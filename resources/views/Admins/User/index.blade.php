@@ -82,8 +82,17 @@
                     </svg>
                 </div>
             </div>
+            <div id="bulkActions" class="bulk-actions" style="display: none;">
+                <span class="selected-count">Đã chọn <strong id="selectedCount">0</strong> người dùng</span>
+                <button class="btn btn-danger" onclick="bulkDelete()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Xóa đã chọn
+                </button>
+            </div>
             <div class="filter-actions">
-                <button class="btn btn-outline">
+                <button class="btn btn-outline" onclick="toggleFilterPanel()">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
                     </svg>
@@ -96,6 +105,86 @@
                     Xuất
                 </button>
             </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div id="filterPanel" class="filter-panel" style="display: none;">
+            <div class="filter-section">
+                <h4>Vai trò</h4>
+                <div class="filter-options">
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="role" value="admin" onchange="applyFilters()">
+                        <span>Admin</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="role" value="moderator" onchange="applyFilters()">
+                        <span>Moderator</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="role" value="employee" onchange="applyFilters()">
+                        <span>Employee</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="role" value="user" onchange="applyFilters()">
+                        <span>User</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4>Trạng thái</h4>
+                <div class="filter-options">
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="status" value="active" onchange="applyFilters()">
+                        <span>Hoạt động</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="status" value="blocked" onchange="applyFilters()">
+                        <span>Bị khóa</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4>Ngày tạo</h4>
+                <div class="filter-options">
+                    <label class="filter-radio">
+                        <input type="radio" name="date_range" value="" checked onchange="applyFilters()">
+                        <span>Tất cả</span>
+                    </label>
+                    <label class="filter-radio">
+                        <input type="radio" name="date_range" value="today" onchange="applyFilters()">
+                        <span>Hôm nay</span>
+                    </label>
+                    <label class="filter-radio">
+                        <input type="radio" name="date_range" value="week" onchange="applyFilters()">
+                        <span>7 ngày qua</span>
+                    </label>
+                    <label class="filter-radio">
+                        <input type="radio" name="date_range" value="month" onchange="applyFilters()">
+                        <span>30 ngày qua</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-actions-buttons">
+                <button class="btn btn-outline" onclick="clearFilters()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    Xóa bộ lọc
+                </button>
+                <button class="btn btn-primary" onclick="toggleFilterPanel()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Áp dụng
+                </button>
+            </div>
+        </div>
+
+        <div class="active-filters" id="activeFilters" style="display: none;">
+            <!-- Active filter tags will appear here -->
         </div>
 
         <div class="table-responsive">
@@ -119,7 +208,7 @@
                     @forelse($users as $user)
                     <tr>
                         <td>
-                            <input type="checkbox" class="row-checkbox">
+                            <input type="checkbox" class="row-checkbox" data-user-id="{{ $user->id }}">
                         </td>
                         <td>
                             <div class="user-cell">
@@ -136,8 +225,10 @@
                         <td>
                             @if($user->role == 'admin')
                                 <span class="badge badge-danger">Admin</span>
-                            @elseif($user->role == 'manager')
-                                <span class="badge badge-warning">Manager</span>
+                            @elseif($user->role == 'moderator')
+                                <span class="badge badge-warning">Moderator</span>
+                            @elseif ($user->role == 'employee')
+                                <span class="badge badge-success">Employee</span>
                             @else
                                 <span class="badge badge-success">User</span>
                             @endif
@@ -269,6 +360,56 @@
         border-bottom: 2px solid transparent;
         background: linear-gradient(to right, #667eea, #764ba2) bottom no-repeat;
         background-size: 100% 2px;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .bulk-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #fff5f5 0%, #fee2e2 100%);
+        border-radius: 12px;
+        border: 2px solid #fecaca;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .selected-count {
+        color: #991b1b;
+        font-size: 0.925rem;
+        font-weight: 600;
+    }
+
+    .selected-count strong {
+        color: #dc2626;
+        font-size: 1.1rem;
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
     }
 
     .header-left h1 {
@@ -858,6 +999,130 @@
         }
     }
 
+    .filter-panel {
+        padding: 1.5rem 2rem;
+        background: linear-gradient(135deg, #fefefe 0%, #f8fafc 100%);
+        border-top: 2px solid #e2e8f0;
+        border-bottom: 2px solid #e2e8f0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .filter-section h4 {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin: 0 0 1rem 0;
+    }
+
+    .filter-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .filter-checkbox,
+    .filter-radio {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .filter-checkbox:hover,
+    .filter-radio:hover {
+        background: #f1f5f9;
+    }
+
+    .filter-checkbox input[type="checkbox"],
+    .filter-radio input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #667eea;
+    }
+
+    .filter-checkbox span,
+    .filter-radio span {
+        font-size: 0.925rem;
+        color: #475569;
+        font-weight: 500;
+    }
+
+    .filter-actions-buttons {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .active-filters {
+        padding: 1rem 2rem;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .filter-tag button {
+        background: none;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        padding: 0;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+    }
+
+    .filter-tag button:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-tag svg {
+        width: 14px;
+        height: 14px;
+    }
+
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
@@ -877,14 +1142,186 @@
         .stats-grid {
             grid-template-columns: 1fr;
         }
+
+        .filter-panel {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
 <script>
+    // Bulk actions functionality
+    const bulkActionsDiv = document.getElementById('bulkActions');
+    const selectedCountSpan = document.getElementById('selectedCount');
+
+    function updateBulkActions() {
+        const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+        const count = checkedBoxes.length;
+
+        if (count > 0) {
+            bulkActionsDiv.style.display = 'flex';
+            selectedCountSpan.textContent = count;
+        } else {
+            bulkActionsDiv.style.display = 'none';
+        }
+    }
+
     document.getElementById('selectAll')?.addEventListener('change', function() {
         const checkboxes = document.querySelectorAll('.row-checkbox');
         checkboxes.forEach(cb => cb.checked = this.checked);
+        updateBulkActions();
     });
+
+    // Add event listener to all row checkboxes
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('row-checkbox')) {
+            updateBulkActions();
+
+            // Update "Select All" checkbox state
+            const allCheckboxes = document.querySelectorAll('.row-checkbox');
+            const checkedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+            const selectAllCheckbox = document.getElementById('selectAll');
+
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = allCheckboxes.length === checkedCheckboxes.length;
+            }
+        }
+    });
+
+    function bulkDelete() {
+        const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+        const userIds = Array.from(checkedBoxes).map(cb => cb.dataset.userId);
+
+        if (userIds.length === 0) {
+            alert('Vui lòng chọn ít nhất một người dùng để xóa.');
+            return;
+        }
+
+        if (!confirm(`Bạn có chắc chắn muốn xóa ${userIds.length} người dùng đã chọn không?`)) {
+            return;
+        }
+
+        // Create a form to submit bulk delete
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route("users.bulkDelete") }}';
+
+        // Add CSRF token
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = '{{ csrf_token() }}';
+        form.appendChild(csrfInput);
+
+        // Add user IDs
+        userIds.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'user_ids[]';
+            input.value = id;
+            form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    // Filter functionality
+    function toggleFilterPanel() {
+        const panel = document.getElementById('filterPanel');
+        panel.style.display = panel.style.display === 'none' ? 'grid' : 'none';
+    }
+
+    function applyFilters() {
+        const roles = Array.from(document.querySelectorAll('input[name="role"]:checked')).map(cb => cb.value);
+        const statuses = Array.from(document.querySelectorAll('input[name="status"]:checked')).map(cb => cb.value);
+        const dateRange = document.querySelector('input[name="date_range"]:checked')?.value || '';
+
+        updateActiveFilters(roles, statuses, dateRange);
+        performFilter(roles, statuses, dateRange);
+    }
+
+    function updateActiveFilters(roles, statuses, dateRange) {
+        const activeFiltersDiv = document.getElementById('activeFilters');
+        const filters = [];
+
+        roles.forEach(role => {
+            const labels = {admin: 'Admin', moderator: 'Moderator', employee: 'Employee', user: 'User'};
+            filters.push({type: 'role', value: role, label: labels[role]});
+        });
+
+        statuses.forEach(status => {
+            const labels = {active: 'Hoạt động', blocked: 'Bị khóa'};
+            filters.push({type: 'status', value: status, label: labels[status]});
+        });
+
+        if (dateRange) {
+            const labels = {today: 'Hôm nay', week: '7 ngày qua', month: '30 ngày qua'};
+            filters.push({type: 'date', value: dateRange, label: labels[dateRange]});
+        }
+
+        if (filters.length === 0) {
+            activeFiltersDiv.style.display = 'none';
+            return;
+        }
+
+        activeFiltersDiv.style.display = 'flex';
+        activeFiltersDiv.innerHTML = filters.map(filter => `
+            <div class="filter-tag">
+                <span>${filter.label}</span>
+                <button onclick="removeFilter('${filter.type}', '${filter.value}')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    function removeFilter(type, value) {
+        if (type === 'role' || type === 'status') {
+            const checkbox = document.querySelector(`input[name="${type}"][value="${value}"]`);
+            if (checkbox) checkbox.checked = false;
+        } else if (type === 'date') {
+            const allRadio = document.querySelector('input[name="date_range"][value=""]');
+            if (allRadio) allRadio.checked = true;
+        }
+        applyFilters();
+    }
+
+    function clearFilters() {
+        document.querySelectorAll('input[name="role"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('input[name="status"]').forEach(cb => cb.checked = false);
+        const allRadio = document.querySelector('input[name="date_range"][value=""]');
+        if (allRadio) allRadio.checked = true;
+        applyFilters();
+    }
+
+    function performFilter(roles, statuses, dateRange) {
+        const query = searchInput?.value.trim() || '';
+        if (searchSpinner) searchSpinner.classList.add('active');
+
+        const params = new URLSearchParams();
+        if (query) params.append('query', query);
+        if (roles.length) params.append('roles', roles.join(','));
+        if (statuses.length) params.append('statuses', statuses.join(','));
+        if (dateRange) params.append('date_range', dateRange);
+
+        fetch(`/api/users/search?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateTable(data.data);
+                    updatePagination(data.pagination, query);
+                }
+            })
+            .catch(error => {
+                console.error('Filter error:', error);
+            })
+            .finally(() => {
+                if (searchSpinner) searchSpinner.classList.remove('active');
+            });
+    }
 
     // Live search functionality
     let searchTimeout;
@@ -942,14 +1379,23 @@
         }
 
         userTableBody.innerHTML = users.map(user => {
-            const roleClass = user.role === 'admin' ? 'danger' : user.role === 'manager' ? 'warning' : 'success';
-            const roleName = user.role === 'admin' ? 'Admin' : user.role === 'manager' ? 'Manager' : 'User';
+            // Role mapping with proper labels and colors
+            const roleMap = {
+                'admin': { class: 'danger', name: 'Admin' },
+                'moderator': { class: 'warning', name: 'Moderator' },
+                'employee': { class: 'warning', name: 'Employee' },
+                'user': { class: 'success', name: 'User' }
+            };
+
+            const roleInfo = roleMap[user.role] || roleMap['user'];
+            const roleClass = roleInfo.class;
+            const roleName = roleInfo.name;
             const createdAt = user.created_at ? new Date(user.created_at).toLocaleString('vi-VN') : 'N/A';
 
             return `
                 <tr>
                     <td>
-                        <input type="checkbox" class="row-checkbox">
+                        <input type="checkbox" class="row-checkbox" data-user-id="${user._id || user.id}">
                     </td>
                     <td>
                         <div class="user-cell">
@@ -988,12 +1434,12 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
                             </button>
-                            <button class="btn-icon" title="Sửa">
+                            <button class="btn-icon" onclick="window.location.href='/users/${user._id || user.id}/edit'" title="Sửa">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                 </svg>
                             </button>
-                            <button class="btn-icon danger" title="Xóa">
+                            <button class="btn-icon danger" onclick="deleteUser('${user._id || user.id}')" title="Xóa">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                 </svg>
@@ -1077,6 +1523,31 @@
 
             paginationLinks.innerHTML = linksHtml;
         }
+    }
+
+    function deleteUser(userId) {
+        if (!confirm('Bạn có chắc chắn muốn xóa người dùng này không?')) {
+            return;
+        }
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/users/${userId}`;
+
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = '{{ csrf_token() }}';
+        form.appendChild(csrfInput);
+
+        const methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'DELETE';
+        form.appendChild(methodInput);
+
+        document.body.appendChild(form);
+        form.submit();
     }
 </script>
 

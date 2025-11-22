@@ -11,6 +11,7 @@ Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users.index');
     Route::get('/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/', [UserController::class, 'store'])->name('users.store');
+    Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->name('users.bulkDelete');
     Route::get('/{users}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/{users}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/{users}', [UserController::class, 'destroy'])->name('users.destroy');

@@ -16,6 +16,7 @@ class Users extends Model
         'phone_number',
         'address',
         'role',
+
         'is_blocked',
     ];
 
@@ -28,6 +29,7 @@ class Users extends Model
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+          
             'is_blocked' => 'boolean',
         ];
     }
