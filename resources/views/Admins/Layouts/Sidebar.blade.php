@@ -99,7 +99,7 @@
                 <p class="nav-section-title">HỆ THỐNG</p>
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="{{ url('/admin/settings') }}" class="nav-link">
+                        <a href="{{ url('/settings') }}" class="nav-link">
                             <div class="nav-icon">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -144,7 +144,14 @@
         display: flex;
         flex-direction: column;
         z-index: 1001;
-        transition: transform 0.3s ease;
+        transition: all 0.3s ease;
+    }
+
+    /* Light mode sidebar */
+    [data-theme="light"] .sidebar {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #e2e8f0;
     }
 
     .sidebar-header {
@@ -153,6 +160,10 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+
+    [data-theme="light"] .sidebar-header {
+        border-bottom: 1px solid #e2e8f0;
     }
 
     .logo-section {
@@ -186,10 +197,18 @@
         line-height: 1.2;
     }
 
+    [data-theme="light"] .logo-text h2 {
+        color: #1e293b;
+    }
+
     .logo-text span {
         font-size: 0.75rem;
         color: #94a3b8;
         font-weight: 500;
+    }
+
+    [data-theme="light"] .logo-text span {
+        color: #64748b;
     }
 
     .sidebar-close {
@@ -252,6 +271,10 @@
         margin-bottom: 0.75rem;
     }
 
+    [data-theme="light"] .nav-section-title {
+        color: #94a3b8;
+    }
+
     .nav-list {
         list-style: none;
         padding: 0;
@@ -277,10 +300,19 @@
         font-size: 0.95rem;
     }
 
+    [data-theme="light"] .nav-link {
+        color: #64748b;
+    }
+
     .nav-link:hover {
         background: rgba(255, 255, 255, 0.1);
         color: #ffffff;
         transform: translateX(4px);
+    }
+
+    [data-theme="light"] .nav-link:hover {
+        background: #f1f5f9;
+        color: #1e293b;
     }
 
     .nav-link.active {
@@ -312,6 +344,10 @@
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    [data-theme="light"] .sidebar-footer {
+        border-top: 1px solid #e2e8f0;
+    }
+
     .user-profile {
         display: flex;
         align-items: center;
@@ -322,8 +358,16 @@
         transition: all 0.3s ease;
     }
 
+    [data-theme="light"] .user-profile {
+        background: #f8fafc;
+    }
+
     .user-profile:hover {
         background: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="light"] .user-profile:hover {
+        background: #f1f5f9;
     }
 
     .profile-avatar {
@@ -349,6 +393,10 @@
         text-overflow: ellipsis;
     }
 
+    [data-theme="light"] .profile-info h4 {
+        color: #1e293b;
+    }
+
     .profile-info p {
         font-size: 0.75rem;
         color: #94a3b8;
@@ -356,6 +404,10 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    [data-theme="light"] .profile-info p {
+        color: #64748b;
     }
 
     .logout-btn {

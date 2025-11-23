@@ -266,11 +266,20 @@
         font-weight: 500;
     }
 
+    [data-theme="dark"] .header-content p {
+        color: #94a3b8;
+    }
+
     .form-container {
         background: #ffffff;
         border-radius: 16px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         overflow: hidden;
+    }
+
+    [data-theme="dark"] .form-container {
+        background: #1a1f2e;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     }
 
     .user-form {
@@ -307,6 +316,10 @@
         color: #1e293b;
     }
 
+    [data-theme="dark"] .section-header h3 {
+        color: #f1f5f9;
+    }
+
     .form-group {
         margin-bottom: 1.75rem;
     }
@@ -317,6 +330,10 @@
         color: #334155;
         margin-bottom: 0.625rem;
         font-size: 0.95rem;
+    }
+
+    [data-theme="dark"] .form-label {
+        color: #e2e8f0;
     }
 
     .required {
@@ -352,6 +369,13 @@
         font-family: inherit;
     }
 
+    [data-theme="dark"] .form-input,
+    [data-theme="dark"] .form-select {
+        background: #0f1419;
+        border-color: #2d3748;
+        color: #e2e8f0;
+    }
+
     .form-textarea {
         width: 100%;
         padding: 0.875rem 1rem 0.875rem 3rem;
@@ -364,6 +388,12 @@
         font-family: inherit;
         resize: vertical;
         min-height: 100px;
+    }
+
+    [data-theme="dark"] .form-textarea {
+        background: #0f1419;
+        border-color: #2d3748;
+        color: #e2e8f0;
     }
 
     .form-input:focus,
@@ -418,6 +448,11 @@
         margin-top: 2rem;
     }
 
+    [data-theme="dark"] .info-box {
+        background: linear-gradient(135deg, #1e3a5f 0%, #1a2f4d 100%);
+        border-color: #3b82f6;
+    }
+
     .info-box svg {
         width: 24px;
         height: 24px;
@@ -432,10 +467,18 @@
         font-weight: 700;
     }
 
+    [data-theme="dark"] .info-content h4 {
+        color: #93c5fd;
+    }
+
     .info-content ul {
         margin: 0;
         padding-left: 1.25rem;
         color: #1e40af;
+    }
+
+    [data-theme="dark"] .info-content ul {
+        color: #93c5fd;
     }
 
     .info-content li {
@@ -453,6 +496,10 @@
         gap: 1rem;
         padding-top: 2rem;
         border-top: 2px solid #e2e8f0;
+    }
+
+    [data-theme="dark"] .form-footer {
+        border-top-color: #2d3748;
     }
 
     .btn {
