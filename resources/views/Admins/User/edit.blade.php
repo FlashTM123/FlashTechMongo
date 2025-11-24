@@ -25,7 +25,7 @@
                 <div class="preview-info">
                     <h3>{{ $users->name }}</h3>
                     <p>{{ $users->email }}</p>
-                    <span class="badge badge-{{ $users->role == 'admin' ? 'danger' : ($users->role == 'moderator' ? 'warning' : ($users->role == 'employee' ? 'info' : 'secondary')) }}">
+                    <span class="badge badge-{{ $users->role == 'admin' ? 'danger' : ($users->role == 'moderator' ? 'warning' : 'success') }}">
                         {{ ucfirst($users->role ?? 'user') }}
                     </span>
                 </div>
@@ -81,7 +81,7 @@
                     <div class="form-group">
                         <div class="password-header">
                             <label class="form-label">Mật khẩu</label>
-                            <button type="button" class="toggle-password-section" onclick="togglePasswordSection()">
+                            <button type="button" class="toggle-password-section" id="togglePasswordBtn">
                                 <svg class="lock-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                 </svg>
@@ -95,7 +95,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                 </svg>
                                 <input type="password" id="password" name="password" class="form-input" placeholder="Nhập mật khẩu mới">
-                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">
+                                <button type="button" class="toggle-password" data-target="password">
                                     <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -111,7 +111,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                                 </svg>
                                 <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" placeholder="Xác nhận mật khẩu mới">
-                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password_confirmation')">
+                                <button type="button" class="toggle-password" data-target="password_confirmation">
                                     <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -194,7 +194,7 @@
                             Trạng thái tài khoản
                         </label>
                         <div class="status-controls">
-                            <div class="status-toggle-card" id="activeCard" onclick="toggleStatus('active')">
+                            <div class="status-toggle-card" id="activeCard" data-status="active">
                                 <div class="status-icon active-icon">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -211,7 +211,7 @@
                                 </div>
                             </div>
 
-                            <div class="status-toggle-card" id="blockedCard" onclick="toggleStatus('blocked')">
+                            <div class="status-toggle-card" id="blockedCard" data-status="blocked">
                                 <div class="status-icon blocked-icon">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
@@ -248,13 +248,13 @@
             </div>
 
             <div class="form-footer">
-                <button type="button" onclick="window.location='{{ url('/users') }}'" class="btn btn-cancel">
+                <button type="button" id="cancelBtn" class="btn btn-cancel">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                     Hủy bỏ
                 </button>
-                <button type="button" onclick="confirmDelete()" class="btn btn-delete">
+                <button type="button" id="deleteBtn" class="btn btn-delete">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
@@ -313,6 +313,10 @@
         font-size: 0.95rem;
         transition: all 0.3s ease;
         width: fit-content;
+    }
+
+    [data-theme="dark"] .back-btn {
+        color: #94a3b8;
     }
 
     .back-btn:hover {
@@ -932,10 +936,21 @@
         border: 2px solid #e2e8f0;
     }
 
+    [data-theme="dark"] .btn-cancel {
+        background: #1a1f2e;
+        color: #94a3b8;
+        border-color: #2d3748;
+    }
+
     .btn-cancel:hover {
         background: #f8fafc;
         border-color: #cbd5e1;
         transform: translateY(-2px);
+    }
+
+    [data-theme="dark"] .btn-cancel:hover {
+        background: #252836;
+        border-color: #3b4252;
     }
 
     .btn-delete {
@@ -997,78 +1012,124 @@
 </style>
 
 <script>
-    function toggleStatus(status) {
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all elements
         const activeCard = document.getElementById('activeCard');
         const blockedCard = document.getElementById('blockedCard');
         const statusInput = document.getElementById('statusInput');
         const statusDisplay = document.getElementById('statusDisplay');
-
-        if (status === 'active') {
-            activeCard.classList.add('selected', 'active-selected');
-            blockedCard.classList.remove('selected', 'blocked-selected');
-            statusInput.value = '0';
-            statusDisplay.textContent = 'Hoạt động';
-            statusDisplay.className = 'status-active';
-        } else {
-            blockedCard.classList.add('selected', 'blocked-selected');
-            activeCard.classList.remove('selected', 'active-selected');
-            statusInput.value = '1';
-            statusDisplay.textContent = 'Bị khóa';
-            statusDisplay.className = 'status-blocked';
-        }
-    }
-
-    // Initialize status on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if user is blocked from backend data
-        const isBlocked = {{ $users->is_blocked ?? 0 }};
-        if (isBlocked) {
-            toggleStatus('blocked');
-        } else {
-            toggleStatus('active');
-        }
-    });
-
-    function togglePasswordSection() {
-        const section = document.getElementById('passwordSection');
+        const passwordSection = document.getElementById('passwordSection');
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
         const toggleText = document.getElementById('toggleText');
+        const passwordField = document.getElementById('password');
+        const confirmationField = document.getElementById('password_confirmation');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const deleteForm = document.getElementById('deleteForm');
+        const userForm = document.querySelector('.user-form');
 
-        if (section.style.display === 'none') {
-            section.style.display = 'block';
-            toggleText.textContent = 'Ẩn mật khẩu';
-        } else {
-            section.style.display = 'none';
-            toggleText.textContent = 'Thay đổi mật khẩu';
-            // Clear password fields
-            document.getElementById('password').value = '';
-            document.getElementById('password_confirmation').value = '';
+        // Function to toggle status
+        function toggleStatus(status) {
+            if (!activeCard || !blockedCard || !statusInput || !statusDisplay) {
+                return;
+            }
+
+            // Remove all status classes first
+            activeCard.classList.remove('selected', 'active-selected', 'blocked-selected');
+            blockedCard.classList.remove('selected', 'active-selected', 'blocked-selected');
+
+            if (status === 'active') {
+                activeCard.classList.add('selected', 'active-selected');
+                statusInput.value = '0';
+                statusDisplay.textContent = 'Hoạt động';
+                statusDisplay.className = 'status-active';
+            } else {
+                blockedCard.classList.add('selected', 'blocked-selected');
+                statusInput.value = '1';
+                statusDisplay.textContent = 'Bị khóa';
+                statusDisplay.className = 'status-blocked';
+            }
         }
-    }
 
-    function togglePasswordVisibility(inputId) {
-        const input = document.getElementById(inputId);
-        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-        input.setAttribute('type', type);
-    }
+        // Initialize status based on backend data
+        const isBlocked = {!! json_encode($users->is_blocked ?? 0) !!};
+        toggleStatus(isBlocked ? 'blocked' : 'active');
 
-    function confirmDelete() {
-        if (confirm('Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác!')) {
-            document.getElementById('deleteForm').submit();
+        // Add click events to status cards
+        if (activeCard) {
+            activeCard.addEventListener('click', function() {
+                toggleStatus('active');
+            });
         }
-    }
 
-    // Form validation
-    document.querySelector('.user-form')?.addEventListener('submit', function(e) {
-        const password = document.getElementById('password').value;
-        const confirmation = document.getElementById('password_confirmation').value;
+        if (blockedCard) {
+            blockedCard.addEventListener('click', function() {
+                toggleStatus('blocked');
+            });
+        }
 
-        // Only validate if password section is visible and has value
-        if (password && password !== confirmation) {
-            e.preventDefault();
-            alert('Mật khẩu xác nhận không khớp!');
-            return false;
+        // Toggle password section
+        if (togglePasswordBtn && passwordSection && toggleText) {
+            togglePasswordBtn.addEventListener('click', function() {
+                const isHidden = passwordSection.style.display === 'none' || passwordSection.style.display === '';
+
+                if (isHidden) {
+                    passwordSection.style.display = 'block';
+                    toggleText.textContent = 'Ẩn mật khẩu';
+                } else {
+                    passwordSection.style.display = 'none';
+                    toggleText.textContent = 'Thay đổi mật khẩu';
+                    if (passwordField) passwordField.value = '';
+                    if (confirmationField) confirmationField.value = '';
+                }
+            });
+        }
+
+        // Toggle password visibility
+        const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+        togglePasswordBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (input) {
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                }
+            });
+        });
+
+        // Delete button
+        if (deleteBtn && deleteForm) {
+            deleteBtn.addEventListener('click', function() {
+                if (confirm('Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác!')) {
+                    deleteForm.submit();
+                }
+            });
+        }
+
+        // Cancel button
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function() {
+                window.location.href = '{{ url('/users') }}';
+            });
+        }
+
+        // Form validation
+        if (userForm) {
+            userForm.addEventListener('submit', function(e) {
+                if (!passwordField || !confirmationField) {
+                    return true;
+                }
+
+                const password = passwordField.value;
+                const confirmation = confirmationField.value;
+
+                if (password && password !== confirmation) {
+                    e.preventDefault();
+                    alert('Mật khẩu xác nhận không khớp!');
+                    return false;
+                }
+            });
         }
     });
-</script>
-
-@endsection
+</script>@endsection
