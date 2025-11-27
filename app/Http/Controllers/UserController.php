@@ -6,6 +6,8 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Users;
 
+use function Flasher\Prime\flash;
+
 class UserController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = Users::paginate(10);
+        $users = Users::paginate(5);
         return view('Admins.User.index', compact('users'));
     }
 
@@ -130,7 +132,17 @@ class UserController extends Controller
         ]);
 
         Users::create($request->all());
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+
+
+         if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Người dùng đã được tạo thành công!",
+
+                ]);
+            }
+
+        return redirect()->route('users.index')->with('success', 'Nguoì dùng đã được tạo thành công.');
     }
 
     /**
@@ -169,7 +181,17 @@ class UserController extends Controller
         }
 
         $users->update($data);
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        $userName = $users->name;
+
+        if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Người dùng " . $userName . " đã được cập nhật thành công!",
+
+                ]);
+            }
+
+        return redirect()->route('users.index')->with('success', "Người dùng " . $userName . " đã được cập nhật thành công.");
     }
 
     /**
@@ -178,6 +200,8 @@ class UserController extends Controller
     public function destroy(Users $users)
     {
         $users->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        $userName = $users->name;
+
+        return redirect()->route('users.index')->with('success', "Người dùng " . $userName . " đã được xóa thành công.");
     }
 }

@@ -7,7 +7,7 @@
     <div class="page-header">
         <div class="header-left">
             <h1>Dashboard</h1>
-            <p>Chào mừng trở lại, <strong>Admin123</strong>! 👋</p>
+            <p>Chào mừng trở lại, <strong>{{ Auth::user()->name }}</strong>! 👋</p>
         </div>
         <div class="header-right">
             <div class="date-time-card">

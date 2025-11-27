@@ -4,8 +4,9 @@ namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
 
-class Users extends Model
+class Users extends Model implements \Illuminate\Contracts\Auth\Authenticatable
 {
+    use \Illuminate\Auth\Authenticatable;
     protected $connection = 'mongodb';
     protected $table = 'user';
 
@@ -29,7 +30,7 @@ class Users extends Model
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-          
+
             'is_blocked' => 'boolean',
         ];
     }
