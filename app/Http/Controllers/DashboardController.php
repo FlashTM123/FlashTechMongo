@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Users;
+use App\Models\Customer;
 
 class DashboardController extends Controller
 {
@@ -39,6 +40,20 @@ class DashboardController extends Controller
                 'employee' => Users::where('role', 'employee')->count(),
                 'user' => Users::where('role', 'user')->count(),
             ];
+            $totalCustomers = Customer::count();
+            $activeCustomers = Customer::where(function($query) {
+                $query->where('is_blocked', false)
+                      ->orWhere('is_blocked', 0)
+                      ->orWhere('is_blocked', '0')
+                      ->orWhereNull('is_blocked');
+            })->count();
+            $vipCustomers = Customer::where('is_vip', true)->count();
+            $inactiveCustomers = Customer::where(function($query) {
+                $query->where('is_blocked', true)
+                      ->orWhere('is_blocked', 1)
+                      ->orWhere('is_blocked', '1')
+                      ->orWhere('is_blocked', 'true');
+            })->count();
 
             return view('Admins.Dashboard.dashboard', compact(
                 'totalUsers',
@@ -47,7 +62,11 @@ class DashboardController extends Controller
                 'adminUsers',
                 'moderatorUsers',
                 'recentUsers',
-                'usersByRole'
+                'usersByRole',
+                'totalCustomers',
+                'activeCustomers',
+                'vipCustomers',
+                'inactiveCustomers'
             ));
         } catch (\Exception $e) {
             return view('Admins.Dashboard.dashboard', [

@@ -36,6 +36,16 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{users}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
+    // Brands Management - Admin, Employee
+    Route::middleware(['role:admin,employee'])->prefix('brands')->group(function () {
+        Route::get('/', [\App\Http\Controllers\BrandController::class, 'index'])->name('brands.index');
+        Route::get('/create', [\App\Http\Controllers\BrandController::class, 'create'])->name('brands.create');
+        Route::post('/', [\App\Http\Controllers\BrandController::class, 'store'])->name('brands.store');
+        Route::get('/{brand}/edit', [\App\Http\Controllers\BrandController::class, 'edit'])->name('brands.edit');
+        Route::put('/{brand}', [\App\Http\Controllers\BrandController::class, 'update'])->name('brands.update');
+        Route::delete('/{brand}', [\App\Http\Controllers\BrandController::class, 'destroy'])->name('brands.destroy');
+    });
+
     // Customers Management - Admin, Moderator, Employee
     Route::middleware(['role:admin,moderator,employee'])->prefix('customers')->group(function () {
         Route::get('/', [CustomerController::class, 'index'])->name('customers.index');

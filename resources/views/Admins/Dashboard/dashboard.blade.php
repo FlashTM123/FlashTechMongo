@@ -107,19 +107,136 @@
         </div>
     </div>
 
-    <!-- Charts and Tables Row -->
-    <div class="content-grid">
-        <!-- Users by Role Chart -->
-        <div class="content-card chart-card">
-            <div class="card-header">
-                <h3>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
-                    </svg>
-                    Phân bổ người dùng theo vai trò
-                </h3>
+    <!-- Customer Statistics (collapsible to keep page short) -->
+    <div class="customer-stats">
+        <div class="collapsible-header">
+            <div class="header-content">
+                <svg class="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.856-1.487M7 20H2v-2a3 3 0 015.856-1.487M15 7a4 4 0 11-8 0 4 4 0 018 0zM6 10h12M6 14h12M6 18h12"/>
+                </svg>
+                <h3>Thống kê khách hàng</h3>
             </div>
+            <button id="toggleCustomers" class="toggle-btn" aria-expanded="false">
+                <svg class="toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </button>
+        </div>
+
+        <div id="customerContent" class="collapsible-body" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon users-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A8 8 0 0112 4a8 8 0 016.879 13.804M12 14a4 4 0 110-8 4 4 0 010 8z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Tổng khách hàng</h3>
+                        <div class="stat-value">{{ number_format($totalCustomers ?? 0) }}</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon active-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Khách hàng hoạt động</h3>
+                        <div class="stat-value">{{ number_format($activeCustomers ?? 0) }}</div>
+                        <div class="stat-footer">
+                            <span class="stat-badge success">
+                                Hoạt động
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon admin-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Khách hàng VIP</h3>
+                        <div class="stat-value">{{ number_format($vipCustomers ?? 0) }}</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blocked-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636L5.636 18.364M5.636 5.636l12.728 12.728"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Khách hàng không hoạt động</h3>
+                        <div class="stat-value">{{ number_format($inactiveCustomers ?? 0) }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="recent-users-list">
+                    @forelse($recentCustomers ?? [] as $customer)
+                        <div class="recent-user-item">
+                            <div class="user-avatar">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($customer->name) }}&background=10b981&color=fff&size=48" alt="{{ $customer->name }}">
+                            </div>
+                            <div class="user-details">
+                                <h4>{{ $customer->name }}</h4>
+                                <p>{{ $customer->email ?? '-' }}</p>
+                            </div>
+                            <div class="user-meta">
+                                <span class="badge badge-{{ ($customer->status ?? 'active') == 'vip' ? 'danger' : 'success' }}">
+                                    {{ ucfirst($customer->status ?? 'active') }}
+                                </span>
+                                <span class="user-date">{{ optional($customer->created_at)->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="empty-state">
+                            <p>Chưa có khách hàng mới</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Tables Row -->
+    <!-- User Statistics (collapsible section) -->
+    <div class="user-stats">
+        <div class="collapsible-header">
+            <div class="header-content">
+                <svg class="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+                <h3>Thống kê người dùng</h3>
+            </div>
+            <button id="toggleUsers" class="toggle-btn" aria-expanded="false">
+                <svg class="toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </button>
+        </div>
+
+        <div id="userContent" class="collapsible-body" style="display: none;">
+            <div class="content-grid">
+                <!-- Users by Role Chart -->
+                <div class="content-card chart-card">
+                    <div class="card-header">
+                        <h3>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                            </svg>
+                            Phân bổ người dùng theo vai trò
+                        </h3>
+                    </div>
             <div class="card-body">
                 <div class="role-chart">
                     @foreach($usersByRole as $role => $count)
@@ -200,8 +317,9 @@
             </div>
         </div>
     </div>
+    </div>
+    <br>
 
-    <!-- Quick Actions -->
     <div class="quick-actions">
         <h3>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -860,6 +978,207 @@
         color: #94a3b8;
     }
 
+    /* Customer stats collapsible */
+    .customer-stats {
+        margin-bottom: 2rem;
+        border-radius: 16px;
+        overflow: visible;
+        animation: slideDown 0.4s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .customer-stats .collapsible-header,
+    .user-stats .collapsible-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: 1.5rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .user-stats .collapsible-header {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+    }
+
+    .customer-stats .collapsible-header::before,
+    .user-stats .collapsible-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+        pointer-events: none;
+    }
+
+    .customer-stats .collapsible-header:hover,
+    .user-stats .collapsible-header:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(102, 126, 234, 0.3);
+    }
+
+    .user-stats .collapsible-header:hover {
+        box-shadow: 0 12px 32px rgba(16, 185, 129, 0.3);
+    }
+
+    [data-theme="dark"] .customer-stats .collapsible-header {
+        background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
+    }
+
+    [data-theme="dark"] .customer-stats .collapsible-header:hover {
+        box-shadow: 0 12px 32px rgba(124, 58, 237, 0.3);
+    }
+
+    [data-theme="dark"] .user-stats .collapsible-header {
+        background: linear-gradient(135deg, #065f46 0%, #10b981 100%);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+    }
+
+    [data-theme="dark"] .user-stats .collapsible-header:hover {
+        box-shadow: 0 12px 32px rgba(16, 185, 129, 0.3);
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-icon {
+        width: 28px;
+        height: 28px;
+        color: #ffffff;
+        flex-shrink: 0;
+        animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    .customer-stats .collapsible-header h3,
+    .user-stats .collapsible-header h3 {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.3px;
+    }
+
+    .toggle-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        padding: 0.75rem;
+        border-radius: 12px;
+        color: #ffffff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+        backdrop-filter: blur(10px);
+        flex-shrink: 0;
+    }
+
+    .toggle-icon {
+        width: 20px;
+        height: 20px;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateY(-2px);
+    }
+
+    .toggle-btn[aria-expanded="true"] .toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    [data-theme="dark"] .toggle-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    [data-theme="dark"] .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .collapsible-body {
+        animation: expandHeight 0.4s ease forwards;
+        overflow: hidden;
+    }
+
+    @keyframes expandHeight {
+        from {
+            opacity: 0;
+            max-height: 0;
+            margin-top: 0;
+        }
+        to {
+            opacity: 1;
+            max-height: 2000px;
+            margin-top: 1.5rem;
+        }
+    }
+
+    .collapsible-body[style*="display: none"] {
+        animation: collapseHeight 0.4s ease forwards;
+    }
+
+    @keyframes collapseHeight {
+        from {
+            opacity: 1;
+            max-height: 2000px;
+            margin-top: 1.5rem;
+        }
+        to {
+            opacity: 0;
+            max-height: 0;
+            margin-top: 0;
+        }
+    }
+
+    /* User stats collapsible */
+    .user-stats {
+        margin-bottom: 2rem;
+        border-radius: 16px;
+        overflow: visible;
+        animation: slideDown 0.4s ease;
+    }
+
+
     @media (max-width: 1024px) {
         .content-grid {
             grid-template-columns: 1fr;
@@ -882,6 +1201,16 @@
 
         .date-time-card {
             width: 100%;
+        }
+
+        .customer-stats .collapsible-header,
+        .user-stats .collapsible-header {
+            padding: 1rem 1.5rem;
+        }
+
+        .customer-stats .collapsible-header h3,
+        .user-stats .collapsible-header h3 {
+            font-size: 1.1rem;
         }
     }
 </style>
@@ -916,6 +1245,70 @@
         // Update immediately and then every second
         updateDateTime();
         setInterval(updateDateTime, 1000);
+
+        // Collapsible customer stats: remember state in localStorage
+        try {
+            const toggleBtn = document.getElementById('toggleCustomers');
+            const customerContent = document.getElementById('customerContent');
+            if (toggleBtn && customerContent) {
+                const STORAGE_KEY = 'dashboard_customers_open';
+                const saved = localStorage.getItem(STORAGE_KEY);
+                const isOpen = saved === '1';
+                const setState = (open) => {
+                    if (open) {
+                        customerContent.style.display = 'block';
+                    } else {
+                        customerContent.style.display = 'none';
+                    }
+                    toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                };
+
+                setState(isOpen);
+
+                toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const currentlyOpen = customerContent.style.display !== 'none';
+                    const nextOpen = !currentlyOpen;
+                    setState(nextOpen);
+                    try { localStorage.setItem(STORAGE_KEY, nextOpen ? '1' : '0'); } catch (e) { /* ignore */ }
+                });
+            }
+        } catch (e) {
+            // safe fail for older browsers
+            console.error(e);
+        }
+
+        // Collapsible user stats: remember state in localStorage
+        try {
+            const toggleBtn = document.getElementById('toggleUsers');
+            const userContent = document.getElementById('userContent');
+            if (toggleBtn && userContent) {
+                const STORAGE_KEY = 'dashboard_users_open';
+                const saved = localStorage.getItem(STORAGE_KEY);
+                const isOpen = saved === '1';
+                const setState = (open) => {
+                    if (open) {
+                        userContent.style.display = 'block';
+                    } else {
+                        userContent.style.display = 'none';
+                    }
+                    toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                };
+
+                setState(isOpen);
+
+                toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const currentlyOpen = userContent.style.display !== 'none';
+                    const nextOpen = !currentlyOpen;
+                    setState(nextOpen);
+                    try { localStorage.setItem(STORAGE_KEY, nextOpen ? '1' : '0'); } catch (e) { /* ignore */ }
+                });
+            }
+        } catch (e) {
+            // safe fail for older browsers
+            console.error(e);
+        }
     });
 </script>
 
