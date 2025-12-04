@@ -52,6 +52,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     });
 
+    Route::middleware(['role:admin,employee'])->prefix('products')->group(function () {
+        Route::get('/', [\App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+        Route::get('/create', [\App\Http\Controllers\ProductController::class, 'create'])->name('products.create');
+        Route::post('/', [\App\Http\Controllers\ProductController::class, 'store'])->name('products.store');
+        Route::get('/{product}/edit', [\App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/{product}', [\App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
+        Route::delete('/{product}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('products.destroy');
+    });
     // Settings - Admin, Moderator, Employee
     Route::middleware(['role:admin,moderator,employee'])->prefix('settings')->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('settings.index');

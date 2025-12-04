@@ -62,7 +62,7 @@
                             <input type="checkbox" id="selectAll" class="checkbox-input">
                         </th>
                         <th>Tên thương hiệu</th>
-                        <th>Logo</th>
+                        <th class="center">Logo</th>
                         <th class="center">Sản phẩm</th>
                         <th class="center">Trạng thái</th>
                         <th class="right">Hành động</th>
@@ -74,7 +74,7 @@
                         <td class="checkbox-col">
                             <input type="checkbox" class="row-checkbox" value="{{ $brand->slug ?? '' }}">
                         </td>
-                        <td>
+                        <td class="center">
                             <div class="brand-cell">
                                 <strong class="brand-title">{{ $brand->name ?? 'N/A' }}</strong>
                             </div>
@@ -676,6 +676,7 @@
         padding: 0.25rem;
         border: 1px solid var(--gray-200);
         transition: all 0.3s ease;
+        align-items: center;
     }
 
     [data-theme="dark"] .brand-logo {
