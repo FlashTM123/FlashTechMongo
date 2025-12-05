@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->string('color');
+            $table->enum('category', ['Smartphone', 'Tablet', 'Laptop', 'Accessory','Computer','Other']);
             $table->decimal('price', 12, 2);
             $table->decimal('sale_price', 12, 2)->nullable();
             $table->integer('stock_quantity')->default(0);

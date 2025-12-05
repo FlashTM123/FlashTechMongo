@@ -15,6 +15,10 @@ class Brand extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['name', 'logo', 'slug', 'description', 'is_active', 'website'];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     protected static function boot(){
         parent::boot();
 

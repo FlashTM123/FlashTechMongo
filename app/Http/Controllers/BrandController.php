@@ -51,13 +51,13 @@ class BrandController extends Controller
             $logoPath = $request->file('logo')->store('logos', 'public');
         }
 
-        Brand::create([
+        $brands = Brand::create([
             'name' => $validated['name'],
             'slug' => $validated['slug'],
             'description' => $validated['description'] ?? null,
             'website' => $validated['website'] ?? null,
             'logo' => $logoPath,
-            'is_active' => $validated['is_active'] ?? true,
+            'is_active' => isset($validated['is_active']) ? (bool)$validated['is_active'] : false,
         ]);
 
         return redirect()->route('brands.index')
@@ -77,7 +77,7 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-        
+
         return view('Admins.Brands.edit', compact('brand'));
     }
 
@@ -110,7 +110,7 @@ class BrandController extends Controller
         $brand->slug = $validated['slug'];
         $brand->description = $validated['description'] ?? null;
         $brand->website = $validated['website'] ?? null;
-        $brand->is_active = $validated['is_active'] ?? true;
+        $brand->is_active = isset($validated['is_active']) ? (bool)$validated['is_active'] : false;
         $brand->save();
 
         return redirect()->route('brands.index')

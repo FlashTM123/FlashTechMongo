@@ -20,7 +20,7 @@
 
     <!-- Main Form Container -->
     <div class="form-wrapper">
-        <form action="{{ route('brands.update', $brand->id) }}" method="POST" enctype="multipart/form-data" class="edit-form">
+        <form action="{{ route('brands.update', $brand->slug) }}" method="POST" enctype="multipart/form-data" class="edit-form">
             @csrf
             @method('PUT')
 
@@ -133,6 +133,7 @@
                             <span class="label-text">Trạng thái</span>
                         </label>
                         <div class="toggle-switch">
+                            <input type="hidden" name="is_active" value="0">
                             <input
                                 type="checkbox"
                                 id="is_active"

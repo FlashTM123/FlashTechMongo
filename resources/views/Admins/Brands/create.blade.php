@@ -132,6 +132,7 @@
                             <span class="label-text">Trạng thái</span>
                         </label>
                         <div class="toggle-switch">
+                            <input type="hidden" name="is_active" value="0">
                             <input
                                 type="checkbox"
                                 id="is_active"

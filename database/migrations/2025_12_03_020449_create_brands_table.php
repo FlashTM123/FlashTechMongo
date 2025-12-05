@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('slug')->unique();
             $table->string('description')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active');
             $table->string('website')->nullable();
             $table->string('logo')->nullable();
             $table->timestamps();
