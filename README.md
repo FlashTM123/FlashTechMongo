@@ -303,7 +303,7 @@ Dự án được phát hành dưới giấy phép [MIT License](LICENSE).
 
 ## 📧 Liên hệ
 
-- **Author**: FlashTM123
+- **Author**: FlashTM123 (Trương Minh)
 - **Email**: nhatduong019@gmail.com
 - **GitHub**: [https://github.com/FlashTM123/FlashTechMongo](https://github.com/FlashTM123/FlashTechMongo)
 
