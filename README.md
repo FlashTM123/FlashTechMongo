@@ -1,7 +1,7 @@
 # ⚡ FlashTech - E-Commerce Technology Store
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Laravel-11.x-red?style=for-the-badge&logo=laravel" alt="Laravel">
+  <img src="https://img.shields.io/badge/Laravel-12.x-red?style=for-the-badge&logo=laravel" alt="Laravel">
   <img src="https://img.shields.io/badge/MongoDB-6.0-green?style=for-the-badge&logo=mongodb" alt="MongoDB">
   <img src="https://img.shields.io/badge/PHP-8.2-blue?style=for-the-badge&logo=php" alt="PHP">
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
