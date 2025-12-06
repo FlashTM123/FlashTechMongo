@@ -12,9 +12,7 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::get('/', function () {
-    return redirect()->route('dashboard.index');
-});
+Route::get('/', [\App\Http\Controllers\CustomerHomeController::class, 'index'])->name('home');
 
 
 // Protected routes - Require authentication
