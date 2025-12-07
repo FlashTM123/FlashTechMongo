@@ -6,12 +6,20 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerAuthController;
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+// Customer Authentication Routes
+Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->name('customers.register');
+Route::post('/register', [CustomerAuthController::class, 'register'])->name('customers.register.post');
+Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customers.login');
+Route::post('/login', [CustomerAuthController::class, 'login'])->name('customers.login.post');
+Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name('customers.logout');
 
+// Customer Home Route
 Route::get('/', [\App\Http\Controllers\CustomerHomeController::class, 'index'])->name('home');
 
 

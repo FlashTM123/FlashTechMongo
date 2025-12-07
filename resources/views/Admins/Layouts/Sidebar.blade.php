@@ -118,7 +118,7 @@
                 <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name ?? 'User') }}&background=667eea&color=fff" alt="{{ $user->name ?? 'User' }}" class="profile-avatar">
                 <div class="profile-info">
                     <h4>{{ Auth::user()->name }}</h4>
-                    <p>Administrator</p>
+                    <p>{{ Auth::user()->role ?? 'Administrator' }}</p>
                 </div>
                 <a href="{{ route('logout') }}" class="logout-btn" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -189,9 +189,9 @@
                                 <div class="customer-info">
                                     <div class="customer-avatar">
                                         @if($customer->profile_picture)
-                                            <img src="{{ asset( $customer->profile_picture) }}" alt="{{ $customer->full_name }}">
+                                            <img src="{{ asset('storage/' . $customer->profile_picture) }}" alt="{{ $customer->full_name }}">
                                         @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($customer->full_name) }}&background=667eea&color=fff&size=40" alt="{{ $customer->full_name }}">
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($customer->full_name) }}&background=667eea&color=fff&size=128" alt="{{ $customer->full_name }}">
                                         @endif
                                     </div>
                                     <div class="customer-details">
