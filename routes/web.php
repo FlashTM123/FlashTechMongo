@@ -22,6 +22,12 @@ Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name
 // Customer Home Route
 Route::get('/', [\App\Http\Controllers\CustomerHomeController::class, 'index'])->name('home');
 
+// Product Detail Route
+Route::get('/product/{slug}', [\App\Http\Controllers\CustomerHomeController::class, 'productDetail'])->name('product.detail');
+
+// Category Route
+Route::get('/danh-muc/{category}', [\App\Http\Controllers\CustomerHomeController::class, 'category'])->name('products.category');
+
 
 // Protected routes - Require authentication
 Route::middleware(['auth'])->group(function () {

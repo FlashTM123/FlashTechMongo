@@ -216,7 +216,7 @@
         <div class="container">
             <ul class="menu-list" id="mobileMenu">
                 <li class="menu-item">
-                    <a href="#" class="menu-link active">
+                    <a href="{{ route('home') }}" class="menu-link active">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -236,11 +236,11 @@
                         </svg>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">📱 Smartphone</a>
-                        <a href="#" class="dropdown-item">💻 Laptop</a>
-                        <a href="#" class="dropdown-item">📲 Tablet</a>
-                        <a href="#" class="dropdown-item">🖥️ Computer</a>
-                        <a href="#" class="dropdown-item">🎧 Phụ kiện</a>
+                        <a href="{{ route('products.category', 'smartphone') }}" class="dropdown-item">📱 Smartphone</a>
+                        <a href="{{ route('products.category', 'laptop') }}" class="dropdown-item">💻 Laptop</a>
+                        <a href="{{ route('products.category', 'tablet') }}" class="dropdown-item">📲 Tablet</a>
+                        <a href="{{ route('products.category', 'computer') }}" class="dropdown-item">🖥️ Computer</a>
+                        <a href="{{ route('products.category', 'accessory') }}" class="dropdown-item">🎧 Phụ kiện</a>
                     </div>
                 </li>
                 <li class="menu-item">

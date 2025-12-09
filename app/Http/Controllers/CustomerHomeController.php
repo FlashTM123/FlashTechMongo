@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Brand;
+use App\Models\Specifications;
 
 class CustomerHomeController extends Controller
 {
@@ -72,6 +73,129 @@ class CustomerHomeController extends Controller
             'accessories',
             'brands',
             'categoryCounts'
+        ));
+    }
+
+    /**
+     * Hiển thị chi tiết sản phẩm
+     */
+    public function productDetail($slug)
+    {
+        // Tìm sản phẩm theo slug
+        $product = Product::where('slug', $slug)
+            ->where('is_active', true)
+            ->with('brand')
+            ->firstOrFail();
+
+        // Tăng lượt xem
+        $product->increment('views_count');
+
+        // Lấy thông số kỹ thuật
+        $specifications = Specifications::where('product_id', $product->id)
+            ->orderBy('order')
+            ->get();
+
+        // Lấy sản phẩm liên quan (cùng category hoặc brand)
+        $relatedProducts = Product::where('is_active', true)
+            ->where('id', '!=', $product->id)
+            ->where(function($query) use ($product) {
+                $query->where('category', $product->category)
+                      ->orWhere('brand_id', $product->brand_id);
+            })
+            ->with('brand')
+            ->take(4)
+            ->get();
+
+        return view('Customers.Products.detail', compact(
+            'product',
+            'specifications',
+            'relatedProducts'
+        ));
+    }
+
+    /**
+     * Hiển thị sản phẩm theo danh mục
+     */
+    public function category(Request $request, $category)
+    {
+        // Map slug to category name
+        $categoryMap = [
+            'smartphone' => 'Smartphone',
+            'laptop' => 'Laptop',
+            'tablet' => 'Tablet',
+            'computer' => 'Computer',
+            'accessory' => 'Accessory',
+            'other' => 'Other'
+        ];
+
+        $categoryName = $categoryMap[$category] ?? abort(404);
+
+        // Base query
+        $query = Product::where('is_active', true)
+            ->where('category', $categoryName)
+            ->with('brand');
+
+        // Search filter
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Brand filter
+        if ($request->has('brand') && $request->brand) {
+            $query->where('brand_id', $request->brand);
+        }
+
+        // Price range filter
+        if ($request->has('min_price') && $request->min_price) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->has('max_price') && $request->max_price) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'newest');
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'popular':
+                $query->orderBy('views_count', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+        }
+
+        // Paginate
+        $products = $query->paginate(12)->appends($request->query());
+
+        // Get brands for filter
+        $brands = Brand::where('is_active', true)->orderBy('name')->get();
+
+        // Category info
+        $categoryInfo = [
+            'slug' => $category,
+            'name' => $categoryName,
+            'count' => Product::where('category', $categoryName)->where('is_active', true)->count()
+        ];
+
+        return view('Customers.Products.category', compact(
+            'products',
+            'brands',
+            'categoryInfo'
         ));
     }
 }

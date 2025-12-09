@@ -236,6 +236,12 @@
         gap: 2rem;
     }
 
+    .product-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
     .product-card {
         background: white;
         border-radius: 16px;

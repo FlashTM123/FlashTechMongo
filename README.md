@@ -107,6 +107,8 @@
 |:----------|:------|
 | Homepage | Hero banner, categories, flash sale |
 | Product Cards | Badges, wishlist, quick view, ratings |
+| Product Detail | Gallery ảnh, thông số kỹ thuật, đánh giá |
+| Category Page | Lọc theo brand/giá, sắp xếp, phân trang |
 | Navbar | Sticky header, user dropdown, search |
 | Responsive | Mobile hamburger menu, adaptive layout |
 
@@ -353,6 +355,9 @@ FlashTechMongo/
 | **Frontend** | Homepage | ✅ |
 | | Navbar responsive | ✅ |
 | | Product cards | ✅ |
+| | Product detail page | ✅ |
+| | Category page với filters | ✅ |
+| | Pagination component | ✅ |
 | | Flash sale timer | ✅ |
 | | Footer | ✅ |
 
@@ -362,11 +367,13 @@ FlashTechMongo/
 
 | Ưu tiên | Tính năng | Trạng thái |
 |:-------:|:----------|:----------:|
-| 🔴 | Chi tiết sản phẩm | ⏳ |
 | 🔴 | Giỏ hàng (Cart) | ⏳ |
 | 🔴 | Thanh toán (Checkout) | ⏳ |
+| 🔴 | Quản lý đơn hàng | ⏳ |
 | 🟡 | Đánh giá sản phẩm | ⏳ |
 | 🟡 | Wishlist | ⏳ |
+| 🟡 | Trang tài khoản khách hàng | ⏳ |
+| 🟢 | Tìm kiếm sản phẩm | ⏳ |
 | 🟢 | Email notifications | ⏳ |
 | 🟢 | Tích hợp VNPay | ⏳ |
 
