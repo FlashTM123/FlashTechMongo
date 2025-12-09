@@ -26,11 +26,8 @@
 
 | STT | Họ và tên | MSSV | Vai trò | GitHub |
 |:---:|:----------|:----:|:--------|:------:|
-| 1 | Trương Minh | XXXXXXXX | 👨‍💻 Team Leader / Full-stack Developer | [@FlashTM123](https://github.com/FlashTM123) |
-| 2 | Thành viên 2 | XXXXXXXX | 🎨 Frontend Developer | [@username](https://github.com/) |
-| 3 | Thành viên 3 | XXXXXXXX | ⚙️ Backend Developer | [@username](https://github.com/) |
-| 4 | Thành viên 4 | XXXXXXXX | 🗄️ Database Designer | [@username](https://github.com/) |
-| 5 | Thành viên 5 | XXXXXXXX | 🧪 Tester / Documentation | [@username](https://github.com/) |
+| 1 | Trương Minh | BKC15067 | 👨‍💻 Team Leader / Full-stack Developer | [@FlashTM123](https://github.com/FlashTM123) |
+
 
 </div>
 
