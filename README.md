@@ -1,171 +1,148 @@
-# ⚡ FlashTech - E-Commerce Technology Store
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Laravel-12.x-red?style=for-the-badge&logo=laravel" alt="Laravel">
-  <img src="https://img.shields.io/badge/MongoDB-6.0-green?style=for-the-badge&logo=mongodb" alt="MongoDB">
-  <img src="https://img.shields.io/badge/PHP-8.2-blue?style=for-the-badge&logo=php" alt="PHP">
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
-</p>
+# ⚡ FlashTech
+
+### 🛒 E-Commerce Technology Store
+
+<img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
+<img src="https://img.shields.io/badge/MongoDB-6.0-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+<img src="https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+<img src="https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+<img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
+
+<br><br>
+
+**Website bán lẻ công nghệ hiện đại được xây dựng với Laravel & MongoDB**
+
+[Demo](#demo) • [Tính năng](#-tính-năng-chính) • [Cài đặt](#-cài-đặt) • [Tài liệu](#-tài-liệu) • [Đóng góp](#-đóng-góp)
+
+</div>
+
+---
+
+## 👥 Thành viên phát triển
+
+<div align="center">
+
+| STT | Họ và tên | MSSV | Vai trò | GitHub |
+|:---:|:----------|:----:|:--------|:------:|
+| 1 | Trương Minh | XXXXXXXX | 👨‍💻 Team Leader / Full-stack Developer | [@FlashTM123](https://github.com/FlashTM123) |
+| 2 | Thành viên 2 | XXXXXXXX | 🎨 Frontend Developer | [@username](https://github.com/) |
+| 3 | Thành viên 3 | XXXXXXXX | ⚙️ Backend Developer | [@username](https://github.com/) |
+| 4 | Thành viên 4 | XXXXXXXX | 🗄️ Database Designer | [@username](https://github.com/) |
+| 5 | Thành viên 5 | XXXXXXXX | 🧪 Tester / Documentation | [@username](https://github.com/) |
+
+</div>
+
+---
 
 ## 📖 Giới thiệu
 
 **FlashTech** là hệ thống website bán lẻ công nghệ (E-Commerce) được xây dựng trên nền tảng **Laravel 12** và **MongoDB**. Dự án cung cấp đầy đủ tính năng quản lý sản phẩm, đơn hàng, khách hàng với giao diện hiện đại và trải nghiệm người dùng tối ưu.
 
-### ✨ Tính năng chính
+### 🎯 Mục tiêu dự án
+- Xây dựng website thương mại điện tử hoàn chỉnh
+- Áp dụng kiến trúc MVC với Laravel Framework
+- Sử dụng MongoDB làm cơ sở dữ liệu NoSQL
+- Thiết kế giao diện responsive, thân thiện người dùng
 
-#### 🔐 Hệ thống xác thực & phân quyền
-- Đăng nhập/Đăng xuất
-- Phân quyền người dùng: Admin, Moderator, Employee
-- Bảo vệ routes theo vai trò
+---
 
-#### 👥 Quản lý người dùng
-- CRUD người dùng đầy đủ
-- Gán vai trò và phân quyền
-- Xóa hàng loạt (Bulk Delete)
-- Tìm kiếm và lọc người dùng
+## 🛠️ Yêu cầu hệ thống
 
-#### 🏢 Quản lý thương hiệu (Brands)
-- Thêm, sửa, xóa thương hiệu
-- Kích hoạt/Vô hiệu hóa thương hiệu
-- Tích hợp với sản phẩm
+<div align="center">
 
-#### 📦 Quản lý sản phẩm (Products)
-- CRUD sản phẩm với thông tin đầy đủ
-- Upload hình ảnh sản phẩm
-- Quản lý thông số kỹ thuật (Specifications)
-- Phân loại theo danh mục: Smartphone, Laptop, Tablet, Computer, Accessory
-- Màu sắc sản phẩm
-- Giá gốc, giá khuyến mãi
-- Quản lý tồn kho
-- Sản phẩm nổi bật (Featured)
-- Lọc theo thương hiệu, danh mục, trạng thái
+| Công cụ | Phiên bản |
+|:--------|:---------:|
+| PHP | >= 8.2 |
+| Composer | >= 2.0 |
+| Node.js | >= 18.x |
+| NPM | >= 9.x |
+| MongoDB | >= 6.0 |
 
-#### 👤 Quản lý khách hàng (Customers)
-- CRUD thông tin khách hàng đầy đủ
-- Mã khách hàng tự động (Format: KH + YYYYMMDD + 4 số ngẫu nhiên)
-- Upload ảnh đại diện khách hàng
-- Quản lý thông tin: Họ tên, email, số điện thoại, địa chỉ, ngày sinh, giới tính
-- Hiển thị avatar (upload hoặc UI Avatars fallback)
-- Điểm tích lũy (Loyalty Points)
-- Theo dõi lịch sử mua hàng
-- Tìm kiếm và lọc khách hàng
-- Xóa hàng loạt
+</div>
 
-#### 🎨 Giao diện người dùng (Customer Frontend)
-- **Homepage**: 
-  - Hero banner với gradient động
-  - Danh mục sản phẩm với số lượng thống kê
-  - Sản phẩm nổi bật
-  - Phân loại sản phẩm theo từng danh mục
-  - Flash sale countdown timer
-  - Thương hiệu đối tác
-- **Product Cards**:
-  - Badges (Hot, Sale, New)
-  - Wishlist & Quick view
-  - Rating & Reviews
-  - Discount calculator
-  - Stock status
-- **Header & Navigation**: 
-  - Top bar với hotline và liên kết nhanh
-  - Logo với animation xoay gradient
-  - Search bar với gradient effect và suggestions
-  - Cart & Wishlist badges với số lượng
-  - User dropdown menu khi đã đăng nhập
-  - Mobile responsive hamburger menu
-  - Sticky header khi scroll
-- **Authentication System**:
-  - **Đăng ký khách hàng**:
-    - Form đăng ký đầy đủ với 9 trường
-    - Mã khách hàng tự động sinh (KH + date + random)
-    - Upload ảnh đại diện (max 5MB)
-    - Password strength indicator (weak/medium/strong)
-    - Password toggle visibility
-    - Validation real-time
-    - Social login buttons (Google, Facebook)
-  - **Đăng nhập khách hàng**:
-    - Form đăng nhập compact
-    - Remember me checkbox
-    - Forgot password link
-    - Session-based authentication
-  - **User Dropdown Menu** (khi đã đăng nhập):
-    - Avatar với ảnh đại diện
-    - Tên và email khách hàng
-    - Điểm tích lũy (loyalty points)
-    - Menu: Tài khoản, Đơn hàng, Yêu thích, Cài đặt
-    - Nút đăng xuất
-- **Footer**:
-  - 4 columns layout
-  - Social media links
-  - Newsletter subscription
-  - Payment methods
-  - Back to top button
+---
 
-#### 📊 Dashboard
-- Thống kê tổng quan
-- Biểu đồ và báo cáo
+## ⚡ Công nghệ sử dụng
 
-### 🛠️ Công nghệ sử dụng
+<div align="center">
 
-#### Backend
-- **Framework**: Laravel 12.x
-- **Database**: MongoDB 6.0+
-- **ODM**: Laravel MongoDB (jenssegers/mongodb)
-- **Authentication**: Laravel Breeze/Custom
-- **Validation**: Form Request Validation
-- **Storage**: Laravel File Storage
+| Backend | Frontend | Database | Tools |
+|:-------:|:--------:|:--------:|:-----:|
+| ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![Blade](https://img.shields.io/badge/Blade-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white) | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) |
+| ![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white) | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) | | ![Composer](https://img.shields.io/badge/Composer-885630?style=flat-square&logo=composer&logoColor=white) |
+| | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | | ![NPM](https://img.shields.io/badge/NPM-CB3837?style=flat-square&logo=npm&logoColor=white) |
 
-#### Frontend
-- **Template Engine**: Blade
-- **CSS**: Custom CSS với CSS Variables
-- **JavaScript**: Vanilla JS
-- **Icons**: SVG Icons
-- **Fonts**: Google Fonts (Inter)
-- **Animations**: CSS Animations (Keyframes)
+</div>
 
-#### UI/UX Features
-- Gradient backgrounds
-- Shimmer effects
-- Smooth animations
-- Responsive design
-- Mobile-first approach
-- Modern card layouts
-- Hover effects
-- Loading states
+---
 
-## 📋 Yêu cầu hệ thống
+## ✨ Tính năng chính
 
-- PHP >= 8.2
-- Composer >= 2.0
-- MongoDB >= 6.0
-- MongoDB PHP Extension (mongodb)
-- Node.js >= 18.x & NPM
-- Web Server (Apache/Nginx)
-- Git
+### 🔐 Hệ thống xác thực
+| Tính năng | Mô tả |
+|:----------|:------|
+| Đăng nhập/Đăng xuất | Session-based authentication |
+| Phân quyền | Admin, Moderator, Employee |
+| Đăng ký khách hàng | Mã tự động, upload avatar, validation |
+| Password | Strength indicator, toggle visibility |
+
+### 🛍️ Quản lý sản phẩm
+| Tính năng | Mô tả |
+|:----------|:------|
+| CRUD sản phẩm | Thêm, sửa, xóa, xem chi tiết |
+| Upload hình ảnh | Multiple images upload |
+| Specifications | Thông số kỹ thuật động |
+| Danh mục | Smartphone, Laptop, Tablet, Computer, Accessory |
+| Filters | Lọc theo brand, category, status |
+
+### 👤 Quản lý khách hàng
+| Tính năng | Mô tả |
+|:----------|:------|
+| Mã khách hàng | Tự động: KH + YYYYMMDD + 4 số |
+| Avatar | Upload hoặc UI Avatars fallback |
+| Loyalty Points | Điểm tích lũy |
+| Thông tin | Họ tên, email, SĐT, địa chỉ, ngày sinh, giới tính |
+
+### 🎨 Giao diện Frontend
+| Tính năng | Mô tả |
+|:----------|:------|
+| Homepage | Hero banner, categories, flash sale |
+| Product Cards | Badges, wishlist, quick view, ratings |
+| Navbar | Sticky header, user dropdown, search |
+| Responsive | Mobile hamburger menu, adaptive layout |
+
+---
 
 ## 🚀 Cài đặt
 
-### Bước 0: Cài đặt MongoDB và MongoDB PHP Extension
+### 📦 Bước 0: Cài đặt MongoDB
 
-#### A. Cài đặt MongoDB Server
+<details>
+<summary><b>🪟 Windows</b></summary>
 
-**Windows:**
 1. Tải MongoDB Community Server: https://www.mongodb.com/try/download/community
-2. Chạy installer và làm theo hướng dẫn
-3. Chọn "Complete" installation
-4. Chọn "Install MongoDB as a Service"
-5. Sau khi cài xong, mở Command Prompt và kiểm tra:
+2. Chạy installer → Chọn "Complete" → "Install MongoDB as a Service"
+3. Kiểm tra:
 ```bash
 mongod --version
 ```
+</details>
 
-**macOS (dùng Homebrew):**
+<details>
+<summary><b>🍎 macOS</b></summary>
+
 ```bash
 brew tap mongodb/brew
 brew install mongodb-community@6.0
 brew services start mongodb-community@6.0
 ```
+</details>
 
-**Linux (Ubuntu/Debian):**
+<details>
+<summary><b>🐧 Linux (Ubuntu/Debian)</b></summary>
+
 ```bash
 wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
@@ -174,87 +151,93 @@ sudo apt-get install -y mongodb-org
 sudo systemctl start mongod
 sudo systemctl enable mongod
 ```
+</details>
 
-#### B. Cài đặt MongoDB PHP Extension
+---
 
-**Windows:**
-1. Xác định phiên bản PHP của bạn:
+### 🔌 Bước 1: Cài MongoDB PHP Extension
+
+<details>
+<summary><b>🪟 Windows</b></summary>
+
+1. Kiểm tra PHP version:
 ```bash
 php -v
 ```
 
-2. Tải MongoDB PHP Extension từ: https://pecl.php.net/package/mongodb
-   - Chọn phiên bản phù hợp với PHP version, Thread Safety (TS/NTS), và kiến trúc (x64/x86)
-   - Ví dụ: `php_mongodb-1.17.2-8.2-ts-x64.zip`
+2. Tải extension từ: https://pecl.php.net/package/mongodb
+   - Chọn phiên bản phù hợp (ví dụ: `php_mongodb-1.17.2-8.2-ts-x64.zip`)
 
-3. Giải nén và copy file `php_mongodb.dll` vào thư mục `ext` của PHP:
-   - Thường là: `C:\php\ext\` hoặc `C:\xampp\php\ext\`
+3. Copy `php_mongodb.dll` vào thư mục `ext` của PHP:
+   - `C:\php\ext\` hoặc `C:\xampp\php\ext\`
 
-4. Mở file `php.ini` và thêm dòng:
+4. Thêm vào `php.ini`:
 ```ini
 extension=mongodb
 ```
 
-5. Restart web server (Apache/Nginx) hoặc PHP-FPM
+5. Restart Apache/Nginx
 
-6. Kiểm tra cài đặt:
+6. Kiểm tra:
 ```bash
 php -m | findstr mongodb
 ```
+</details>
 
-**macOS:**
+<details>
+<summary><b>🍎 macOS</b></summary>
+
 ```bash
 pecl install mongodb
 ```
-Sau đó thêm vào `php.ini`:
+Thêm vào `php.ini`:
 ```ini
 extension=mongodb.so
 ```
+</details>
 
-**Linux (Ubuntu/Debian):**
+<details>
+<summary><b>🐧 Linux</b></summary>
+
 ```bash
 sudo apt-get install php-dev php-pear
 sudo pecl install mongodb
 ```
-Sau đó thêm vào `php.ini` (thường ở `/etc/php/8.2/cli/php.ini` và `/etc/php/8.2/fpm/php.ini`):
+Thêm vào `/etc/php/8.2/cli/php.ini` và `/etc/php/8.2/fpm/php.ini`:
 ```ini
 extension=mongodb.so
 ```
-Restart PHP-FPM:
 ```bash
 sudo systemctl restart php8.2-fpm
 ```
+</details>
 
-**Kiểm tra MongoDB Extension đã cài thành công:**
+**✅ Kiểm tra cài đặt thành công:**
 ```bash
-php -r "echo extension_loaded('mongodb') ? 'MongoDB extension installed!' : 'MongoDB extension NOT installed!';"
+php -r "echo extension_loaded('mongodb') ? '✅ MongoDB extension installed!' : '❌ MongoDB extension NOT installed!';"
 ```
 
 ---
 
-### 1. Clone repository
+### 📥 Bước 2: Clone & Setup Project
 
 ```bash
+# Clone repository
 git clone https://github.com/FlashTM123/FlashTechMongo.git
 cd FlashTechMongo
-```
 
-### 2. Cài đặt dependencies
-
-```bash
+# Cài đặt dependencies
 composer install
 npm install
-```
 
-### 3. Cấu hình môi trường
-
-```bash
+# Cấu hình môi trường
 cp .env.example .env
 php artisan key:generate
 ```
 
-### 4. Cấu hình MongoDB trong `.env`
+### ⚙️ Bước 3: Cấu hình Database
 
+Mở file `.env` và cập nhật:
 ```env
 DB_CONNECTION=mongodb
 DB_HOST=127.0.0.1
@@ -264,309 +247,209 @@ DB_USERNAME=
 DB_PASSWORD=
 ```
 
-### 5. Chạy migrations & seeders
+### 🗄️ Bước 4: Migration & Seeding
 
 ```bash
 php artisan migrate
 php artisan db:seed
 ```
 
-### 6. Tạo thư mục storage và symbolic link
+### 📁 Bước 5: Storage Setup
 
 ```bash
-# Tạo thư mục cho profile pictures
+# Tạo thư mục
 mkdir storage/app/public/profile_pictures
 
-# Tạo symbolic link
+# Tạo symbolic link (Windows: chạy với quyền Administrator)
 php artisan storage:link
 ```
 
-**Lưu ý Windows**: Nếu gặp lỗi khi tạo symbolic link, chạy Command Prompt/PowerShell với quyền Administrator
-
-### 7. Build assets
+### 🎨 Bước 6: Build Assets
 
 ```bash
+# Development
 npm run dev
-# hoặc cho production
+
+# Production
 npm run build
 ```
 
-### 8. Chạy server
+### 🌐 Bước 7: Chạy Server
 
 ```bash
 php artisan serve
 ```
 
-Truy cập: `http://localhost:8000`
+**🎉 Truy cập:** http://localhost:8000
+
+---
 
 ## 👤 Tài khoản mặc định
 
-Sau khi seed database, bạn có thể đăng nhập với:
+### 🔑 Admin Panel
+> Truy cập: http://localhost:8000/dashboard
 
-### Admin Panel (http://localhost:8000/login)
-**Admin Account:**
-- Email: `admin@flashtech.vn`
-- Password: `password`
+| Vai trò | Email | Password |
+|:--------|:------|:---------|
+| Admin | `admin@flashtech.vn` | `password` |
+| Moderator | `moderator@flashtech.vn` | `password` |
+| Employee | `employee@flashtech.vn` | `password` |
 
-**Employee Account:**
-- Email: `employee@flashtech.vn`
-- Password: `password`
+### 🛒 Customer Frontend
+> Truy cập: http://localhost:8000
 
-**Moderator Account:**
-- Email: `moderator@flashtech.vn`
-- Password: `password`
+Đăng ký tài khoản mới tại: http://localhost:8000/register
 
-### Customer Frontend (http://localhost:8000)
-Khách hàng có thể đăng ký tài khoản mới tại: http://localhost:8000/register
+---
 
-**Hoặc sử dụng tài khoản mẫu** (nếu có trong seeder):
-- Email: `customer@example.com`
-- Password: `password`
-
-## 📁 Cấu trúc thư mục
+## 📁 Cấu trúc dự án
 
 ```
 FlashTechMongo/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/
+├── 📂 app/
+│   ├── 📂 Http/
+│   │   ├── 📂 Controllers/
 │   │   │   ├── AuthController.php
-│   │   │   ├── BrandController.php
-│   │   │   ├── CustomerController.php
 │   │   │   ├── CustomerAuthController.php
-│   │   │   ├── CustomerHomeController.php
-│   │   │   ├── DashboardController.php
+│   │   │   ├── CustomerController.php
 │   │   │   ├── ProductController.php
-│   │   │   └── UserController.php
-│   │   ├── Middleware/
-│   │   │   ├── CheckRole.php
-│   │   │   └── CustomerLoginMiddleware.php
-│   │   └── Requests/
-│   │       ├── StoreProductRequest.php
-│   │       └── UpdateProductRequest.php
-│   ├── Models/
+│   │   │   └── ...
+│   │   ├── 📂 Middleware/
+│   │   └── 📂 Requests/
+│   ├── 📂 Models/
 │   │   ├── Brand.php
 │   │   ├── Customer.php
 │   │   ├── Product.php
-│   │   ├── Specification.php
 │   │   └── User.php
-│   └── Policies/
-│       ├── CustomerPolicy.php
-│       └── UserPolicy.php
-├── database/
-│   ├── factories/
-│   ├── migrations/
-│   └── seeders/
-├── resources/
-│   ├── views/
-│   │   ├── Admins/
-│   │   │   ├── Brands/
-│   │   │   ├── Customers/
-│   │   │   ├── Products/
-│   │   │   └── Users/
-│   │   └── Customers/
-│   │       ├── Account/
-│   │       │   ├── login.blade.php
-│   │       │   └── register.blade.php
-│   │       ├── Components/
-│   │       │   └── product-card.blade.php
-│   │       ├── Home/
-│   │       │   └── home.blade.php
-│   │       └── Layouts/
-│   │           ├── master.blade.php
-│   │           ├── navbar.blade.php
-│   │           └── footer.blade.php
-│   ├── css/
-│   └── js/
-└── routes/
-    └── web.php
+│   └── 📂 Policies/
+├── 📂 database/
+│   ├── 📂 factories/
+│   ├── 📂 migrations/
+│   └── 📂 seeders/
+├── 📂 resources/
+│   └── 📂 views/
+│       ├── 📂 Admins/
+│       └── 📂 Customers/
+│           ├── 📂 Account/
+│           ├── 📂 Home/
+│           └── 📂 Layouts/
+├── 📂 routes/
+│   └── web.php
+└── 📂 storage/
 ```
 
-## 🎯 Tính năng đã triển khai
+---
 
-### Admin Panel
-- ✅ Dashboard với thống kê
-- ✅ Quản lý người dùng (CRUD + Bulk actions)
-- ✅ Quản lý thương hiệu (CRUD + Active/Inactive)
-- ✅ Quản lý sản phẩm (CRUD + Specifications + Multiple images)
-- ✅ Quản lý khách hàng (CRUD + Avatar upload + Bulk delete)
-- ✅ Upload & quản lý hình ảnh (Storage system)
-- ✅ Validation form requests (Frontend + Backend)
-- ✅ Phân quyền theo vai trò (Admin, Moderator, Employee)
-- ✅ Authentication system với session
+## ✅ Tính năng đã hoàn thành
 
-### Customer Frontend
-- ✅ Homepage với sản phẩm động
-- ✅ Header responsive với sticky navigation
-- ✅ Navbar với user dropdown menu
-- ✅ Footer đầy đủ (4 columns + Social + Newsletter)
-- ✅ Product cards component với badges và effects
-- ✅ Phân loại sản phẩm theo danh mục
-- ✅ Flash sale countdown timer
-- ✅ Animations & Gradient effects
-- ✅ Mobile hamburger menu
-- ✅ Search bar với suggestions
+| Module | Tính năng | Trạng thái |
+|:-------|:----------|:----------:|
+| **Authentication** | Đăng nhập Admin | ✅ |
+| | Đăng ký/Đăng nhập Customer | ✅ |
+| | User dropdown menu | ✅ |
+| | Session management | ✅ |
+| **Admin Panel** | Dashboard thống kê | ✅ |
+| | Quản lý Users (CRUD) | ✅ |
+| | Quản lý Brands | ✅ |
+| | Quản lý Products | ✅ |
+| | Quản lý Customers | ✅ |
+| **Frontend** | Homepage | ✅ |
+| | Navbar responsive | ✅ |
+| | Product cards | ✅ |
+| | Flash sale timer | ✅ |
+| | Footer | ✅ |
 
-### Customer Authentication
-- ✅ **Đăng ký khách hàng**:
-  - Form đầy đủ (Full name, Email, Phone, Address, DOB, Gender, Password, Avatar)
-  - Mã khách hàng tự động (KH + YYYYMMDD + 4 digits)
-  - Upload ảnh đại diện (max 5MB)
-  - Password strength indicator
-  - Password visibility toggle
-  - Email uniqueness validation
-  - Custom Vietnamese error messages
-- ✅ **Đăng nhập khách hàng**:
-  - Email & Password authentication
-  - Remember me functionality
-  - Session-based authentication
-  - Redirect after login
-- ✅ **User Profile Dropdown**:
-  - Avatar display (uploaded or UI Avatars fallback)
-  - User name and email
-  - Loyalty points display
-  - Quick links (Account, Orders, Wishlist, Settings)
-  - Logout functionality
-- ✅ **Session Management**:
-  - Customer session storage
-  - Auto-redirect khi chưa đăng nhập
-  - Persistent login state
+---
 
-### Database
-- ✅ MongoDB integration với jenssegers/mongodb
-- ✅ Migrations cho tất cả collections
-- ✅ Seeders với dữ liệu mẫu (Users, Brands, Products, Customers)
-- ✅ Relationships (embedsMany, belongsTo)
-- ✅ Indexes cho performance
-- ✅ Unique constraints (email, customer_code)
+## 🔜 Tính năng sắp tới
 
-## 🔜 Tính năng sắp triển khai
+| Ưu tiên | Tính năng | Trạng thái |
+|:-------:|:----------|:----------:|
+| 🔴 | Chi tiết sản phẩm | ⏳ |
+| 🔴 | Giỏ hàng (Cart) | ⏳ |
+| 🔴 | Thanh toán (Checkout) | ⏳ |
+| 🟡 | Đánh giá sản phẩm | ⏳ |
+| 🟡 | Wishlist | ⏳ |
+| 🟢 | Email notifications | ⏳ |
+| 🟢 | Tích hợp VNPay | ⏳ |
 
-### Frontend Features
-- [ ] Chi tiết sản phẩm (Product Detail Page)
-- [ ] Giỏ hàng (Shopping Cart)
-- [ ] Danh sách yêu thích (Wishlist)
-- [ ] So sánh sản phẩm (Product Compare)
-- [ ] Tìm kiếm sản phẩm nâng cao với filters
-- [ ] Lọc & Sắp xếp sản phẩm (Price, Name, Rating)
-- [ ] Phân trang sản phẩm
+---
 
-### Customer Account
-- [ ] Trang tài khoản khách hàng (Profile Page)
-- [ ] Chỉnh sửa thông tin cá nhân
-- [ ] Đổi mật khẩu
-- [ ] Quản lý địa chỉ giao hàng
-- [ ] Lịch sử đơn hàng
-- [ ] Theo dõi đơn hàng (Order Tracking)
-- [ ] Quên mật khẩu & Reset password
-- [ ] Email verification
+## 🐛 Xử lý sự cố
 
-### Order Management
-- [ ] Thanh toán (Checkout Process)
-- [ ] Quản lý đơn hàng (Admin)
-- [ ] Cập nhật trạng thái đơn hàng
-- [ ] In hóa đơn (Invoice)
-- [ ] Xử lý hoàn trả (Returns)
+<details>
+<summary><b>❌ MongoDB Connection Error</b></summary>
 
-### Product Features
-- [ ] Đánh giá & Nhận xét sản phẩm (Reviews & Ratings)
-- [ ] Hình ảnh sản phẩm zoom & gallery
-- [ ] Sản phẩm liên quan (Related Products)
-- [ ] Sản phẩm đã xem (Recently Viewed)
-- [ ] Thông báo hết hàng (Out of Stock Notification)
-
-### Advanced Features
-- [ ] Email notifications (Order confirmation, Shipping, etc.)
-- [ ] SMS notifications
-- [ ] Tích hợp thanh toán online (VNPay, Momo, ZaloPay)
-- [ ] Export/Import dữ liệu (Excel, CSV)
-- [ ] Báo cáo thống kê nâng cao (Charts & Analytics)
-- [ ] Mã giảm giá & Vouchers
-- [ ] Flash sale tự động
-- [ ] SEO optimization (Meta tags, Sitemap)
-- [ ] Multi-language support
-
-### Admin Features
-- [ ] Quản lý banner & sliders
-- [ ] Quản lý nội dung CMS
-- [ ] Quản lý đánh giá (Review moderation)
-- [ ] Activity logs
-- [ ] Backup & Restore database
-
-## 🤝 Đóng góp
-
-Mọi đóng góp đều được chào đón! Vui lòng:
-
-1. Fork repository
-2. Tạo branch mới (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Tạo Pull Request
-
-## 🐛 Xử lý sự cố thường gặp
-
-### MongoDB Connection Error
 ```
 SQLSTATE[HY000]: SCRAM failure: bad auth
 ```
-**Giải pháp**: Kiểm tra username/password trong `.env`, hoặc để trống nếu MongoDB không có authentication:
+**Giải pháp:** Để trống username/password trong `.env`:
 ```env
 DB_USERNAME=
 DB_PASSWORD=
 ```
+</details>
 
-### Storage Link Error (Windows)
+<details>
+<summary><b>❌ Storage Link Error (Windows)</b></summary>
+
 ```
 symlink(): Cannot create symlink, error code(1314)
 ```
-**Giải pháp**: Chạy Command Prompt/PowerShell với quyền Administrator rồi chạy lại:
+**Giải pháp:** Chạy PowerShell với quyền **Administrator**:
 ```bash
 php artisan storage:link
 ```
+</details>
 
-### MongoDB Extension Not Loaded
+<details>
+<summary><b>❌ MongoDB Extension Not Loaded</b></summary>
+
 ```
 Class 'MongoDB\Driver\Manager' not found
 ```
-**Giải pháp**: 
-1. Kiểm tra MongoDB extension đã cài: `php -m | findstr mongodb`
-2. Đảm bảo đã thêm `extension=mongodb` vào `php.ini`
+**Giải pháp:**
+1. Kiểm tra: `php -m | findstr mongodb`
+2. Thêm `extension=mongodb` vào `php.ini`
 3. Restart web server
-
-### Composer MongoDB Package Error
-```
-Your requirements could not be resolved to an installable set of packages
-```
-**Giải pháp**: Cài đặt MongoDB extension trước, sau đó:
-```bash
-composer install --ignore-platform-reqs
-```
-
-### Image Upload Error
-```
-The profile picture failed to upload
-```
-**Giải pháp**: 
-1. Kiểm tra quyền thư mục `storage/app/public/`
-2. Tạo thư mục nếu chưa có: `mkdir storage/app/public/profile_pictures`
-3. Tạo lại symbolic link: `php artisan storage:link`
-
-## 📝 License
-
-Dự án được phát hành dưới giấy phép [MIT License](LICENSE).
-
-## 📧 Liên hệ
-
-- **Author**: FlashTM123 (Trương Minh)
-- **Email**: nhatduong019@gmail.com
-- **GitHub**: [https://github.com/FlashTM123/FlashTechMongo](https://github.com/FlashTM123/FlashTechMongo)
-
-## 🙏 Đóng góp & Hỗ trợ
-
-Nếu bạn thấy dự án này hữu ích, hãy cho một ⭐ trên GitHub!
-
-Báo cáo lỗi hoặc đề xuất tính năng mới tại: [Issues](https://github.com/FlashTM123/FlashTechMongo/issues)
+</details>
 
 ---
 
-<p align="center">Made with ❤️ by FlashTM123</p>
+## 🤝 Đóng góp
+
+1. **Fork** repository
+2. **Tạo branch** mới: `git checkout -b feature/TinhNangMoi`
+3. **Commit** changes: `git commit -m 'Thêm tính năng mới'`
+4. **Push** to branch: `git push origin feature/TinhNangMoi`
+5. Tạo **Pull Request**
+
+---
+
+## 📄 License
+
+Dự án được phát hành dưới giấy phép **MIT License**.
+
+---
+
+## 📞 Liên hệ
+
+<div align="center">
+
+| | |
+|:---:|:---|
+| 👤 | **FlashTM123** (Trương Minh) |
+| 📧 | nhatduong019@gmail.com |
+| 🐙 | [github.com/FlashTM123](https://github.com/FlashTM123) |
+
+<br>
+
+⭐ **Nếu thấy hữu ích, hãy cho dự án một star!** ⭐
+
+<br>
+
+---
+
+<sub>Made with ❤️ by FlashTech Team © 2025</sub>
+
+</div>
