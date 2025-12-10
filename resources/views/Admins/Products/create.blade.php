@@ -90,6 +90,7 @@
                         <option value="Laptop" {{ old('category') == 'Laptop' ? 'selected' : '' }}>💻 Laptop</option>
                         <option value="Computer" {{ old('category') == 'Computer' ? 'selected' : '' }}>🖥️ Computer</option>
                         <option value="Accessory" {{ old('category') == 'Accessory' ? 'selected' : '' }}>🎧 Accessory</option>
+                        <option value="Component" {{ old('category') == 'Component' ? 'selected' : '' }}>🛠️ Component</option>
                         <option value="Other" {{ old('category') == 'Other' ? 'selected' : '' }}>📦 Other</option>
                     </select>
                     @error('category')

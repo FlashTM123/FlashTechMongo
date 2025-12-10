@@ -72,4 +72,28 @@ class Product extends Model
     {
         return $this->is_on_sale ? $this->sale_price : $this->price;
     }
+    public function reviews()
+    {
+        return $this->hasMany(Reviews::class)->approved()->latest();
+    }
+    public function getAverageRatingAttribute(): float
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+    public function getReviewCountAttribute(): int
+    {
+        return $this->reviews()->count();
+    }
+    public function getRatingStarsAttribute(): array
+    {
+      $stats = [];
+      for($i = 5; $i >= 1; $i--) {
+          $count = $this->reviews()->where('rating', $i)->count();
+          $stats[$i] = [
+                'count' => $count,
+                'percentage' => $this->review_count > 0 ? round(($count / $this->review_count) * 100) : 0,
+          ];
+      }
+        return $stats;
+    }
 }

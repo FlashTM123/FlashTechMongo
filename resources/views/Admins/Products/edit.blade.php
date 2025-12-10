@@ -91,6 +91,7 @@
                         <option value="Laptop" {{ old('category', $product->category) == 'Laptop' ? 'selected' : '' }}>💻 Laptop</option>
                         <option value="Computer" {{ old('category', $product->category) == 'Computer' ? 'selected' : '' }}>🖥️ Computer</option>
                         <option value="Accessory" {{ old('category', $product->category) == 'Accessory' ? 'selected' : '' }}>🎧 Accessory</option>
+                        <option value="Component" {{ old('category', $product->category) == 'Component' ? 'selected' : '' }}>🛠️ Component</option>
                         <option value="Other" {{ old('category', $product->category) == 'Other' ? 'selected' : '' }}>📦 Other</option>
                     </select>
                     @error('category')

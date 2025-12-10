@@ -360,6 +360,11 @@ FlashTechMongo/
 | | Pagination component | ✅ |
 | | Flash sale timer | ✅ |
 | | Footer | ✅ |
+| **Đánh giá sản phẩm** | Form đánh giá với star rating | ✅ |
+| | Upload nhiều ảnh đánh giá | ✅ |
+| | Sửa/Xóa đánh giá | ✅ |
+| | Nút "Hữu ích" (AJAX) | ✅ |
+| | Thống kê rating | ✅ |
 
 ---
 
@@ -370,9 +375,9 @@ FlashTechMongo/
 | 🔴 | Giỏ hàng (Cart) | ⏳ |
 | 🔴 | Thanh toán (Checkout) | ⏳ |
 | 🔴 | Quản lý đơn hàng | ⏳ |
-| 🟡 | Đánh giá sản phẩm | ⏳ |
+| 🟡 | Trang thông tin khách hàng | ⏳ |
 | 🟡 | Wishlist | ⏳ |
-| 🟡 | Trang tài khoản khách hàng | ⏳ |
+| 🟡 | Lịch sử đơn hàng | ⏳ |
 | 🟢 | Tìm kiếm sản phẩm | ⏳ |
 | 🟢 | Email notifications | ⏳ |
 | 🟢 | Tích hợp VNPay | ⏳ |

@@ -95,9 +95,16 @@ class CustomerHomeController extends Controller
             ->orderBy('order')
             ->get();
 
+        // Lấy reviews của sản phẩm
+        $reviews = \App\Models\Review::where('product_id', $product->_id)
+            ->where('is_approved', true)
+            ->with('customer')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         // Lấy sản phẩm liên quan (cùng category hoặc brand)
         $relatedProducts = Product::where('is_active', true)
-            ->where('id', '!=', $product->id)
+            ->where('_id', '!=', $product->_id)
             ->where(function($query) use ($product) {
                 $query->where('category', $product->category)
                       ->orWhere('brand_id', $product->brand_id);
@@ -109,7 +116,8 @@ class CustomerHomeController extends Controller
         return view('Customers.Products.detail', compact(
             'product',
             'specifications',
-            'relatedProducts'
+            'relatedProducts',
+            'reviews'
         ));
     }
 
@@ -125,6 +133,7 @@ class CustomerHomeController extends Controller
             'tablet' => 'Tablet',
             'computer' => 'Computer',
             'accessory' => 'Accessory',
+            'component' => 'Component',
             'other' => 'Other'
         ];
 

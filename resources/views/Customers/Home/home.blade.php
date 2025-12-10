@@ -775,6 +775,11 @@
                 <h3 class="category-name">Phụ kiện</h3>
                 <p class="category-count">{{ $categoryCounts['Accessory'] ?? 0 }} sản phẩm</p>
             </a>
+            <a href="#components" class="category-card">
+                <span class="category-icon">🛠️</span>
+                <h3 class="category-name">Linh kiện</h3>
+                <p class="category-count">{{ $categoryCounts['Component'] ?? 0 }} sản phẩm</p>
+            </a>
             <a href="#accessories" class="category-card">
                 <span class="category-icon">📦</span>
                 <h3 class="category-name">Khác</h3>

@@ -241,6 +241,7 @@
                         <a href="{{ route('products.category', 'tablet') }}" class="dropdown-item">📲 Tablet</a>
                         <a href="{{ route('products.category', 'computer') }}" class="dropdown-item">🖥️ Computer</a>
                         <a href="{{ route('products.category', 'accessory') }}" class="dropdown-item">🎧 Phụ kiện</a>
+                        <a href="{{ route('products.category', 'component') }}" class="dropdown-item">🛠️ Linh kiện</a>
                     </div>
                 </li>
                 <li class="menu-item">

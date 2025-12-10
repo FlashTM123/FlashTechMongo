@@ -53,6 +53,7 @@
                 <option value="Laptop" {{ request('category') == 'Laptop' ? 'selected' : '' }}>💻 Laptop</option>
                 <option value="Computer" {{ request('category') == 'Computer' ? 'selected' : '' }}>🖥️ Computer</option>
                 <option value="Accessory" {{ request('category') == 'Accessory' ? 'selected' : '' }}>🎧 Accessory</option>
+                <option value="Component" {{ request('category') == 'Component' ? 'selected' : '' }}>🛠️ Component</option>
                 <option value="Other" {{ request('category') == 'Other' ? 'selected' : '' }}>📦 Other</option>
             </select>
             <select name="status" class="filter-select" onchange="this.form.submit()">

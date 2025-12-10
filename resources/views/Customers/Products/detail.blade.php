@@ -763,6 +763,384 @@
         margin-bottom: 1rem;
     }
 
+    /* Review Form Styles */
+    .review-form-section {
+        background: var(--gray-50);
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 2px solid var(--gray-200);
+    }
+
+    .review-form-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+    }
+
+    .review-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--gray-700);
+    }
+
+    .form-label .required {
+        color: var(--danger);
+    }
+
+    /* Star Rating Input */
+    .star-rating-input {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: 0.25rem;
+    }
+
+    .star-rating-input input {
+        display: none;
+    }
+
+    .star-rating-input label {
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--gray-300);
+        transition: color 0.2s;
+    }
+
+    .star-rating-input label:hover,
+    .star-rating-input label:hover ~ label,
+    .star-rating-input input:checked ~ label {
+        color: #fbbf24;
+    }
+
+    .form-input,
+    .form-textarea {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid var(--gray-200);
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: var(--white);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .image-upload-area {
+        border: 2px dashed var(--gray-300);
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s;
+        background: var(--white);
+    }
+
+    .image-upload-area:hover {
+        border-color: var(--primary);
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    .file-input-hidden {
+        display: none;
+    }
+
+    .upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        color: var(--gray-500);
+    }
+
+    .image-preview-grid {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .image-preview-grid img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid var(--gray-200);
+    }
+
+    .btn-submit-review {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 2rem;
+    }
+
+    .review-form-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-delete-review {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 2rem;
+        background: var(--danger);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-delete-review:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+    }
+
+    .current-review-images {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    .current-review-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid var(--gray-200);
+    }
+
+    .form-hint {
+        color: var(--gray-500);
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+        border: 1px solid var(--success);
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger);
+        border: 1px solid var(--danger);
+    }
+
+    .error-text {
+        color: var(--danger);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    .login-to-review {
+        text-align: center;
+        padding: 2rem;
+        background: var(--gray-100);
+        border-radius: 12px;
+        margin: 2rem 0;
+    }
+
+    .login-to-review a {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .login-to-review a:hover {
+        text-decoration: underline;
+    }
+
+    .already-reviewed {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+        border-radius: 10px;
+        margin: 2rem 0;
+        font-weight: 600;
+    }
+
+    /* Reviews List */
+    .reviews-list {
+        margin-top: 2rem;
+    }
+
+    .reviews-list-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--gray-200);
+    }
+
+    .review-item {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .review-item:last-child {
+        border-bottom: none;
+    }
+
+    .review-header {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .reviewer-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .reviewer-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .reviewer-info {
+        flex: 1;
+    }
+
+    .reviewer-name {
+        font-weight: 600;
+        color: var(--dark);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.75rem;
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.1);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+
+    .review-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 0.25rem;
+    }
+
+    .review-stars {
+        color: #fbbf24;
+        font-size: 0.875rem;
+    }
+
+    .review-date {
+        font-size: 0.8125rem;
+        color: var(--gray-500);
+    }
+
+    .review-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .review-content {
+        color: var(--gray-700);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .review-images {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .review-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        border: 2px solid var(--gray-200);
+    }
+
+    .review-image:hover {
+        transform: scale(1.1);
+    }
+
+    .review-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .helpful-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: var(--gray-100);
+        border: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        color: var(--gray-600);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .helpful-btn:hover {
+        background: var(--gray-200);
+        color: var(--primary);
+    }
+
+    .helpful-btn.active {
+        background: rgba(102, 126, 234, 0.1);
+        color: var(--primary);
+    }
+
     /* Related Products */
     .related-products-section {
         margin-top: 3rem;
@@ -1105,7 +1483,7 @@
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchTab('description')">Mô tả sản phẩm</button>
                 <button class="tab-btn" onclick="switchTab('specifications')">Thông số kỹ thuật</button>
-                <button class="tab-btn" onclick="switchTab('reviews')">Đánh giá ({{ $product->sales_count ?? 0 }})</button>
+                <button class="tab-btn" onclick="switchTab('reviews')">Đánh giá ({{ $reviews->count() ?? 0 }})</button>
             </div>
 
             <!-- Description Tab -->
@@ -1187,31 +1565,224 @@
 
             <!-- Reviews Tab -->
             <div class="tab-content" id="tab-reviews">
+                <!-- Tổng quan đánh giá -->
+                @php
+                    $totalReviews = $reviews->count();
+                    $avgRating = $totalReviews > 0 ? $reviews->avg('rating') : 0;
+                    $ratingStats = [];
+                    for($i = 5; $i >= 1; $i--) {
+                        $count = $reviews->where('rating', $i)->count();
+                        $ratingStats[$i] = [
+                            'count' => $count,
+                            'percent' => $totalReviews > 0 ? round(($count / $totalReviews) * 100) : 0
+                        ];
+                    }
+                @endphp
                 <div class="reviews-summary">
                     <div class="rating-big">
-                        <div class="rating-number">{{ number_format($product->rating ?? 5, 1) }}</div>
-                        <div class="rating-stars">★★★★★</div>
-                        <div class="rating-count">{{ $product->sales_count ?? 0 }} đánh giá</div>
+                        <div class="rating-number">{{ number_format($avgRating, 1) }}</div>
+                        <div class="rating-stars">
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= round($avgRating))★@else☆@endif
+                            @endfor
+                        </div>
+                        <div class="rating-count">{{ $totalReviews }} đánh giá</div>
                     </div>
                     <div class="rating-bars">
                         @for($i = 5; $i >= 1; $i--)
                             <div class="rating-bar-item">
                                 <span class="rating-bar-label">{{ $i }} sao</span>
                                 <div class="rating-bar">
-                                    <div class="rating-bar-fill" style="width: {{ $i == 5 ? '70' : ($i == 4 ? '20' : ($i == 3 ? '7' : ($i == 2 ? '2' : '1'))) }}%;"></div>
+                                    <div class="rating-bar-fill" style="width: {{ $ratingStats[$i]['percent'] }}%;"></div>
                                 </div>
-                                <span class="rating-bar-count">{{ $i == 5 ? '70' : ($i == 4 ? '20' : ($i == 3 ? '7' : ($i == 2 ? '2' : '1'))) }}%</span>
+                                <span class="rating-bar-count">{{ $ratingStats[$i]['count'] }}</span>
                             </div>
                         @endfor
                     </div>
                 </div>
 
-                <div class="no-reviews">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    <p>Chưa có đánh giá nào cho sản phẩm này.</p>
-                    <p>Hãy là người đầu tiên đánh giá!</p>
+                <!-- Form đánh giá -->
+                @if(session('customer'))
+                    @php
+                        $existingReview = $reviews->where('customer_id', session('customer')->_id)->first();
+                    @endphp
+
+                    <div class="review-form-section">
+                        <h4 class="review-form-title">
+                            {{ $existingReview ? 'Sửa đánh giá của bạn' : 'Viết đánh giá của bạn' }}
+                        </h4>
+
+                        @if(session('review_success'))
+                            <div class="alert alert-success">{{ session('review_success') }}</div>
+                        @endif
+                        @if(session('review_error'))
+                            <div class="alert alert-error">{{ session('review_error') }}</div>
+                        @endif
+
+                        <form action="{{ route('reviews.store', $product->slug) }}" method="POST" enctype="multipart/form-data" class="review-form">
+                            @csrf
+
+                            <!-- Chọn số sao -->
+                            <div class="form-group">
+                                <label class="form-label">Đánh giá của bạn <span class="required">*</span></label>
+                                <div class="star-rating-input">
+                                    @for($i = 5; $i >= 1; $i--)
+                                        <input type="radio" name="rating" value="{{ $i }}" id="star{{ $i }}" {{ old('rating', $existingReview->rating ?? 5) == $i ? 'checked' : '' }}>
+                                        <label for="star{{ $i }}" title="{{ $i }} sao">★</label>
+                                    @endfor
+                                </div>
+                                @error('rating')
+                                    <span class="error-text">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Tiêu đề -->
+                            <div class="form-group">
+                                <label class="form-label" for="review-title">Tiêu đề</label>
+                                <input type="text" name="title" id="review-title" class="form-input" placeholder="Tóm tắt đánh giá của bạn" value="{{ old('title', $existingReview->title ?? '') }}">
+                            </div>
+
+                            <!-- Nội dung -->
+                            <div class="form-group">
+                                <label class="form-label" for="review-comment">Nội dung đánh giá <span class="required">*</span></label>
+                                <textarea name="comment" id="review-comment" class="form-textarea" rows="4" placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này...">{{ old('comment', $existingReview->comment ?? '') }}</textarea>
+                                @error('comment')
+                                    <span class="error-text">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Ảnh hiện tại (nếu đang sửa) -->
+                            @if($existingReview && $existingReview->images && count($existingReview->images) > 0)
+                                <div class="form-group">
+                                    <label class="form-label">Ảnh hiện tại</label>
+                                    <div class="current-review-images">
+                                        @foreach($existingReview->images as $image)
+                                            <img src="{{ asset('storage/' . $image) }}" alt="Current review image" class="current-review-image">
+                                        @endforeach
+                                    </div>
+                                    <p class="form-hint">Tải ảnh mới sẽ thay thế tất cả ảnh cũ</p>
+                                </div>
+                            @endif
+
+                            <!-- Upload ảnh -->
+                            <div class="form-group">
+                                <label class="form-label">{{ $existingReview ? 'Thay đổi hình ảnh' : 'Thêm hình ảnh' }}</label>
+                                <div class="image-upload-area">
+                                    <input type="file" name="images[]" id="review-images" multiple accept="image/*" class="file-input-hidden">
+                                    <label for="review-images" class="upload-label">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21 15 16 10 5 21"></polyline>
+                                        </svg>
+                                        <span>Chọn ảnh (tối đa 5 ảnh)</span>
+                                    </label>
+                                </div>
+                                <div id="image-preview" class="image-preview-grid"></div>
+                            </div>
+
+                            <div class="review-form-actions">
+                                <button type="submit" class="btn btn-primary btn-submit-review">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
+                                    </svg>
+                                    {{ $existingReview ? 'Cập nhật đánh giá' : 'Gửi đánh giá' }}
+                                </button>
+
+                                @if($existingReview)
+                                    <button type="button" class="btn btn-danger btn-delete-review" onclick="confirmDeleteReview('{{ $existingReview->_id }}')">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="m19 6-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6m5 6v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v2"></path>
+                                        </svg>
+                                        Xóa đánh giá
+                                    </button>
+                                @endif
+                            </div>
+                        </form>
+
+                        @if($existingReview)
+                            <form id="delete-review-form" action="{{ route('reviews.destroy', $existingReview->_id) }}" method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        @endif
+                    </div>
+                @else
+                <div class="login-to-review">
+                    <p>Vui lòng <a href="{{ route('customers.login') }}">đăng nhập</a> để đánh giá sản phẩm</p>
+                </div>
+                @endif
+
+                <!-- Danh sách đánh giá -->
+                <div class="reviews-list">
+                    <h4 class="reviews-list-title">Tất cả đánh giá ({{ $reviews->count() }})</h4>
+
+                    @forelse($reviews as $review)
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer-avatar">
+                                    @if($review->customer && $review->customer->profile_picture)
+                                        <img src="{{ asset('storage/' . $review->customer->profile_picture) }}" alt="{{ $review->customer->full_name ?? 'User' }}">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($review->customer->full_name ?? 'User') }}&background=667eea&color=fff&size=48" alt="{{ $review->customer->full_name ?? 'User' }}">
+                                    @endif
+                                </div>
+                                <div class="reviewer-info">
+                                    <div class="reviewer-name">
+                                        {{ $review->customer->full_name ?? 'Khách hàng' }}
+                                        @if($review->is_verified)
+                                            <span class="verified-badge">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                                                </svg>
+                                                Đã mua hàng
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="review-meta">
+                                        <span class="review-stars">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $review->rating)★@else☆@endif
+                                            @endfor
+                                        </span>
+                                        <span class="review-date">{{ $review->created_at->diffForHumans() }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if($review->title)
+                                <h5 class="review-title">{{ $review->title }}</h5>
+                            @endif
+
+                            <p class="review-content">{{ $review->comment }}</p>
+
+                            @if($review->images && count($review->images) > 0)
+                                <div class="review-images">
+                                    @foreach($review->images as $image)
+                                        <img src="{{ asset('storage/' . $image) }}" alt="Review image" class="review-image" onclick="openImageModal(this.src)">
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <div class="review-actions">
+                                <button class="helpful-btn" onclick="markHelpful('{{ $review->_id }}')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                    </svg>
+                                    Hữu ích (<span class="helpful-count">{{ $review->helpful_count ?? 0 }}</span>)
+                                </button>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="no-reviews">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+                            <p>Hãy là người đầu tiên đánh giá!</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -1291,6 +1862,64 @@
         // Update tab content
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         document.getElementById('tab-' + tabName).classList.add('active');
+    }
+
+    // Preview uploaded images
+    const reviewImagesInput = document.getElementById('review-images');
+    if (reviewImagesInput) {
+        reviewImagesInput.addEventListener('change', function(e) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
+
+            Array.from(this.files).slice(0, 5).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    }
+
+    // Mark review as helpful
+    function markHelpful(reviewId) {
+        fetch(`/danh-gia/${reviewId}/helpful`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const btn = event.target.closest('.helpful-btn');
+            btn.querySelector('.helpful-count').textContent = data.helpful_count;
+            btn.classList.add('active');
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Confirm delete review
+    function confirmDeleteReview(reviewId) {
+        if (confirm('Bạn có chắc chắn muốn xóa đánh giá này? Hành động này không thể hoàn tác.')) {
+            document.getElementById('delete-review-form').submit();
+        }
+    }
+
+    // Open image modal
+    function openImageModal(src) {
+        const modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;cursor:pointer;';
+        modal.onclick = () => modal.remove();
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.style.cssText = 'max-width:90%;max-height:90%;object-fit:contain;border-radius:8px;';
+
+        modal.appendChild(img);
+        document.body.appendChild(modal);
     }
 
     // Initialize

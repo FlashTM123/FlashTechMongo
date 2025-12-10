@@ -8,15 +8,16 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerAuthController;
 
-// Authentication Routes
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+// Admin Authentication Routes
+Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
 // Customer Authentication Routes
-Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->name('customers.register');
-Route::post('/register', [CustomerAuthController::class, 'register'])->name('customers.register.post');
-Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customers.login');
-Route::post('/login', [CustomerAuthController::class, 'login'])->name('customers.login.post');
+Route::get('/dang-ky', [CustomerAuthController::class, 'showRegisterForm'])->name('customers.register');
+Route::post('/dang-ky', [CustomerAuthController::class, 'register'])->name('customers.register.post');
+Route::get('/dang-nhap', [CustomerAuthController::class, 'showLoginForm'])->name('customers.login');
+Route::post('/dang-nhap', [CustomerAuthController::class, 'login'])->name('customers.login.post');
 Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name('customers.logout');
 
 // Customer Home Route
@@ -27,6 +28,12 @@ Route::get('/product/{slug}', [\App\Http\Controllers\CustomerHomeController::cla
 
 // Category Route
 Route::get('/danh-muc/{category}', [\App\Http\Controllers\CustomerHomeController::class, 'category'])->name('products.category');
+
+
+// Reviews
+Route::post('/san-pham/{product}/danh-gia', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+Route::post('/danh-gia/{review}/helpful', [App\Http\Controllers\ReviewController::class, 'helpful'])->name('reviews.helpful');
+Route::delete('/danh-gia/{review}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 
 // Protected routes - Require authentication
