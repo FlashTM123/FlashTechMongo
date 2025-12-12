@@ -84,6 +84,7 @@
 | Phân quyền | Admin, Moderator, Employee |
 | Đăng ký khách hàng | Mã tự động, upload avatar, validation |
 | Password | Strength indicator, toggle visibility |
+| 🆕 Đăng nhập Google | OAuth 2.0 với Laravel Socialite |
 
 ### 🛍️ Quản lý sản phẩm
 | Tính năng | Mô tả |
@@ -273,7 +274,20 @@ npm run dev
 npm run build
 ```
 
-### 🌐 Bước 7: Chạy Server
+### 🔐 Bước 7: Cấu hình Google OAuth (Tùy chọn)
+
+1. Truy cập [Google Cloud Console](https://console.cloud.google.com/)
+2. Tạo Project mới hoặc chọn project có sẵn
+3. Vào **APIs & Services** → **Credentials** → **Create Credentials** → **OAuth 2.0 Client IDs**
+4. Chọn **Web application**, thêm redirect URI: `http://localhost:8000/auth/google/callback`
+5. Thêm vào file `.env`:
+```env
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+```
+
+### 🌐 Bước 8: Chạy Server
 
 ```bash
 php artisan serve
@@ -345,6 +359,7 @@ FlashTechMongo/
 |:-------|:----------|:----------:|
 | **Authentication** | Đăng nhập Admin | ✅ |
 | | Đăng ký/Đăng nhập Customer | ✅ |
+| | 🆕 Đăng nhập Google OAuth 2.0 | ✅ |
 | | User dropdown menu | ✅ |
 | | Session management | ✅ |
 | **Admin Panel** | Dashboard thống kê | ✅ |
@@ -421,6 +436,31 @@ Class 'MongoDB\Driver\Manager' not found
 1. Kiểm tra: `php -m | findstr mongodb`
 2. Thêm `extension=mongodb` vào `php.ini`
 3. Restart web server
+</details>
+
+<details>
+<summary><b>❌ Google OAuth SSL Certificate Error (Windows)</b></summary>
+
+```
+cURL error 60: SSL certificate problem: unable to get local issuer certificate
+```
+**Giải pháp:** Thêm vào `AppServiceProvider.php`:
+```php
+public function boot(): void
+{
+    if ($this->app->environment('local')) {
+        $this->app->bind(\GuzzleHttp\Client::class, function () {
+            return new \GuzzleHttp\Client(['verify' => false]);
+        });
+    }
+}
+```
+Và trong `CustomerAuthController.php`:
+```php
+$googleUser = Socialite::driver('google')
+    ->setHttpClient(new \GuzzleHttp\Client(['verify' => false]))
+    ->user();
+```
 </details>
 
 ---

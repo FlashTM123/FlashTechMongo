@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Tắt SSL verify cho Socialite (chỉ dùng cho development)
+        if ($this->app->environment('local')) {
+            \Illuminate\Support\Facades\Http::withoutVerifying();
+
+            // Cấu hình Guzzle cho Socialite
+            $this->app->bind(\GuzzleHttp\Client::class, function () {
+                return new \GuzzleHttp\Client(['verify' => false]);
+            });
+        }
     }
 }

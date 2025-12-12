@@ -23,6 +23,7 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female', 'other'])->nullable(); // Sử dụng trong đăng ký
             $table->string('profile_picture')->nullable(); // Sử dụng trong đăng ký
             $table->integer('loyalty_points')->default(0);
+            $table->string('google_id')->nullable();
 
             $table->timestamps();
         });

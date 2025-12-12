@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\Customer;
 
 class CustomerAuthController extends Controller
 {
@@ -102,5 +104,43 @@ class CustomerAuthController extends Controller
 
         return redirect()->route('home')->with('success', 'Đăng xuất thành công.');
     }
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')
+                ->setHttpClient(new \GuzzleHttp\Client(['verify' => false]))
+                ->user();
 
+            $customer = Customer::where('google_id', $googleUser->getId())->orWhere('email', $googleUser->getEmail())->first();
+
+            if($customer){
+                if(!$customer->google_id){
+
+                    $customer->google_id = $googleUser->getId();
+                $customer->save();
+                }
+            } else {
+                $customer = Customer::create([
+                    'customer_code' => $this->generateCustomerCode(),
+                    'full_name' => $googleUser->getName(),
+                    'email' => $googleUser->getEmail(),
+                    'google_id' => $googleUser->getId(),
+                    'profile_picture' => $googleUser->getAvatar(),
+                    'loyalty_points' => 0,
+                ]);
+            }
+            session(['customer' => $customer]);
+            return redirect()->route('home')->with('success', 'Login with Google successful.');
+
+
+        } catch (\Exception $e) {
+            // Log lỗi chi tiết
+            \Log::error('Google Login Error: ' . $e->getMessage());
+            return redirect()->route('customers.login')->withErrors(['oauth' => 'Lỗi: ' . $e->getMessage()]);
+        }
+    }
 }

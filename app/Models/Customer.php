@@ -22,7 +22,7 @@ class Customer extends Model
         'gender',
         'profile_picture',
         'loyalty_points',
-
+        'google_id',
     ];
 
     protected $hidden = [

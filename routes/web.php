@@ -19,6 +19,8 @@ Route::post('/dang-ky', [CustomerAuthController::class, 'register'])->name('cust
 Route::get('/dang-nhap', [CustomerAuthController::class, 'showLoginForm'])->name('customers.login');
 Route::post('/dang-nhap', [CustomerAuthController::class, 'login'])->name('customers.login.post');
 Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name('customers.logout');
+Route::get('/auth/google', [CustomerAuthController::class, 'redirectToGoogle'])->name('customers.login.google');
+Route::get('/auth/google/callback', [CustomerAuthController::class, 'handleGoogleCallback'])->name('customers.login.google.callback');
 
 // Customer Home Route
 Route::get('/', [\App\Http\Controllers\CustomerHomeController::class, 'index'])->name('home');
