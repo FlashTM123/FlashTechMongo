@@ -362,6 +362,7 @@ FlashTechMongo/
 | | 🆕 Đăng nhập Google OAuth 2.0 | ✅ |
 | | User dropdown menu | ✅ |
 | | Session management | ✅ |
+| | 🆕 Auth Guard cho Customer | ✅ |
 | **Admin Panel** | Dashboard thống kê | ✅ |
 | | Quản lý Users (CRUD) | ✅ |
 | | Quản lý Brands | ✅ |
@@ -375,11 +376,31 @@ FlashTechMongo/
 | | Pagination component | ✅ |
 | | Flash sale timer | ✅ |
 | | Footer | ✅ |
+| | 🆕 Trang hồ sơ khách hàng | ✅ |
 | **Đánh giá sản phẩm** | Form đánh giá với star rating | ✅ |
 | | Upload nhiều ảnh đánh giá | ✅ |
 | | Sửa/Xóa đánh giá | ✅ |
 | | Nút "Hữu ích" (AJAX) | ✅ |
 | | Thống kê rating | ✅ |
+
+---
+
+## 📝 Cập nhật gần đây (14/12/2025)
+
+### 🔧 Sửa lỗi
+| Lỗi | Mô tả | Trạng thái |
+|:----|:------|:----------:|
+| Auth Guard | Thêm `customer` guard vào `config/auth.php` | ✅ |
+| Authenticatable | Customer model implement `Authenticatable` interface | ✅ |
+| Navbar | Sửa lỗi `undefined $customer` - dùng `auth('customer')->user()` | ✅ |
+| Google Login | Sửa lỗi đăng nhập Google không lưu session | ✅ |
+
+### ✨ Tính năng mới
+| Tính năng | Mô tả | Trạng thái |
+|:----------|:------|:----------:|
+| Trang hồ sơ | Trang `/ho-so-ca-nhan` với thiết kế đẹp | ✅ |
+| Profile Avatar | Hiển thị ảnh Google hoặc avatar placeholder | ✅ |
+| Auth Integration | Navbar hiển thị đúng user sau đăng nhập | ✅ |
 
 ---
 
@@ -390,7 +411,8 @@ FlashTechMongo/
 | 🔴 | Giỏ hàng (Cart) | ⏳ |
 | 🔴 | Thanh toán (Checkout) | ⏳ |
 | 🔴 | Quản lý đơn hàng | ⏳ |
-| 🟡 | Trang thông tin khách hàng | ⏳ |
+| 🟡 | Chỉnh sửa hồ sơ khách hàng | ⏳ |
+| 🟡 | Đổi mật khẩu | ⏳ |
 | 🟡 | Wishlist | ⏳ |
 | 🟡 | Lịch sử đơn hàng | ⏳ |
 | 🟢 | Tìm kiếm sản phẩm | ⏳ |

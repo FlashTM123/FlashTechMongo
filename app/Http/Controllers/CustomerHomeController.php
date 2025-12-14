@@ -207,4 +207,15 @@ class CustomerHomeController extends Controller
             'categoryInfo'
         ));
     }
+    public function profile_detail(){
+        // Lấy thông tin khách hàng đang đăng nhập
+        $customer = auth()->guard('customer')->user();
+
+        if (!$customer) {
+            return redirect()->route('customer.login')
+                ->with('error', 'Vui lòng đăng nhập để xem thông tin cá nhân');
+        }
+
+        return view('Customers.profile_detail', compact('customer'));
+    }
 }

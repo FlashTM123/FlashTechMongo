@@ -83,24 +83,22 @@ class CustomerAuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Attempt to find the customer by email
-        $customer = \App\Models\Customer::where('email', $request->email)->first();
+        // Attempt to log in using the customer guard
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
 
-        // Check if customer exists and password matches
-        if ($customer && \Illuminate\Support\Facades\Hash::check($request->password, $customer->password)) {
-            // Store customer info in session
-            session(['customer' => $customer]);
-
-            return redirect()->route('home')->with('success', 'Login successful.');
-        } else {
-            return back()->withErrors(['email' => 'Invalid email or password.'])->withInput();
+        if (\Illuminate\Support\Facades\Auth::guard('customer')->attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            return redirect()->route('home')->with('success', 'Đăng nhập thành công.');
         }
+
+        return back()->withErrors(['email' => 'Email hoặc mật khẩu không đúng.'])->withInput();
     }
     public function logout(Request $request)
     {
-        // Clear the customer session
-        $request->session()->forget('customer');
-        $request->session()->flush();
+        \Illuminate\Support\Facades\Auth::guard('customer')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('home')->with('success', 'Đăng xuất thành công.');
     }
@@ -133,8 +131,9 @@ class CustomerAuthController extends Controller
                     'loyalty_points' => 0,
                 ]);
             }
-            session(['customer' => $customer]);
-            return redirect()->route('home')->with('success', 'Login with Google successful.');
+
+            \Illuminate\Support\Facades\Auth::guard('customer')->login($customer);
+            return redirect()->route('home')->with('success', 'Đăng nhập bằng Google thành công.');
 
 
         } catch (\Exception $e) {

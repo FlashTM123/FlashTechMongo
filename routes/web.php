@@ -22,6 +22,7 @@ Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name
 Route::get('/auth/google', [CustomerAuthController::class, 'redirectToGoogle'])->name('customers.login.google');
 Route::get('/auth/google/callback', [CustomerAuthController::class, 'handleGoogleCallback'])->name('customers.login.google.callback');
 
+
 // Customer Home Route
 Route::get('/', [\App\Http\Controllers\CustomerHomeController::class, 'index'])->name('home');
 
@@ -37,6 +38,11 @@ Route::post('/san-pham/{product}/danh-gia', [App\Http\Controllers\ReviewControll
 Route::post('/danh-gia/{review}/helpful', [App\Http\Controllers\ReviewController::class, 'helpful'])->name('reviews.helpful');
 Route::delete('/danh-gia/{review}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
 
+// Customer Profile Routes
+Route::middleware(['auth:customer'])->group(function () {
+    Route::get('/profile', [\App\Http\Controllers\CustomerHomeController::class, 'profile'])->name('customers.profile');
+    Route::get('/ho-so-ca-nhan', [\App\Http\Controllers\CustomerHomeController::class, 'profile_detail'])->name('customers.profile.detail');
+});
 
 // Protected routes - Require authentication
 Route::middleware(['auth'])->group(function () {

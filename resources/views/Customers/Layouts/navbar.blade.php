@@ -5,14 +5,18 @@
             <div class="top-bar-content">
                 <div class="top-left">
                     <a href="tel:1900-xxxx" class="top-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
                         </svg>
                         <span>Hotline: <strong>1900-xxxx</strong></span>
                     </a>
                     <span class="divider">|</span>
                     <a href="#" class="top-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                             <circle cx="12" cy="10" r="3"></circle>
                         </svg>
@@ -20,110 +24,144 @@
                     </a>
                     <span class="divider">|</span>
                     <a href="#" class="top-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                         </svg>
                         <span>Tra cứu đơn hàng</span>
                     </a>
                 </div>
                 <div class="top-right">
-                    @if(session('customer'))
-                    <div class="user-dropdown">
-                        <button class="top-link user-link" id="userDropdownBtn">
-                            <div class="user-avatar">
-                                @if(session('customer')->profile_picture)
-                                    <img src="{{ asset('storage/' . session('customer')->profile_picture) }}" alt="{{ session('customer')->full_name }}">
-                                @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(session('customer')->full_name) }}&background=667eea&color=fff&size=64" alt="{{ session('customer')->full_name }}">
-                                @endif
-                            </div>
-                            <span class="user-info">
-                                <span class="user-name">{{ session('customer')->full_name }}</span>
-                            </span>
-                            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
-                        <div class="user-dropdown-menu" id="userDropdownMenu">
-                            <div class="dropdown-header">
-                                <div class="dropdown-avatar">
-                                    @if(session('customer')->profile_picture)
-                                        <img src="{{ asset('storage/' . session('customer')->profile_picture) }}" alt="{{ session('customer')->full_name }}">
+                    @if (auth('customer')->check())
+                        <div class="user-dropdown">
+                            <button class="top-link user-link" id="userDropdownBtn">
+                                <div class="user-avatar">
+                                    @if (auth('customer')->user()->profile_picture)
+                                        @if (str_starts_with(auth('customer')->user()->profile_picture, 'http'))
+                                            <img src="{{ auth('customer')->user()->profile_picture }}"
+                                                alt="{{ auth('customer')->user()->full_name }}">
+                                        @else
+                                            <img src="{{ asset('storage/' . auth('customer')->user()->profile_picture) }}"
+                                                alt="{{ auth('customer')->user()->full_name }}">
+                                        @endif
                                     @else
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode(session('customer')->full_name) }}&background=667eea&color=fff&size=128" alt="{{ session('customer')->full_name }}">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth('customer')->user()->full_name) }}&background=667eea&color=fff&size=64"
+                                            alt="{{ auth('customer')->user()->full_name }}">
                                     @endif
                                 </div>
-                                <div class="dropdown-user-info">
-                                    <div class="dropdown-user-name">{{ session('customer')->full_name }}</div>
-                                    <div class="dropdown-user-email">{{ session('customer')->email }}</div>
-                                    <div class="dropdown-user-points">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                        </svg>
-                                        <span>{{ session('customer')->loyalty_points ?? 0 }} điểm</span>
+                                <span class="user-info">
+                                    <span class="user-name">{{ auth('customer')->user()->full_name }}</span>
+                                </span>
+                                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                                <div class="dropdown-header">
+                                    <div class="dropdown-avatar">
+                                        @if (auth('customer')->user()->profile_picture)
+                                            @if (str_starts_with(auth('customer')->user()->profile_picture, 'http'))
+                                                <img src="{{ auth('customer')->user()->profile_picture }}"
+                                                    alt="{{ auth('customer')->user()->full_name }}">
+                                            @else
+                                                <img src="{{ asset('storage/' . auth('customer')->user()->profile_picture) }}"
+                                                    alt="{{ auth('customer')->user()->full_name }}">
+                                            @endif
+                                        @else
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth('customer')->user()->full_name) }}&background=667eea&color=fff&size=128"
+                                                alt="{{ auth('customer')->user()->full_name }}">
+                                        @endif
+                                    </div>
+                                    <div class="dropdown-user-info">
+                                        <div class="dropdown-user-name">{{ auth('customer')->user()->full_name }}</div>
+                                        <div class="dropdown-user-email">{{ auth('customer')->user()->email }}</div>
+                                        <div class="dropdown-user-points">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
+                                                <polygon
+                                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                                </polygon>
+                                            </svg>
+                                            <span>{{ auth('customer')->user()->loyalty_points ?? 0 }} điểm</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-link">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                                <span>Tài khoản của tôi</span>
-                            </a>
-                            <a href="#" class="dropdown-link">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                                </svg>
-                                <span>Đơn hàng của tôi</span>
-                            </a>
-                            <a href="#" class="dropdown-link">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                                </svg>
-                                <span>Sản phẩm yêu thích</span>
-                            </a>
-                            <a href="#" class="dropdown-link">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                    <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m-2.8 2.8l-4.2 4.2M23 12h-6m-6 0H5m13.2 5.2l-4.2-4.2m-2.8-2.8l-4.2-4.2"></path>
-                                </svg>
-                                <span>Cài đặt</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <form action="{{ route('customers.logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="dropdown-link logout-link">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                        <polyline points="16 17 21 12 16 7"></polyline>
-                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ route('customers.profile.detail') }}" class="dropdown-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                    <span>Đăng xuất</span>
-                                </button>
-                            </form>
+                                    <span>Tài khoản của tôi</span>
+                                </a>
+                                <a href="#" class="dropdown-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                                        </path>
+                                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1">
+                                        </rect>
+                                    </svg>
+                                    <span>Đơn hàng của tôi</span>
+                                </a>
+                                <a href="#" class="dropdown-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                        </path>
+                                    </svg>
+                                    <span>Sản phẩm yêu thích</span>
+                                </a>
+                                <a href="#" class="dropdown-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path
+                                            d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m-2.8 2.8l-4.2 4.2M23 12h-6m-6 0H5m13.2 5.2l-4.2-4.2m-2.8-2.8l-4.2-4.2">
+                                        </path>
+                                    </svg>
+                                    <span>Cài đặt</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form action="{{ route('customers.logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-link logout-link">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                            <polyline points="16 17 21 12 16 7"></polyline>
+                                            <line x1="21" y1="12" x2="9" y2="12">
+                                            </line>
+                                        </svg>
+                                        <span>Đăng xuất</span>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
                     @else
-                    <a href="{{ route('customers.login') }}" class="top-link login-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                            <polyline points="10 17 15 12 10 7"></polyline>
-                            <line x1="15" y1="12" x2="3" y2="12"></line>
-                        </svg>
-                        <span>Đăng nhập</span>
-                    </a>
-                    <span class="divider">|</span>
-                    <a href="{{ route('customers.register') }}" class="top-link register-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <polyline points="17 11 19 13 23 9"></polyline>
-                        </svg>
-                        <span>Đăng ký</span>
-                    </a>
+                        <a href="{{ route('customers.login') }}" class="top-link login-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10 17 15 12 10 7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            <span>Đăng nhập</span>
+                        </a>
+                        <span class="divider">|</span>
+                        <a href="{{ route('customers.register') }}" class="top-link register-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <polyline points="17 11 19 13 23 9"></polyline>
+                            </svg>
+                            <span>Đăng ký</span>
+                        </a>
                     @endif
                 </div>
             </div>
@@ -137,7 +175,8 @@
                 <!-- Logo -->
                 <a href="#" class="logo">
                     <div class="logo-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
                         </svg>
                     </div>
@@ -151,12 +190,14 @@
                 <div class="search-container">
                     <form action="#" method="GET" class="search-form">
                         <button type="submit" class="search-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
                         </button>
-                        <input type="text" name="q" placeholder="Tìm kiếm sản phẩm, thương hiệu..." class="search-input" value="{{ request('q') }}">
+                        <input type="text" name="q" placeholder="Tìm kiếm sản phẩm, thương hiệu..."
+                            class="search-input" value="{{ request('q') }}">
                         <div class="search-category">
                             <select name="category" class="category-select">
                                 <option value="">Tất cả</option>
@@ -182,8 +223,11 @@
                 <div class="nav-actions">
                     <!-- Wishlist -->
                     <a href="#" class="nav-action" title="Yêu thích">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                            </path>
                         </svg>
                         <span class="action-label">Yêu thích</span>
                         <span class="badge">3</span>
@@ -191,7 +235,8 @@
 
                     <!-- Cart -->
                     <a href="#" class="nav-action cart-action" title="Giỏ hàng">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <circle cx="9" cy="21" r="1"></circle>
                             <circle cx="20" cy="21" r="1"></circle>
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
@@ -217,7 +262,8 @@
             <ul class="menu-list" id="mobileMenu">
                 <li class="menu-item">
                     <a href="{{ route('home') }}" class="menu-link active">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
@@ -226,27 +272,32 @@
                 </li>
                 <li class="menu-item has-dropdown">
                     <a href="#" class="menu-link">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                             <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                         </svg>
                         <span>Danh mục</span>
-                        <svg class="dropdown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg class="dropdown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{{ route('products.category', 'smartphone') }}" class="dropdown-item">📱 Smartphone</a>
+                        <a href="{{ route('products.category', 'smartphone') }}" class="dropdown-item">📱
+                            Smartphone</a>
                         <a href="{{ route('products.category', 'laptop') }}" class="dropdown-item">💻 Laptop</a>
                         <a href="{{ route('products.category', 'tablet') }}" class="dropdown-item">📲 Tablet</a>
                         <a href="{{ route('products.category', 'computer') }}" class="dropdown-item">🖥️ Computer</a>
                         <a href="{{ route('products.category', 'accessory') }}" class="dropdown-item">🎧 Phụ kiện</a>
-                        <a href="{{ route('products.category', 'component') }}" class="dropdown-item">🛠️ Linh kiện</a>
+                        <a href="{{ route('products.category', 'component') }}" class="dropdown-item">🛠️ Linh
+                            kiện</a>
                     </div>
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
                             <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -256,8 +307,10 @@
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link deals-link">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                            </path>
                             <line x1="7" y1="7" x2="7.01" y2="7"></line>
                         </svg>
                         <span>Khuyến mãi</span>
@@ -266,7 +319,8 @@
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="12" y1="16" x2="12" y2="12"></line>
                             <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -276,8 +330,10 @@
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
                             <polyline points="22,6 12,13 2,6"></polyline>
                         </svg>
                         <span>Liên hệ</span>
@@ -370,13 +426,18 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
         animation: shimmer 3s infinite;
     }
 
     @keyframes shimmer {
-        0% { left: -100%; }
-        100% { left: 100%; }
+        0% {
+            left: -100%;
+        }
+
+        100% {
+            left: 100%;
+        }
     }
 
     .top-bar-content {
@@ -388,7 +449,8 @@
         overflow: visible;
     }
 
-    .top-left, .top-right {
+    .top-left,
+    .top-right {
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -434,13 +496,15 @@
         font-weight: 700;
     }
 
-    .login-link, .register-link {
+    .login-link,
+    .register-link {
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .login-link:hover, .register-link:hover {
+    .login-link:hover,
+    .register-link:hover {
         background: rgba(255, 255, 255, 0.25);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
@@ -701,20 +765,25 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
         animation: rotate 4s linear infinite;
     }
 
     @keyframes rotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
     .logo-icon svg {
         color: var(--white);
         position: relative;
         z-index: 1;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
 
     .logo-text {
@@ -912,8 +981,15 @@
     }
 
     @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
     }
 
     /* Mobile Menu Toggle */
@@ -1005,9 +1081,19 @@
     }
 
     @keyframes shake {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(-5deg); }
-        75% { transform: rotate(5deg); }
+
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(-5deg);
+        }
+
+        75% {
+            transform: rotate(5deg);
+        }
     }
 
     /* Dropdown Menu */
