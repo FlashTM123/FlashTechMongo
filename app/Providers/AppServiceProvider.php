@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
             $this->app->bind(\GuzzleHttp\Client::class, function () {
                 return new \GuzzleHttp\Client(['verify' => false]);
             });
+        }
+        if($this->app->environment('production')){
+            URL::forceScheme('https');
         }
     }
 }
