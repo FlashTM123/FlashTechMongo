@@ -6,3 +6,76 @@
 @source "../../storage/framework/views/*.php";
 
 @plugin "daisyui";
+
+/* Responsive for all layouts and components */
+html {
+	scroll-behavior: smooth;
+}
+body {
+	min-width: 320px;
+}
+.main-content {
+	min-height: 60vh;
+}
+@media (max-width: 1024px) {
+	.main-content, .container, .footer-top, .profile-container, .category-header-content, .top-bar, .main-header {
+		padding: 0.5rem;
+	}
+	.footer-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+	.product-card {
+		padding: 0.5rem;
+		border-radius: 12px;
+	}
+	.product-image {
+		height: 160px;
+	}
+}
+@media (max-width: 768px) {
+	.main-content, .container, .footer-top, .profile-container, .category-header-content, .top-bar, .main-header {
+		padding: 0.25rem;
+	}
+	.footer-grid {
+		grid-template-columns: 1fr;
+		gap: 0.5rem;
+	}
+	.product-card {
+		padding: 0.25rem;
+		border-radius: 8px;
+	}
+	.product-image {
+		height: 120px;
+	}
+	.pagination {
+		gap: 0.25rem;
+		font-size: 0.95rem;
+	}
+	.page-link {
+		padding: 0.25rem 0.5rem;
+	}
+}
+@media (max-width: 480px) {
+	.main-content, .container, .footer-top, .profile-container, .category-header-content, .top-bar, .main-header {
+		padding: 0;
+	}
+	.footer-grid {
+		grid-template-columns: 1fr;
+		gap: 0.25rem;
+	}
+	.product-card {
+		padding: 0.1rem;
+		border-radius: 6px;
+	}
+	.product-image {
+		height: 80px;
+	}
+	.pagination {
+		gap: 0.1rem;
+		font-size: 0.85rem;
+	}
+	.page-link {
+		padding: 0.1rem 0.25rem;
+	}
+}

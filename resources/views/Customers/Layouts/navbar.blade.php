@@ -339,6 +339,54 @@
                         <span>Liên hệ</span>
                     </a>
                 </li>
+                @if (auth('customer')->check())
+                    <li class="menu-item only-mobile">
+                        <a href="{{ route('customers.profile.detail') }}" class="menu-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+                            </svg>
+                            <span>Tài khoản của tôi</span>
+                        </a>
+                    </li>
+                    <li class="menu-item only-mobile">
+                        <form action="{{ route('customers.logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="menu-link" style="background:none;border:none;padding:0;display:flex;align-items:center;width:100%;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12">
+                                    </line>
+                                </svg>
+                                <span>Đăng xuất</span>
+                            </button>
+                        </form>
+                    </li>
+                @else
+                    <li class="menu-item only-mobile">
+                        <a href="{{ route('customers.login') }}" class="menu-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10 17 15 12 10 7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            <span>Đăng nhập</span>
+                        </a>
+                    </li>
+                    <li class="menu-item only-mobile">
+                        <a href="{{ route('customers.register') }}" class="menu-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <polyline points="17 11 19 13 23 9"></polyline>
+                            </svg>
+                            <span>Đăng ký</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
     </nav>
@@ -1220,6 +1268,12 @@
             display: block;
         }
     }
+
+    @media (min-width: 1025px) {
+        .only-mobile {
+            display: none !important;
+        }
+    }
 </style>
 
 <script>
@@ -1248,11 +1302,23 @@
     // Mobile dropdown toggle
     const hasDropdown = document.querySelectorAll('.has-dropdown');
     hasDropdown.forEach(item => {
+        // Toggle dropdown on click (mobile)
         item.addEventListener('click', (e) => {
             if (window.innerWidth <= 768) {
-                e.preventDefault();
-                item.classList.toggle('active');
+                // Nếu click vào chính menu-link thì toggle, nếu click vào dropdown-item thì cho phép chuyển trang
+                if (e.target.classList.contains('menu-link') || e.target.closest('.menu-link')) {
+                    e.preventDefault();
+                    item.classList.toggle('active');
+                }
             }
+        });
+        // Cho phép click vào dropdown-item để chuyển trang
+        const dropdownItems = item.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Không ngăn chặn mặc định, cho phép chuyển trang
+                e.stopPropagation();
+            });
         });
     });
 

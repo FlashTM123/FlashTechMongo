@@ -1775,16 +1775,16 @@
                             <div class="review-item">
                                 <div class="review-header">
                                     <div class="reviewer-avatar">
-                                        @if ($customer->profile_picture)
-                                            @if (str_starts_with($customer->profile_picture, 'http'))
-                                                <img src="{{ $customer->profile_picture }}"
-                                                    alt="{{ $customer->full_name }}">
+                                        @if ($review->customer->profile_picture)
+                                            @if (str_starts_with($review->customer->profile_picture, 'http'))
+                                                <img src="{{ $review->customer->profile_picture }}"
+                                                    alt="{{ $review->customer->full_name }}">
                                             @else
-                                                <img src="{{ asset('storage/' . $customer->profile_picture) }}"
-                                                    alt="{{ $customer->full_name }}">
+                                                <img src="{{ asset('storage/' . $review->customer->profile_picture) }}"
+                                                    alt="{{ $review->customer->full_name }}">
                                             @endif
                                         @else
-                                            <div class="avatar-placeholder">{{ substr($customer->full_name, 0, 1) }}</div>
+                                            <div class="avatar-placeholder">{{ substr($review->customer->full_name, 0, 1) }}</div>
                                         @endif
                                     </div>
                                     <div class="reviewer-info">
