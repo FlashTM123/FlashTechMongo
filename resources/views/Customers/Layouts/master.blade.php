@@ -28,7 +28,7 @@
     </main>
 
     <!-- Footer -->
-    @include('Customers.Layouts.footer')
+    @include('Customers.Layouts.Footer')
 
     @stack('scripts')
 </body>
