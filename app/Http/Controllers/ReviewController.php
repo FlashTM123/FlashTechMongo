@@ -6,6 +6,7 @@ use App\Models\Review;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -14,14 +15,14 @@ class ReviewController extends Controller
      */
     public function store(Request $request, $productSlug)
     {
-        // Kiểm tra đăng nhập
-        if (!session('customer')) {
+        // Kiểm tra đăng nhập chuẩn Laravel guard
+        if (!Auth::guard('customer')->check()) {
             return redirect()->route('customers.login')
                 ->with('error', 'Vui lòng đăng nhập để đánh giá sản phẩm');
         }
 
         $product = Product::where('slug', $productSlug)->firstOrFail();
-        $customer = session('customer');
+        $customer = Auth::guard('customer')->user();
 
         // Validate
         $validated = $request->validate([
@@ -92,11 +93,11 @@ class ReviewController extends Controller
      */
     public function destroy($reviewId)
     {
-        if (!session('customer')) {
+        if (!Auth::guard('customer')->check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $customer = session('customer');
+        $customer = Auth::guard('customer')->user();
         $review = Review::where('_id', $reviewId)
             ->where('customer_id', $customer->_id)
             ->first();

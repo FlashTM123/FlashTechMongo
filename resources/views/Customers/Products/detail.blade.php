@@ -1602,9 +1602,9 @@
                 </div>
 
                 <!-- Form đánh giá -->
-                @if(session('customer'))
+                @if(auth('customer')->check())
                     @php
-                        $existingReview = $reviews->where('customer_id', session('customer')->_id)->first();
+                        $existingReview = $reviews->where('customer_id', auth('customer')->id())->first();
                     @endphp
 
                     <div class="review-form-section">

@@ -132,7 +132,7 @@ class CustomerAuthController extends Controller
                 ]);
             }
 
-            \Illuminate\Support\Facades\Auth::guard('customer')->login($customer);
+            Auth::guard('customer')->login($customer);
             return redirect()->route('home')->with('success', 'Đăng nhập bằng Google thành công.');
 
 
