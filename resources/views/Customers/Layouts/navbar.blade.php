@@ -40,11 +40,7 @@
                                         $avatar = auth('customer')->user()->profile_picture;
                                     @endphp
                                     @if ($avatar)
-                                        @if (Str::startsWith($avatar, 'http'))
                                             <img src="{{ $avatar }}" alt="{{ auth('customer')->user()->full_name }}">
-                                        @else
-                                            <img src="{{ asset('storage/' . $avatar) }}" alt="{{ auth('customer')->user()->full_name }}">
-                                        @endif
                                     @else
                                         <img src="https://ui-avatars.com/api/?name={{ urlencode(auth('customer')->user()->full_name) }}&background=667eea&color=fff&size=64" alt="{{ auth('customer')->user()->full_name }}">
                                     @endif
@@ -61,13 +57,8 @@
                                 <div class="dropdown-header">
                                     <div class="dropdown-avatar">
                                         @if (auth('customer')->user()->profile_picture)
-                                            @if (str_starts_with(auth('customer')->user()->profile_picture, 'http'))
                                                 <img src="{{ auth('customer')->user()->profile_picture }}"
                                                     alt="{{ auth('customer')->user()->full_name }}">
-                                            @else
-                                                <img src="{{ asset('storage/' . auth('customer')->user()->profile_picture) }}"
-                                                    alt="{{ auth('customer')->user()->full_name }}">
-                                            @endif
                                         @else
                                             <img src="https://ui-avatars.com/api/?name={{ urlencode(auth('customer')->user()->full_name) }}&background=667eea&color=fff&size=128"
                                                 alt="{{ auth('customer')->user()->full_name }}">

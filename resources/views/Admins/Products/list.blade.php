@@ -102,7 +102,7 @@
             <!-- Product Image -->
             <div class="product-image">
                 @if($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                <img src="{{ $product->image }}" alt="{{ $product->name }}">
                 @else
                 <div class="image-placeholder">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">

@@ -15,11 +15,7 @@
             <div class="profile-avatar-wrapper">
                 <div class="profile-avatar">
                     @if($customer->profile_picture)
-                        @if(str_starts_with($customer->profile_picture, 'http'))
-                            <img src="{{ $customer->profile_picture }}" alt="{{ $customer->full_name }}">
-                        @else
-                            <img src="{{ asset('storage/' . $customer->profile_picture) }}" alt="{{ $customer->full_name }}">
-                        @endif
+                        <img src="{{ $customer->profile_picture }}" alt="{{ $customer->full_name }}">
                     @else
                         <div class="avatar-placeholder">{{ substr($customer->full_name, 0, 1) }}</div>
                     @endif

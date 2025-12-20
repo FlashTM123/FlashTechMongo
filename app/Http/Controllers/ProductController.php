@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Brand;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -113,20 +113,16 @@ class ProductController extends Controller
 
         // Handle main image upload with Cloudinary
         if ($request->hasFile('image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath(), [
-                'folder' => 'products'
-            ])->getSecurePath();
-            $validated['image'] = $uploadedFileUrl;
+            $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $request->file('image'));
+            $validated['image'] = Storage::disk('cloudinary')->url($uploadedFilePath);
         }
 
         // Handle multiple images upload with Cloudinary
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $image) {
-                $uploadedFileUrl = Cloudinary::upload($image->getRealPath(), [
-                    'folder' => 'products'
-                ])->getSecurePath();
-                $images[] = $uploadedFileUrl;
+                $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $image);
+                $images[] = Storage::disk('cloudinary')->url($uploadedFilePath);
             }
             $validated['images'] = $images;
         }
@@ -204,20 +200,16 @@ class ProductController extends Controller
 
         // Handle main image upload with Cloudinary
         if ($request->hasFile('image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath(), [
-                'folder' => 'products'
-            ])->getSecurePath();
-            $validated['image'] = $uploadedFileUrl;
+            $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $request->file('image'));
+            $validated['image'] = Storage::disk('cloudinary')->url($uploadedFilePath);
         }
 
         // Handle multiple images upload with Cloudinary
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $image) {
-                $uploadedFileUrl = Cloudinary::upload($image->getRealPath(), [
-                    'folder' => 'products'
-                ])->getSecurePath();
-                $images[] = $uploadedFileUrl;
+                $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $image);
+                $images[] = Storage::disk('cloudinary')->url($uploadedFilePath);
             }
             $validated['images'] = $images;
         }

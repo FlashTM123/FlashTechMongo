@@ -1281,11 +1281,7 @@
                             $mainImage = $product->image;
                         @endphp
                         @if ($mainImage)
-                            @if (Str::startsWith($mainImage, 'http'))
-                                <img src="{{ $mainImage }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
-                            @else
-                                <img src="{{ asset('storage/' . $mainImage) }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
-                            @endif
+                            <img src="{{ $mainImage }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
                         @else
                             <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" alt="{{ $product->name }}" class="main-image" id="mainImage">
                         @endif
@@ -1309,14 +1305,10 @@
                     @if ($product->images && count($product->images) > 0)
                         <div class="thumbnail-list">
                             <div class="thumbnail-item active"
-                                onclick="changeImage('{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop' }}', this)">
+                                onclick="changeImage('{{ $product->image ? $product->image : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop' }}', this)">
                                 @php $thumb = $product->image; @endphp
                                 @if ($thumb)
-                                    @if (Str::startsWith($thumb, 'http'))
-                                        <img src="{{ $thumb }}" alt="Thumbnail">
-                                    @else
-                                        <img src="{{ asset('storage/' . $thumb) }}" alt="Thumbnail">
-                                    @endif
+                                    <img src="{{ $thumb }}" alt="Thumbnail">
                                 @else
                                     <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop" alt="Thumbnail">
                                 @endif

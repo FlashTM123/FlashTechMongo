@@ -1,11 +1,13 @@
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 <?php
+
+
 
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Users;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 use function Flasher\Prime\flash;
 
