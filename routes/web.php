@@ -22,6 +22,18 @@ Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name
 Route::get('/auth/google', [CustomerAuthController::class, 'redirectToGoogle'])->name('customers.login.google');
 Route::get('/auth/google/callback', [CustomerAuthController::class, 'handleGoogleCallback'])->name('customers.login.google.callback');
 
+Route::get('/fix-storage', function () {
+    $target = storage_path('app/public');
+    $link = public_path('storage');
+
+    if (file_exists($link)) {
+        @unlink($link);
+    }
+
+    symlink($target, $link);
+    return 'Storage link created successfully.';
+});
+
 
 // Customer Home Route
 Route::get('/', [\App\Http\Controllers\CustomerHomeController::class, 'index'])->name('home');
