@@ -1277,12 +1277,17 @@
                 <!-- Gallery -->
                 <div class="product-gallery">
                     <div class="main-image-wrapper">
-                        @if ($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                class="main-image" id="mainImage">
+                        @php
+                            $mainImage = $product->image;
+                        @endphp
+                        @if ($mainImage)
+                            @if (Str::startsWith($mainImage, 'http'))
+                                <img src="{{ $mainImage }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
+                            @else
+                                <img src="{{ asset('storage/' . $mainImage) }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
+                            @endif
                         @else
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop"
-                                alt="{{ $product->name }}" class="main-image" id="mainImage">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" alt="{{ $product->name }}" class="main-image" id="mainImage">
                         @endif
 
                         <div class="image-badges">
@@ -1305,17 +1310,25 @@
                         <div class="thumbnail-list">
                             <div class="thumbnail-item active"
                                 onclick="changeImage('{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop' }}', this)">
-                                @if ($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Thumbnail">
+                                @php $thumb = $product->image; @endphp
+                                @if ($thumb)
+                                    @if (Str::startsWith($thumb, 'http'))
+                                        <img src="{{ $thumb }}" alt="Thumbnail">
+                                    @else
+                                        <img src="{{ asset('storage/' . $thumb) }}" alt="Thumbnail">
+                                    @endif
                                 @else
-                                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop"
-                                        alt="Thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop" alt="Thumbnail">
                                 @endif
                             </div>
                             @foreach ($product->images as $image)
                                 <div class="thumbnail-item"
-                                    onclick="changeImage('{{ asset('storage/' . $image) }}', this)">
-                                    <img src="{{ asset('storage/' . $image) }}" alt="Thumbnail">
+                                    onclick="changeImage('{{ Str::startsWith($image, 'http') ? $image : asset('storage/' . $image) }}', this)">
+                                    @if (Str::startsWith($image, 'http'))
+                                        <img src="{{ $image }}" alt="Thumbnail">
+                                    @else
+                                        <img src="{{ asset('storage/' . $image) }}" alt="Thumbnail">
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
