@@ -1,3 +1,4 @@
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 <?php
 
 namespace App\Http\Controllers;
@@ -131,7 +132,14 @@ class UserController extends Controller
             'role' => 'required|in:admin,moderator,user,employee',
         ]);
 
-        Users::create($request->all());
+        $data = $request->all();
+        if ($request->hasFile('profile_picture')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('profile_picture')->getRealPath(), [
+                'folder' => 'avatars'
+            ])->getSecurePath();
+            $data['profile_picture'] = $uploadedFileUrl;
+        }
+        Users::create($data);
 
 
          if ($request->wantsJson() || $request->ajax()) {
@@ -176,10 +184,15 @@ class UserController extends Controller
         ]);
 
         $data = $request->all();
+        if ($request->hasFile('profile_picture')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('profile_picture')->getRealPath(), [
+                'folder' => 'avatars'
+            ])->getSecurePath();
+            $data['profile_picture'] = $uploadedFileUrl;
+        }
         if (empty($data['password'])) {
             unset($data['password']);
         }
-
         $users->update($data);
         $userName = $users->name;
 

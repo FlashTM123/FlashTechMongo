@@ -6,6 +6,7 @@ use App\Models\Review;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
@@ -44,15 +45,13 @@ class ReviewController extends Controller
         // Upload ảnh mới nếu có
         $images = $existingReview ? ($existingReview->images ?? []) : [];
         if ($request->hasFile('images')) {
-            // Xóa ảnh cũ nếu đang update
-            if ($existingReview && $existingReview->images) {
-                foreach ($existingReview->images as $oldImage) {
-                    Storage::disk('public')->delete($oldImage);
-                }
-                $images = [];
-            }
+            // Xóa ảnh cũ nếu đang update (nếu muốn xoá Cloudinary thì cần thêm API, ở đây chỉ clear DB)
+            $images = [];
             foreach ($request->file('images') as $image) {
-                $images[] = $image->store('reviews', 'public');
+                $uploadedFileUrl = Cloudinary::upload($image->getRealPath(), [
+                    'folder' => 'reviews'
+                ])->getSecurePath();
+                $images[] = $uploadedFileUrl;
             }
         }
 
