@@ -1438,7 +1438,7 @@
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        <button class="btn btn-primary" {{ $product->stock_quantity <= 0 ? 'disabled' : '' }}>
+                        <button class="btn btn-primary" id="addToCartBtn" {{ $product->stock_quantity <= 0 ? 'disabled' : '' }} onclick="addToCart()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
@@ -1997,5 +1997,59 @@
 
         // Initialize
         updateBtns();
+
+        // Add to cart
+        function addToCart() {
+            const qty = parseInt(document.getElementById('qtyInput').value);
+            const btn = document.getElementById('addToCartBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Đang thêm...';
+
+            fetch('{{ route('cart.add') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: '{{ $product->_id }}',
+                    quantity: qty
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                if (data.success) {
+                    // Update cart badge in navbar
+                    const badges = document.querySelectorAll('.cart-count');
+                    badges.forEach(badge => {
+                        badge.textContent = data.cartCount;
+                        badge.style.display = 'flex';
+                    });
+                    // Show toast notification
+                    showAddToCartToast(data.message);
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            });
+        }
+
+        function showAddToCartToast(message) {
+            let toast = document.getElementById('addToCartToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'addToCartToast';
+                toast.style.cssText = 'position:fixed;top:20px;right:20px;padding:1rem 1.5rem;border-radius:12px;background:#10b981;color:#fff;font-weight:600;z-index:9999;transform:translateX(120%);transition:transform 0.3s;display:flex;align-items:center;gap:0.5rem;';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.transform = 'translateX(0)';
+            setTimeout(() => { toast.style.transform = 'translateX(120%)'; }, 3000);
+        }
     </script>
 @endpush

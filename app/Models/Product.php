@@ -96,4 +96,9 @@ class Product extends Model
       }
         return $stats;
     }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetails::class);
+    }
 }

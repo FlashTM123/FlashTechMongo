@@ -32,4 +32,9 @@ class Customer extends Model implements Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Orders::class);
+    }
 }

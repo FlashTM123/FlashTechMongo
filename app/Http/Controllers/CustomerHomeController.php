@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Specifications;
+use App\Models\Orders;
 
 class CustomerHomeController extends Controller
 {
@@ -217,5 +218,34 @@ class CustomerHomeController extends Controller
         }
 
         return view('Customers.profile_detail', compact('customer'));
+    }
+
+    public function orderHistory(Request $request)
+    {
+        $customer = auth()->guard('customer')->user();
+
+        $query = Orders::with('orderDetails')->where('customer_id', (string) $customer->_id)
+            ->orderBy('created_at', 'desc');
+
+        // Lọc theo trạng thái
+        if ($request->filled('status')) {
+            $query->where('order_status', $request->status);
+        }
+
+        $orders = $query->paginate(10);
+
+        return view('Customers.Orders.index', compact('orders'));
+    }
+
+    public function orderDetail($id)
+    {
+        $customer = auth()->guard('customer')->user();
+        $order = Orders::with('orderDetails')->findOrFail($id);
+
+        if ((string) $order->customer_id !== (string) $customer->_id) {
+            abort(403);
+        }
+
+        return view('Customers.Orders.detail', compact('order'));
     }
 }

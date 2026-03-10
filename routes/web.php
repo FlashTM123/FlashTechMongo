@@ -7,6 +7,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 // Admin Authentication Routes
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -52,10 +55,28 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::delete('/danh-gia/{review}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
+// Cart Routes
+Route::middleware(['auth:customer'])->prefix('gio-hang')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/them', [CartController::class, 'add'])->name('cart.add');
+    Route::put('/cap-nhat', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/xoa/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::delete('/xoa-het', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+// Checkout Routes
+Route::middleware(['auth:customer'])->prefix('thanh-toan')->group(function () {
+    Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/dat-hang', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+    Route::get('/thanh-cong/{id}', [CheckoutController::class, 'success'])->name('checkout.success');
+});
+
 // Customer Profile Routes
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/profile', [\App\Http\Controllers\CustomerHomeController::class, 'profile'])->name('customers.profile');
     Route::get('/ho-so-ca-nhan', [\App\Http\Controllers\CustomerHomeController::class, 'profile_detail'])->name('customers.profile.detail');
+    Route::get('/don-hang', [\App\Http\Controllers\CustomerHomeController::class, 'orderHistory'])->name('customers.orders');
+    Route::get('/don-hang/{id}', [\App\Http\Controllers\CustomerHomeController::class, 'orderDetail'])->name('customers.orders.detail');
 });
 
 // Protected routes - Require authentication
@@ -104,6 +125,14 @@ Route::middleware(['auth'])->group(function () {
     // Settings - Admin, Moderator, Employee
     Route::middleware(['role:admin,moderator,employee'])->prefix('settings')->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('settings.index');
+    });
+
+    // Orders Management - Admin, Moderator, Employee
+    Route::middleware(['role:admin,moderator,employee'])->prefix('admin/orders')->group(function () {
+        Route::get('/', [OrdersController::class, 'index'])->name('orders.index');
+        Route::get('/{id}', [OrdersController::class, 'show'])->name('orders.show');
+        Route::put('/{id}', [OrdersController::class, 'update'])->name('orders.update');
+        Route::delete('/{id}', [OrdersController::class, 'destroy'])->name('orders.destroy');
     });
 });
 

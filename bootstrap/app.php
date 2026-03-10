@@ -15,6 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
         $middleware->trustProxies('*');
+        $middleware->redirectGuestsTo(function ($request) {
+            if ($request->is('thanh-toan*') || $request->is('gio-hang*') || $request->is('don-hang*')) {
+                return route('customers.login');
+            }
+            return route('login');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
