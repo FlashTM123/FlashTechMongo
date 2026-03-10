@@ -103,6 +103,35 @@
 | Loyalty Points | Điểm tích lũy |
 | Thông tin | Họ tên, email, SĐT, địa chỉ, ngày sinh, giới tính |
 
+### 🛒 Giỏ hàng & Thanh toán
+| Tính năng | Mô tả |
+|:----------|:------|
+| 🆕 Giỏ hàng (Cart) | Session-based, AJAX thêm/cập nhật/xóa sản phẩm |
+| 🆕 Thêm vào giỏ | Nút thêm giỏ hàng trên trang chi tiết sản phẩm (AJAX) |
+| 🆕 Badge giỏ hàng | Hiển thị số lượng sản phẩm trên navbar |
+| 🆕 Trang thanh toán | Form nhập thông tin giao hàng, chọn phương thức thanh toán |
+| 🆕 Phương thức TT | COD, Chuyển khoản ngân hàng, MoMo, VNPay |
+| 🆕 Đặt hàng | Tạo đơn hàng, trừ tồn kho, tăng số lượng bán |
+| 🆕 Trang thành công | Trang xác nhận đơn hàng sau khi đặt thành công |
+| 🆕 Bảo vệ route | Giỏ hàng & thanh toán yêu cầu đăng nhập customer |
+
+### 📦 Quản lý đơn hàng (Admin)
+| Tính năng | Mô tả |
+|:----------|:------|
+| 🆕 Danh sách đơn hàng | Bảng đơn hàng với tìm kiếm, lọc theo trạng thái |
+| 🆕 Chi tiết đơn hàng | Thông tin khách hàng, sản phẩm, tổng tiền |
+| 🆕 Cập nhật trạng thái | Trạng thái đơn hàng & thanh toán (tiếng Việt) |
+| 🆕 Thống kê | Card thống kê: tổng đơn, chờ xử lý, đang giao, đã giao |
+| 🆕 Xóa đơn hàng | Soft delete đơn hàng |
+
+### 📋 Lịch sử đơn hàng (Customer)
+| Tính năng | Mô tả |
+|:----------|:------|
+| 🆕 Danh sách đơn hàng | Trang lịch sử đơn hàng của khách hàng |
+| 🆕 Lọc trạng thái | Tab lọc: Tất cả, Chờ xử lý, Đang xử lý, Đang giao, Đã giao, Đã hủy |
+| 🆕 Chi tiết đơn hàng | Xem chi tiết đơn hàng, thông tin giao hàng, sản phẩm |
+| 🆕 Phân trang | Phân trang 10 đơn hàng/trang |
+
 ### 🎨 Giao diện Frontend
 | Tính năng | Mô tả |
 |:----------|:------|
@@ -110,7 +139,7 @@
 | Product Cards | Badges, wishlist, quick view, ratings |
 | Product Detail | Gallery ảnh, thông số kỹ thuật, đánh giá |
 | Category Page | Lọc theo brand/giá, sắp xếp, phân trang |
-| Navbar | Sticky header, user dropdown, search |
+| Navbar | Sticky header, user dropdown, search, cart badge |
 | Responsive | Mobile hamburger menu, adaptive layout |
 
 ---
@@ -322,29 +351,66 @@ FlashTechMongo/
 ├── 📂 app/
 │   ├── 📂 Http/
 │   │   ├── 📂 Controllers/
-│   │   │   ├── AuthController.php
-│   │   │   ├── CustomerAuthController.php
-│   │   │   ├── CustomerController.php
-│   │   │   ├── ProductController.php
+│   │   │   ├── AuthController.php          # Đăng nhập/xuất Admin
+│   │   │   ├── CartController.php           # 🆕 Giỏ hàng (session-based)
+│   │   │   ├── CheckoutController.php       # 🆕 Thanh toán & đặt hàng
+│   │   │   ├── CustomerAuthController.php   # Đăng ký/nhập Customer
+│   │   │   ├── CustomerController.php       # CRUD khách hàng (Admin)
+│   │   │   ├── CustomerHomeController.php   # Trang chủ, sản phẩm, đơn hàng
+│   │   │   ├── DashboardController.php      # Dashboard thống kê
+│   │   │   ├── OrdersController.php         # 🆕 Quản lý đơn hàng (Admin)
+│   │   │   ├── OrderDetailsController.php   # 🆕 Chi tiết đơn hàng
+│   │   │   ├── ProductController.php        # CRUD sản phẩm
+│   │   │   ├── ReviewController.php         # Đánh giá sản phẩm
 │   │   │   └── ...
 │   │   ├── 📂 Middleware/
 │   │   └── 📂 Requests/
 │   ├── 📂 Models/
 │   │   ├── Brand.php
 │   │   ├── Customer.php
+│   │   ├── Orders.php                       # 🆕 Model đơn hàng
+│   │   ├── OrderDetails.php                 # 🆕 Model chi tiết đơn hàng
 │   │   ├── Product.php
+│   │   ├── Review.php
+│   │   ├── Specifications.php
 │   │   └── User.php
 │   └── 📂 Policies/
 ├── 📂 database/
 │   ├── 📂 factories/
 │   ├── 📂 migrations/
+│   │   ├── ..._create_users_table.php
+│   │   ├── ..._create_customers_table.php
+│   │   ├── ..._create_brands_table.php
+│   │   ├── ..._create_products_table.php
+│   │   ├── ..._create_spcifications_table.php
+│   │   ├── ..._create_reviews_table.php
+│   │   ├── ..._create_orders_table.php      # 🆕
+│   │   └── ..._create_order_details_table.php # 🆕
 │   └── 📂 seeders/
 ├── 📂 resources/
 │   └── 📂 views/
 │       ├── 📂 Admins/
+│       │   ├── 📂 Orders/                   # 🆕 Quản lý đơn hàng
+│       │   │   ├── list.blade.php
+│       │   │   └── show.blade.php
+│       │   ├── 📂 Dashboard/
+│       │   ├── 📂 Products/
+│       │   ├── 📂 Brands/
+│       │   ├── 📂 Customers/
+│       │   └── 📂 User/
 │       └── 📂 Customers/
-│           ├── 📂 Account/
+│           ├── 📂 Account/                  # Đăng ký, đăng nhập
+│           ├── 📂 Cart/                     # 🆕 Giỏ hàng
+│           │   └── index.blade.php
+│           ├── 📂 Checkout/                 # 🆕 Thanh toán
+│           │   ├── index.blade.php
+│           │   └── success.blade.php
+│           ├── 📂 Orders/                   # 🆕 Lịch sử đơn hàng
+│           │   ├── index.blade.php
+│           │   └── detail.blade.php
 │           ├── 📂 Home/
+│           ├── 📂 Products/
+│           ├── 📂 Components/
 │           └── 📂 Layouts/
 ├── 📂 routes/
 │   └── web.php
@@ -359,35 +425,74 @@ FlashTechMongo/
 |:-------|:----------|:----------:|
 | **Authentication** | Đăng nhập Admin | ✅ |
 | | Đăng ký/Đăng nhập Customer | ✅ |
-| | 🆕 Đăng nhập Google OAuth 2.0 | ✅ |
+| | Đăng nhập Google OAuth 2.0 | ✅ |
 | | User dropdown menu | ✅ |
 | | Session management | ✅ |
-| | 🆕 Auth Guard cho Customer | ✅ |
+| | Auth Guard cho Customer | ✅ |
 | **Admin Panel** | Dashboard thống kê | ✅ |
 | | Quản lý Users (CRUD) | ✅ |
 | | Quản lý Brands | ✅ |
 | | Quản lý Products | ✅ |
 | | Quản lý Customers | ✅ |
+| | 🆕 Quản lý Đơn hàng (danh sách, chi tiết, cập nhật trạng thái) | ✅ |
 | **Frontend** | Homepage | ✅ |
-| | Navbar responsive | ✅ |
+| | Navbar responsive + cart badge | ✅ |
 | | Product cards | ✅ |
 | | Product detail page | ✅ |
 | | Category page với filters | ✅ |
 | | Pagination component | ✅ |
 | | Flash sale timer | ✅ |
 | | Footer | ✅ |
-| | 🆕 Trang hồ sơ khách hàng | ✅ |
+| | Trang hồ sơ khách hàng | ✅ |
 | **Đánh giá sản phẩm** | Form đánh giá với star rating | ✅ |
 | | Upload nhiều ảnh đánh giá | ✅ |
 | | Sửa/Xóa đánh giá | ✅ |
 | | Nút "Hữu ích" (AJAX) | ✅ |
 | | Thống kê rating | ✅ |
+| **🆕 Giỏ hàng** | Thêm sản phẩm vào giỏ (AJAX) | ✅ |
+| | Cập nhật số lượng (AJAX) | ✅ |
+| | Xóa sản phẩm / Xóa toàn bộ giỏ | ✅ |
+| | Badge số lượng trên navbar | ✅ |
+| | Yêu cầu đăng nhập customer | ✅ |
+| **🆕 Thanh toán** | Form thông tin giao hàng | ✅ |
+| | Chọn phương thức thanh toán (COD, CK, MoMo, VNPay) | ✅ |
+| | Tạo đơn hàng + trừ tồn kho | ✅ |
+| | Trang xác nhận đơn hàng thành công | ✅ |
+| **🆕 Lịch sử đơn hàng** | Danh sách đơn hàng của khách hàng | ✅ |
+| | Lọc theo trạng thái (tabs) | ✅ |
+| | Chi tiết đơn hàng | ✅ |
+| | Phân trang | ✅ |
 
 ---
 
-## 📝 Cập nhật gần đây (14/12/2025)
+## 📝 Cập nhật gần đây (10/03/2026)
+
+### 🆕 Tính năng mới
+| Tính năng | Mô tả | Trạng thái |
+|:----------|:------|:----------:|
+| Giỏ hàng | Session-based cart, AJAX thêm/sửa/xóa, badge trên navbar | ✅ |
+| Thanh toán | Form giao hàng, đa phương thức TT (COD/CK/MoMo/VNPay) | ✅ |
+| Đặt hàng | Tạo đơn hàng, tự sinh mã `FT-xxxxx`, trừ tồn kho tự động | ✅ |
+| Quản lý đơn hàng (Admin) | Danh sách, chi tiết, cập nhật trạng thái đơn hàng & thanh toán | ✅ |
+| Lịch sử đơn hàng (Customer) | Xem danh sách & chi tiết đơn hàng, lọc theo trạng thái | ✅ |
+| Bảo vệ route Customer | Giỏ hàng, thanh toán, đơn hàng yêu cầu đăng nhập | ✅ |
+| Giao diện tiếng Việt | Tất cả trạng thái đơn hàng/thanh toán hiển thị tiếng Việt | ✅ |
 
 ### 🔧 Sửa lỗi
+| Lỗi | Mô tả | Trạng thái |
+|:----|:------|:----------:|
+| AJAX Cart | Sửa `$request->ajax()` → `$request->wantsJson()` cho fetch API | ✅ |
+| Auth Redirect | Sửa redirect guest về trang login customer thay vì admin | ✅ |
+| Validation trạng thái | Đồng bộ giá trị trạng thái thanh toán giữa form và controller | ✅ |
+
+---
+
+### 📝 Cập nhật trước đó (14/12/2025)
+
+<details>
+<summary><b>Xem chi tiết</b></summary>
+
+#### 🔧 Sửa lỗi
 | Lỗi | Mô tả | Trạng thái |
 |:----|:------|:----------:|
 | Auth Guard | Thêm `customer` guard vào `config/auth.php` | ✅ |
@@ -395,12 +500,14 @@ FlashTechMongo/
 | Navbar | Sửa lỗi `undefined $customer` - dùng `auth('customer')->user()` | ✅ |
 | Google Login | Sửa lỗi đăng nhập Google không lưu session | ✅ |
 
-### ✨ Tính năng mới
+#### ✨ Tính năng mới
 | Tính năng | Mô tả | Trạng thái |
 |:----------|:------|:----------:|
 | Trang hồ sơ | Trang `/ho-so-ca-nhan` với thiết kế đẹp | ✅ |
 | Profile Avatar | Hiển thị ảnh Google hoặc avatar placeholder | ✅ |
 | Auth Integration | Navbar hiển thị đúng user sau đăng nhập | ✅ |
+
+</details>
 
 ---
 
@@ -408,16 +515,14 @@ FlashTechMongo/
 
 | Ưu tiên | Tính năng | Trạng thái |
 |:-------:|:----------|:----------:|
-| 🔴 | Giỏ hàng (Cart) | ⏳ |
-| 🔴 | Thanh toán (Checkout) | ⏳ |
-| 🔴 | Quản lý đơn hàng | ⏳ |
 | 🟡 | Chỉnh sửa hồ sơ khách hàng | ⏳ |
 | 🟡 | Đổi mật khẩu | ⏳ |
 | 🟡 | Wishlist | ⏳ |
-| 🟡 | Lịch sử đơn hàng | ⏳ |
+| 🟡 | Hủy đơn hàng (Customer) | ⏳ |
 | 🟢 | Tìm kiếm sản phẩm | ⏳ |
 | 🟢 | Email notifications | ⏳ |
-| 🟢 | Tích hợp VNPay | ⏳ |
+| 🟢 | Tích hợp thanh toán VNPay/MoMo | ⏳ |
+| 🟢 | Xuất hóa đơn PDF | ⏳ |
 
 ---
 
@@ -521,6 +626,6 @@ Dự án được phát hành dưới giấy phép **MIT License**.
 
 ---
 
-<sub>Made with ❤️ by FlashTech Team © 2025</sub>
+<sub>Made with ❤️ by FlashTech Team © 2025-2026</sub>
 
 </div>
