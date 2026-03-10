@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
+    unzip \ 
     git \
     curl \
     libssl-dev
@@ -31,6 +31,10 @@ COPY . .
 # Cài đặt Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
+
+# Build giao diện 
+RUN npm install
+RUN npm run build
 
 # Cấp quyền cho thư mục storage và bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
