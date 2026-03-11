@@ -1,0 +1,14 @@
+{
+  "providers": ["php"],
+  "build": {
+    "cmds": [
+      "composer install --optimize-autoloader --no-interaction --ignore-platform-reqs",
+      "npm install",
+      "npm run build"
+    ]
+  },
+  "setup": {
+    "aptPkgs": ["libicu-dev", "libzip-dev", "zip", "unzip"],
+    "phpExts": ["intl", "zip", "mongodb", "gd", "bcmath", "pdo_mysql", "redis"]
+  }
+}
