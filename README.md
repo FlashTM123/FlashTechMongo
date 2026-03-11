@@ -527,6 +527,7 @@ FlashTechMongo/
 
 <details>
 <summary><b>Xem chi tiết</b></summary>
+
 | Tính năng | Mô tả | Trạng thái |
 |:----------|:------|:----------:|
 | Giỏ hàng | Session-based cart, AJAX thêm/sửa/xóa, badge trên navbar | ✅ |
