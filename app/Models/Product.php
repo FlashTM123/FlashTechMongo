@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use MongoDB\Laravel\Eloquent\Model;
 
 class Product extends Model
@@ -41,6 +42,20 @@ class Product extends Model
         'sales_count' => 'integer',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            if (empty($product->slug)) {
+                $product->slug = Str::slug($product->name) . '-' . Str::random(5);
+            }
+            if (empty($product->sku)) {
+                $product->sku = null;
+            }
+        });
+    }
+
     protected function castDecimal($value): float
     {
         if ($value instanceof \MongoDB\BSON\Decimal128) {
@@ -74,7 +89,11 @@ class Product extends Model
     }
     public function getRouteKeyName(): string
     {
-        return 'slug';
+        if (request()?->is('product/*')) {
+            return 'slug';
+        }
+
+        return 'id';
     }
 
     public function getIsOnSaleAttribute(): bool

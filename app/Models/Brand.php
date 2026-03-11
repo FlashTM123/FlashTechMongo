@@ -23,14 +23,17 @@ class Brand extends Model
         parent::boot();
 
         static::creating(function ($brand) {
-            // Generate slug from name
             $brand->slug = Str::slug($brand->name);
+        });
+
+        static::deleting(function ($brand) {
+            Product::where('brand_id', $brand->id)->delete();
         });
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
-        return 'slug';
+        return 'id';
     }
 
 }

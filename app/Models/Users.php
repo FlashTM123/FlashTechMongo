@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class Users extends Model implements \Illuminate\Contracts\Auth\Authenticatable
+class Users extends Model implements \Illuminate\Contracts\Auth\Authenticatable, FilamentUser
 {
     use \Illuminate\Auth\Authenticatable;
     protected $connection = 'mongodb';
@@ -33,5 +35,10 @@ class Users extends Model implements \Illuminate\Contracts\Auth\Authenticatable
 
             'is_blocked' => 'boolean',
         ];
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return !$this->is_blocked;
     }
 }

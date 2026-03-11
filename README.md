@@ -8,6 +8,7 @@
 <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
 <img src="https://img.shields.io/badge/PHP-8.5-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
 <img src="https://img.shields.io/badge/Node.js-24.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+<img src="https://img.shields.io/badge/Filament-3.3-FDAE4B?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==&logoColor=white" alt="Filament">
 <img src="https://img.shields.io/badge/Cloudinary-3.x-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white" alt="Cloudinary">
 <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
 
@@ -70,7 +71,7 @@
 |:-------:|:--------:|:--------:|:-----:|:-----:|
 | ![Laravel](https://img.shields.io/badge/Laravel_12-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![Blade](https://img.shields.io/badge/Blade-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![MongoDB](https://img.shields.io/badge/MongoDB_Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white) | ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=flat-square&logo=cloudinary&logoColor=white) | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) |
 | ![PHP](https://img.shields.io/badge/PHP_8.5-777BB4?style=flat-square&logo=php&logoColor=white) | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) | | ![Google OAuth](https://img.shields.io/badge/Google_OAuth-4285F4?style=flat-square&logo=google&logoColor=white) | ![Composer](https://img.shields.io/badge/Composer-885630?style=flat-square&logo=composer&logoColor=white) |
-| | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | | | ![NPM](https://img.shields.io/badge/NPM-CB3837?style=flat-square&logo=npm&logoColor=white) |
+| ![Filament](https://img.shields.io/badge/Filament_v3.3-FDAE4B?style=flat-square&logoColor=white) | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | | | ![NPM](https://img.shields.io/badge/NPM-CB3837?style=flat-square&logo=npm&logoColor=white) |
 
 </div>
 
@@ -119,14 +120,18 @@
 | 🆕 Trang thành công | Trang xác nhận đơn hàng sau khi đặt thành công |
 | 🆕 Bảo vệ route | Giỏ hàng & thanh toán yêu cầu đăng nhập customer |
 
-### 📦 Quản lý đơn hàng (Admin)
+### �️ Admin Panel (Filament v3)
 | Tính năng | Mô tả |
 |:----------|:------|
-| 🆕 Danh sách đơn hàng | Bảng đơn hàng với tìm kiếm, lọc theo trạng thái |
-| 🆕 Chi tiết đơn hàng | Thông tin khách hàng, sản phẩm, tổng tiền |
-| 🆕 Cập nhật trạng thái | Trạng thái đơn hàng & thanh toán (tiếng Việt) |
-| 🆕 Thống kê | Card thống kê: tổng đơn, chờ xử lý, đang giao, đã giao |
-| 🆕 Xóa đơn hàng | Soft delete đơn hàng |
+| 🆕 Filament Admin | Thay thế admin panel cũ bằng Filament v3.3 tại `/admin` |
+| 🆕 Dashboard | Widget thống kê: tổng đơn, chờ xử lý, đang giao, đã giao, sản phẩm, khách hàng |
+| 🆕 Quản lý sản phẩm | CRUD sản phẩm với form sections, badge danh mục, hiển thị giá |
+| 🆕 Quản lý thương hiệu | CRUD thương hiệu, cascade delete sản phẩm khi xóa brand |
+| 🆕 Quản lý đơn hàng | Danh sách đơn hàng, chi tiết, cập nhật trạng thái, lọc đa tiêu chí |
+| 🆕 Quản lý nhân viên | CRUD users với phân quyền (Admin/Moderator/Employee), khóa tài khoản |
+| 🆕 Quản lý khách hàng | Xem/sửa thông tin khách hàng, Google ID indicator |
+| 🆕 Quản lý đánh giá | Duyệt/sửa đánh giá, hiển thị sao, toggle approval |
+| 🆕 Giao diện tiếng Việt | Tất cả labels, navigation, filters hiển thị tiếng Việt |
 
 ### 📋 Lịch sử đơn hàng (Customer)
 | Tính năng | Mô tả |
@@ -341,8 +346,8 @@ php artisan serve
 
 ## 👤 Tài khoản mặc định
 
-### 🔑 Admin Panel
-> Truy cập: http://localhost:8000/dashboard
+### 🔑 Admin Panel (Filament)
+> Truy cập: http://localhost:8000/admin
 
 | Vai trò | Email | Password |
 |:--------|:------|:---------|
@@ -362,19 +367,23 @@ php artisan serve
 ```
 FlashTechMongo/
 ├── 📂 app/
+│   ├── 📂 Filament/                          # 🆕 Filament Admin Panel
+│   │   ├── 📂 Resources/
+│   │   │   ├── ProductResource.php           # CRUD sản phẩm
+│   │   │   ├── BrandResource.php             # CRUD thương hiệu
+│   │   │   ├── OrderResource.php             # Quản lý đơn hàng
+│   │   │   ├── UserResource.php              # Quản lý nhân viên
+│   │   │   ├── CustomerResource.php          # Quản lý khách hàng
+│   │   │   └── ReviewResource.php            # Quản lý đánh giá
+│   │   └── 📂 Widgets/
+│   │       └── StatsOverview.php             # Dashboard thống kê
 │   ├── 📂 Http/
 │   │   ├── 📂 Controllers/
-│   │   │   ├── AuthController.php          # Đăng nhập/xuất Admin
-│   │   │   ├── CartController.php           # 🆕 Giỏ hàng (session-based)
-│   │   │   ├── CheckoutController.php       # 🆕 Thanh toán & đặt hàng
-│   │   │   ├── CustomerAuthController.php   # Đăng ký/nhập Customer
-│   │   │   ├── CustomerController.php       # CRUD khách hàng (Admin)
-│   │   │   ├── CustomerHomeController.php   # Trang chủ, sản phẩm, đơn hàng, hồ sơ, wishlist
-│   │   │   ├── DashboardController.php      # Dashboard thống kê
-│   │   │   ├── OrdersController.php         # 🆕 Quản lý đơn hàng (Admin)
-│   │   │   ├── OrderDetailsController.php   # 🆕 Chi tiết đơn hàng
-│   │   │   ├── ProductController.php        # CRUD sản phẩm
-│   │   │   ├── ReviewController.php         # Đánh giá sản phẩm
+│   │   │   ├── CartController.php             # Giỏ hàng (session-based)
+│   │   │   ├── CheckoutController.php         # Thanh toán & đặt hàng
+│   │   │   ├── CustomerAuthController.php     # Đăng ký/nhập Customer
+│   │   │   ├── CustomerHomeController.php     # Trang chủ, sản phẩm, đơn hàng, hồ sơ, wishlist
+│   │   │   ├── ReviewController.php           # Đánh giá sản phẩm
 │   │   │   └── ...
 │   │   ├── 📂 Middleware/
 │   │   └── 📂 Requests/
@@ -387,7 +396,10 @@ FlashTechMongo/
 │   │   ├── Review.php
 │   │   ├── Specifications.php
 │   │   └── User.php
-│   └── 📂 Policies/
+│   ├── 📂 Policies/
+│   └── 📂 Providers/
+│       └── 📂 Filament/
+│           └── AdminPanelProvider.php      # 🆕 Cấu hình Filament panel
 ├── 📂 database/
 │   ├── 📂 factories/
 │   ├── 📂 migrations/
@@ -402,16 +414,7 @@ FlashTechMongo/
 │   └── 📂 seeders/
 ├── 📂 resources/
 │   └── 📂 views/
-│       ├── 📂 Admins/
-│       │   ├── 📂 Orders/                   # 🆕 Quản lý đơn hàng
-│       │   │   ├── list.blade.php
-│       │   │   └── show.blade.php
-│       │   ├── 📂 Dashboard/
-│       │   ├── 📂 Products/
-│       │   ├── 📂 Brands/
-│       │   ├── 📂 Customers/
-│       │   └── 📂 User/
-│       └── 📂 Customers/
+│       └── 📂 Customers/                   # Giao diện Frontend
 │           ├── 📂 Account/                  # Đăng ký, đăng nhập, chỉnh sửa hồ sơ, đổi mật khẩu
 │           ├── 📂 Cart/                     # 🆕 Giỏ hàng
 │           │   └── index.blade.php
@@ -444,12 +447,14 @@ FlashTechMongo/
 | | User dropdown menu | ✅ |
 | | Session management | ✅ |
 | | Auth Guard cho Customer | ✅ |
-| **Admin Panel** | Dashboard thống kê | ✅ |
+| **Admin Panel** | 🆕 Filament v3.3 Admin Panel (`/admin`) | ✅ |
+| | Dashboard thống kê (widget) | ✅ |
 | | Quản lý Users (CRUD) | ✅ |
-| | Quản lý Brands | ✅ |
+| | Quản lý Brands (cascade delete products) | ✅ |
 | | Quản lý Products | ✅ |
 | | Quản lý Customers | ✅ |
-| | 🆕 Quản lý Đơn hàng (danh sách, chi tiết, cập nhật trạng thái) | ✅ |
+| | Quản lý Đơn hàng (danh sách, chi tiết, cập nhật trạng thái) | ✅ |
+| | Quản lý Đánh giá (duyệt, sửa, xóa) | ✅ |
 | **Frontend** | Homepage | ✅ |
 | | Navbar responsive + cart badge | ✅ |
 | | Product cards | ✅ |
@@ -486,12 +491,28 @@ FlashTechMongo/
 
 ## 📝 Cập nhật gần đây (12/03/2026)
 
+### 🆕 Tính năng mới
+| Tính năng | Mô tả | Trạng thái |
+|:----------|:------|:----------:|
+| Filament Admin Panel | Thay thế admin panel cũ bằng Filament v3.3 tại `/admin` | ✅ |
+| Admin Resources | 6 Resources: Product, Brand, Order, User, Customer, Review | ✅ |
+| Dashboard Widget | Thống kê: tổng đơn, chờ xử lý, đang giao, đã giao, sản phẩm, khách hàng | ✅ |
+| Order RelationManager | Xem chi tiết sản phẩm trong đơn hàng (ảnh, tên, giá, số lượng) | ✅ |
+| Cascade Delete | Xóa thương hiệu → tự động xóa tất cả sản phẩm thuộc thương hiệu | ✅ |
+| Auto Slug | Tự tạo slug từ tên sản phẩm khi không nhập | ✅ |
+
 ### 🔧 Sửa lỗi & Cải thiện
 | Tính năng | Mô tả | Trạng thái |
 |:----------|:------|:----------:|
-| Navbar Wishlist | Sửa link `href="#"` → `route('wishlist.index')`, hiển thị số lượng thực tế thay vì hardcode | ✅ |
-| Wishlist toggle JS | Sửa `data.added` → `data.status === 'added'` khớp với controller response | ✅ |
-| Cập nhật badge wishlist | Tự động cập nhật số lượng wishlist trên navbar khi toggle | ✅ |
+| Filament + PHP 8.5 | Sửa type compatibility (`$navigationIcon`, `$navigationGroup`, `form()` signature) | ✅ |
+| Filament + MongoDB | Sửa `CACHE_STORE=database` → `file` (MongoDB không hỗ trợ `insertOrIgnore`) | ✅ |
+| Policy 403 errors | Sửa 7 Policy files trả về `true` thay vì `false`, fix wrong model types | ✅ |
+| Route conflicts | Xóa route admin cũ, Filament tự quản lý auth tại `/admin/login` | ✅ |
+| Namespace v3.3 | Sửa `Tables\Actions\*` → `Filament\Actions\*`, `Forms\Components\Section` → `Schemas\Components\Section` | ✅ |
+| MongoDB unique index | Xóa unique index trên `slug` và `sku` (gây lỗi duplicate key khi null) | ✅ |
+| Route key Product | Sửa `getRouteKeyName()` dùng `id` mặc định, `slug` chỉ cho frontend | ✅ |
+| Brand select | Sửa `Brand::pluck('name', '_id')` → `Brand::all()->pluck('name', 'id')` cho MongoDB | ✅ |
+| Navbar Wishlist | Sửa link `href="#"` → `route('wishlist.index')`, hiển thị số lượng thực tế | ✅ |
 
 ---
 
