@@ -303,6 +303,38 @@
             height: 16px;
         }
 
+        .btn-cancel-order {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--white);
+            background: var(--danger);
+            border: 2px solid var(--danger);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel-order:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .btn-cancel-order svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         /* Payment info */
         .payment-info {
             display: flex;
@@ -530,13 +562,29 @@
                                     @endswitch
                                 </div>
                             </div>
-                            <a href="{{ route('customers.orders.detail', $order->_id) }}" class="btn-view-detail">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                                Xem chi tiết
-                            </a>
+                            <div class="order-actions">
+                                <a href="{{ route('customers.orders.detail', $order->_id) }}" class="btn-view-detail">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    Xem chi tiết
+                                </a>
+                                @if (in_array($order->order_status, ['pending', 'processing']))
+                                    <form action="{{ route('customers.orders.cancel', $order->_id) }}" method="POST"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                                        @csrf
+                                        <button type="submit" class="btn-cancel-order">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                                            </svg>
+                                            Hủy
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 @endforeach

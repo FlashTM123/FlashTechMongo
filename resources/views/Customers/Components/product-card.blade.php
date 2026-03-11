@@ -81,7 +81,7 @@
                 <span style="color: #ef4444;">Hết hàng</span>
             @endif
         </div>
-        <button class="add-to-cart-btn" {{ $product->stock_quantity <= 0 ? 'disabled' : '' }} onclick="event.preventDefault(); event.stopPropagation();">
+        <button class="add-to-cart-btn" {{ $product->stock_quantity <= 0 ? 'disabled' : '' }} onclick="event.preventDefault(); event.stopPropagation(); addToCartFromCard('{{ $product->_id }}')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="9" cy="21" r="1"></circle>
                 <circle cx="20" cy="21" r="1"></circle>

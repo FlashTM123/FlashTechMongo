@@ -107,6 +107,32 @@
             height: 16px;
         }
 
+        .btn-cancel-order {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--white);
+            background: var(--danger);
+            border: 2px solid var(--danger);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel-order:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .btn-cancel-order svg {
+            width: 16px;
+            height: 16px;
+        }
+
         /* Status Timeline */
         .order-status {
             padding: 0.375rem 0.875rem;
@@ -363,13 +389,29 @@
                     </svg>
                     Đơn hàng {{ $order->order_code }}
                 </h1>
-                <a href="{{ route('customers.orders') }}" class="btn-back">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="19" y1="12" x2="5" y2="12"></line>
-                        <polyline points="12 19 5 12 12 5"></polyline>
-                    </svg>
-                    Quay lại
-                </a>
+                <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                    <a href="{{ route('customers.orders') }}" class="btn-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Quay lại
+                    </a>
+                    @if (in_array($order->order_status, ['pending', 'processing']))
+                        <form action="{{ route('customers.orders.cancel', $order->_id) }}" method="POST"
+                            onsubmit="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                            @csrf
+                            <button type="submit" class="btn-cancel-order">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                                Hủy đơn hàng
+                            </button>
+                        </form>
+                    @endif
+                </div>
             </div>
 
             <!-- Order Info -->

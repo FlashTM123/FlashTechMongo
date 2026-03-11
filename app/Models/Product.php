@@ -33,9 +33,6 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'sale_price' => 'decimal:2',
-        'rating' => 'decimal:2',
         'images' => 'array',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
@@ -43,6 +40,29 @@ class Product extends Model
         'views_count' => 'integer',
         'sales_count' => 'integer',
     ];
+
+    protected function castDecimal($value): float
+    {
+        if ($value instanceof \MongoDB\BSON\Decimal128) {
+            return (float) (string) $value;
+        }
+        return (float) ($value ?? 0);
+    }
+
+    public function getPriceAttribute($value): float
+    {
+        return $this->castDecimal($value);
+    }
+
+    public function getSalePriceAttribute($value): float
+    {
+        return $this->castDecimal($value);
+    }
+
+    public function getRatingAttribute($value): float
+    {
+        return $this->castDecimal($value);
+    }
 
     public function brand()
     {

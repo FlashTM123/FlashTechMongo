@@ -24,7 +24,7 @@ class CheckoutController extends Controller
         foreach ($cart as $id => $item) {
             $product = Product::find($id);
             if ($product) {
-                $price = $product->sale_price > 0 ? $product->sale_price : $product->price;
+                $price = $item['price'] ?? ($product->sale_price > 0 ? $product->sale_price : $product->price);
                 $itemTotal = $price * $item['quantity'];
                 $cartItems[] = [
                     'id' => $id,
@@ -74,15 +74,15 @@ class CheckoutController extends Controller
 
         foreach ($cart as $id => $item) {
             $product = Product::find($id);
-            $price = $product->sale_price > 0 ? $product->sale_price : $product->price;
+            $price = $item['price'] ?? ($product->sale_price > 0 ? $product->sale_price : $product->price);
             $itemTotal = $price * $item['quantity'];
             $subtotal += $itemTotal;
 
             $orderItems[] = [
                 'product' => $product,
                 'quantity' => $item['quantity'],
-                'price' => $product->price,
-                'sale_price' => $product->sale_price,
+                'price' => $item['original_price'] ?? $product->price,
+                'sale_price' => $item['sale_price'] ?? $product->sale_price,
                 'total' => $itemTotal,
             ];
         }

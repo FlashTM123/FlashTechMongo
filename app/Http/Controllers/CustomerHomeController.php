@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Specifications;
 use App\Models\Orders;
+use App\Models\Customer;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerHomeController extends Controller
 {
@@ -247,5 +249,141 @@ class CustomerHomeController extends Controller
         }
 
         return view('Customers.Orders.detail', compact('order'));
+    }
+
+    // ===================== CHỈNH SỬA HỒ SƠ =====================
+
+    public function editProfile()
+    {
+        $customer = auth()->guard('customer')->user();
+        return view('Customers.Account.edit_profile', compact('customer'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $customer = auth()->guard('customer')->user();
+
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'phone_number' => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|in:male,female,other',
+            'address' => 'nullable|string|max:500',
+            'profile_picture' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $validated['profile_picture'] = '/storage/' . $path;
+        }
+
+        $customer->update($validated);
+
+        return redirect()->route('customers.profile.detail')
+            ->with('success', 'Hồ sơ đã được cập nhật thành công!');
+    }
+
+    // ===================== ĐỔI MẬT KHẨU =====================
+
+    public function changePassword()
+    {
+        $customer = auth()->guard('customer')->user();
+        return view('Customers.Account.change_password', compact('customer'));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $customer = auth()->guard('customer')->user();
+
+        // Google account without password - just set new password
+        if ($customer->google_id && !$customer->password) {
+            $request->validate([
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+        } else {
+            $request->validate([
+                'current_password' => 'required',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+
+            if (!Hash::check($request->current_password, $customer->password)) {
+                return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không đúng.']);
+            }
+        }
+
+        $customer->password = Hash::make($request->password);
+        $customer->save();
+
+        return redirect()->route('customers.profile.detail')
+            ->with('success', 'Mật khẩu đã được thay đổi thành công!');
+    }
+
+    // ===================== WISHLIST =====================
+
+    public function wishlist()
+    {
+        $customer = auth()->guard('customer')->user();
+        $wishlistIds = $customer->wishlist ?? [];
+        $wishlistProducts = Product::whereIn('_id', $wishlistIds)->with('brand')->get();
+
+        return view('Customers.Wishlist.index', compact('wishlistProducts'));
+    }
+
+    public function toggleWishlist(Request $request)
+    {
+        $customer = auth()->guard('customer')->user();
+        $productId = $request->input('product_id');
+
+        $wishlist = $customer->wishlist ?? [];
+
+        if (in_array($productId, $wishlist)) {
+            $wishlist = array_values(array_diff($wishlist, [$productId]));
+            $status = 'removed';
+        } else {
+            $wishlist[] = $productId;
+            $status = 'added';
+        }
+
+        $customer->wishlist = $wishlist;
+        $customer->save();
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'status' => $status,
+                'count' => count($wishlist),
+            ]);
+        }
+
+        return back();
+    }
+
+    // ===================== HỦY ĐƠN HÀNG =====================
+
+    public function cancelOrder(Request $request, $id)
+    {
+        $customer = auth()->guard('customer')->user();
+        $order = Orders::findOrFail($id);
+
+        if ((string) $order->customer_id !== (string) $customer->_id) {
+            abort(403);
+        }
+
+        if (!in_array($order->order_status, ['pending', 'processing'])) {
+            return back()->with('error', 'Không thể hủy đơn hàng đã xử lý.');
+        }
+
+        $order->order_status = 'cancelled';
+        $order->save();
+
+        // Hoàn lại tồn kho
+        foreach ($order->orderDetails as $detail) {
+            $product = Product::find($detail->product_id);
+            if ($product) {
+                $product->increment('stock_quantity', $detail->quantity);
+                $product->decrement('sales_count', $detail->quantity);
+            }
+        }
+
+        return back()->with('success', "Đơn hàng #{$order->order_code} đã được hủy thành công.");
     }
 }

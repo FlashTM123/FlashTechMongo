@@ -14,8 +14,8 @@
             <!-- Avatar -->
             <div class="profile-avatar-wrapper">
                 <div class="profile-avatar">
-                    @if($customer->profile_picture)
-                        <img src="{{ $customer->profile_picture }}" alt="{{ $customer->full_name }}">
+                    @if($customer->profile_picture_url)
+                        <img src="{{ $customer->profile_picture_url }}" alt="{{ $customer->full_name }}">
                     @else
                         <div class="avatar-placeholder">{{ substr($customer->full_name, 0, 1) }}</div>
                     @endif
@@ -158,13 +158,13 @@
 
             <!-- Action Buttons -->
             <div class="profile-actions">
-                <a href="#" class="btn btn-primary">
+                <a href="{{ route('customers.profile.edit') }}" class="btn btn-primary">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                     Chỉnh sửa hồ sơ
                 </a>
-                <a href="#" class="btn btn-secondary">
+                <a href="{{ route('customers.password.change') }}" class="btn btn-secondary">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>

@@ -75,8 +75,15 @@ Route::middleware(['auth:customer'])->prefix('thanh-toan')->group(function () {
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/profile', [\App\Http\Controllers\CustomerHomeController::class, 'profile'])->name('customers.profile');
     Route::get('/ho-so-ca-nhan', [\App\Http\Controllers\CustomerHomeController::class, 'profile_detail'])->name('customers.profile.detail');
+    Route::get('/chinh-sua-ho-so', [\App\Http\Controllers\CustomerHomeController::class, 'editProfile'])->name('customers.profile.edit');
+    Route::put('/chinh-sua-ho-so', [\App\Http\Controllers\CustomerHomeController::class, 'updateProfile'])->name('customers.profile.update');
+    Route::get('/doi-mat-khau', [\App\Http\Controllers\CustomerHomeController::class, 'changePassword'])->name('customers.password.change');
+    Route::put('/doi-mat-khau', [\App\Http\Controllers\CustomerHomeController::class, 'updatePassword'])->name('customers.password.update');
     Route::get('/don-hang', [\App\Http\Controllers\CustomerHomeController::class, 'orderHistory'])->name('customers.orders');
     Route::get('/don-hang/{id}', [\App\Http\Controllers\CustomerHomeController::class, 'orderDetail'])->name('customers.orders.detail');
+    Route::post('/don-hang/{id}/huy', [\App\Http\Controllers\CustomerHomeController::class, 'cancelOrder'])->name('customers.orders.cancel');
+    Route::get('/yeu-thich', [\App\Http\Controllers\CustomerHomeController::class, 'wishlist'])->name('wishlist.index');
+    Route::post('/yeu-thich/toggle', [\App\Http\Controllers\CustomerHomeController::class, 'toggleWishlist'])->name('wishlist.toggle');
 });
 
 // Protected routes - Require authentication

@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->trustProxies('*');
         $middleware->redirectGuestsTo(function ($request) {
-            if ($request->is('thanh-toan*') || $request->is('gio-hang*') || $request->is('don-hang*')) {
+            if ($request->is('thanh-toan*') || $request->is('gio-hang*') || $request->is('don-hang*') || $request->is('chinh-sua-ho-so*') || $request->is('doi-mat-khau*') || $request->is('yeu-thich*') || $request->is('ho-so-ca-nhan*')) {
                 return route('customers.login');
             }
             return route('login');

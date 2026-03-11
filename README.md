@@ -102,12 +102,15 @@
 | Avatar | Upload hoặc UI Avatars fallback |
 | Loyalty Points | Điểm tích lũy |
 | Thông tin | Họ tên, email, SĐT, địa chỉ, ngày sinh, giới tính |
+| 🆕 Chỉnh sửa hồ sơ | Cập nhật thông tin cá nhân, upload avatar |
+| 🆕 Đổi mật khẩu | Hỗ trợ cả tài khoản thường và Google OAuth |
 
 ### 🛒 Giỏ hàng & Thanh toán
 | Tính năng | Mô tả |
 |:----------|:------|
 | 🆕 Giỏ hàng (Cart) | Session-based, AJAX thêm/cập nhật/xóa sản phẩm |
-| 🆕 Thêm vào giỏ | Nút thêm giỏ hàng trên trang chi tiết sản phẩm (AJAX) |
+| 🆕 Thêm vào giỏ | Nút thêm giỏ hàng trên trang chi tiết & product card (AJAX) |
+| 🆕 Giữ giá giỏ hàng | Lưu giá tại thời điểm thêm, không đổi khi admin cập nhật giá |
 | 🆕 Badge giỏ hàng | Hiển thị số lượng sản phẩm trên navbar |
 | 🆕 Trang thanh toán | Form nhập thông tin giao hàng, chọn phương thức thanh toán |
 | 🆕 Phương thức TT | COD, Chuyển khoản ngân hàng, MoMo, VNPay |
@@ -130,7 +133,16 @@
 | 🆕 Danh sách đơn hàng | Trang lịch sử đơn hàng của khách hàng |
 | 🆕 Lọc trạng thái | Tab lọc: Tất cả, Chờ xử lý, Đang xử lý, Đang giao, Đã giao, Đã hủy |
 | 🆕 Chi tiết đơn hàng | Xem chi tiết đơn hàng, thông tin giao hàng, sản phẩm |
+| 🆕 Hủy đơn hàng | Hủy đơn chờ xử lý/đang xử lý, tự động hoàn kho |
 | 🆕 Phân trang | Phân trang 10 đơn hàng/trang |
+
+### ❤️ Wishlist (Sản phẩm yêu thích)
+| Tính năng | Mô tả |
+|:----------|:------|
+| 🆕 Toggle yêu thích | Thêm/xóa sản phẩm yêu thích trên trang chi tiết (AJAX) |
+| 🆕 Trang wishlist | Xem danh sách sản phẩm yêu thích |
+| 🆕 Thêm vào giỏ | Thêm sản phẩm từ wishlist vào giỏ hàng |
+| 🆕 Badge wishlist | Hiển thị số lượng yêu thích trên navbar |
 
 ### 🎨 Giao diện Frontend
 | Tính năng | Mô tả |
@@ -356,7 +368,7 @@ FlashTechMongo/
 │   │   │   ├── CheckoutController.php       # 🆕 Thanh toán & đặt hàng
 │   │   │   ├── CustomerAuthController.php   # Đăng ký/nhập Customer
 │   │   │   ├── CustomerController.php       # CRUD khách hàng (Admin)
-│   │   │   ├── CustomerHomeController.php   # Trang chủ, sản phẩm, đơn hàng
+│   │   │   ├── CustomerHomeController.php   # Trang chủ, sản phẩm, đơn hàng, hồ sơ, wishlist
 │   │   │   ├── DashboardController.php      # Dashboard thống kê
 │   │   │   ├── OrdersController.php         # 🆕 Quản lý đơn hàng (Admin)
 │   │   │   ├── OrderDetailsController.php   # 🆕 Chi tiết đơn hàng
@@ -399,7 +411,7 @@ FlashTechMongo/
 │       │   ├── 📂 Customers/
 │       │   └── 📂 User/
 │       └── 📂 Customers/
-│           ├── 📂 Account/                  # Đăng ký, đăng nhập
+│           ├── 📂 Account/                  # Đăng ký, đăng nhập, chỉnh sửa hồ sơ, đổi mật khẩu
 │           ├── 📂 Cart/                     # 🆕 Giỏ hàng
 │           │   └── index.blade.php
 │           ├── 📂 Checkout/                 # 🆕 Thanh toán
@@ -408,6 +420,8 @@ FlashTechMongo/
 │           ├── 📂 Orders/                   # 🆕 Lịch sử đơn hàng
 │           │   ├── index.blade.php
 │           │   └── detail.blade.php
+│           ├── 📂 Wishlist/                 # 🆕 Sản phẩm yêu thích
+│           │   └── index.blade.php
 │           ├── 📂 Home/
 │           ├── 📂 Products/
 │           ├── 📂 Components/
@@ -444,6 +458,9 @@ FlashTechMongo/
 | | Flash sale timer | ✅ |
 | | Footer | ✅ |
 | | Trang hồ sơ khách hàng | ✅ |
+| | 🆕 Chỉnh sửa hồ sơ (avatar, thông tin cá nhân) | ✅ |
+| | 🆕 Đổi mật khẩu (thường + Google OAuth) | ✅ |
+| | 🆕 Wishlist (toggle, trang yêu thích, thêm vào giỏ) | ✅ |
 | **Đánh giá sản phẩm** | Form đánh giá với star rating | ✅ |
 | | Upload nhiều ảnh đánh giá | ✅ |
 | | Sửa/Xóa đánh giá | ✅ |
@@ -462,12 +479,37 @@ FlashTechMongo/
 | | Lọc theo trạng thái (tabs) | ✅ |
 | | Chi tiết đơn hàng | ✅ |
 | | Phân trang | ✅ |
+| | 🆕 Hủy đơn hàng (chờ xử lý/đang xử lý, hoàn kho) | ✅ |
 
 ---
 
-## 📝 Cập nhật gần đây (10/03/2026)
+## 📝 Cập nhật gần đây (11/03/2026)
 
 ### 🆕 Tính năng mới
+| Tính năng | Mô tả | Trạng thái |
+|:----------|:------|:----------:|
+| Chỉnh sửa hồ sơ | Form cập nhật thông tin cá nhân, upload avatar (Cloudinary/local) | ✅ |
+| Đổi mật khẩu | Hỗ trợ tài khoản thường (yêu cầu mật khẩu cũ) và Google OAuth (đặt mật khẩu mới) | ✅ |
+| Wishlist | Toggle yêu thích trên trang chi tiết (AJAX), trang danh sách yêu thích, thêm vào giỏ | ✅ |
+| Hủy đơn hàng | Khách hàng hủy đơn chờ xử lý/đang xử lý, tự động hoàn stock_quantity & sales_count | ✅ |
+| Nút thêm giỏ hàng (Product Card) | Nút "Thêm" trên product card gọi AJAX thêm vào giỏ, cập nhật badge | ✅ |
+| Giữ giá giỏ hàng | Lưu giá vào session khi thêm, không thay đổi khi admin cập nhật giá | ✅ |
+
+### 🔧 Sửa lỗi
+| Lỗi | Mô tả | Trạng thái |
+|:----|:------|:----------:|
+| Ảnh sản phẩm Admin | Sửa `asset('storage/')` → URL trực tiếp cho ảnh Cloudinary trên trang đơn hàng | ✅ |
+| Avatar không hiển thị | Thêm accessor `profile_picture_url` xử lý cả URL Cloudinary/Google và đường dẫn local | ✅ |
+| MongoDB Decimal128 | Sửa lỗi "Unable to cast value to decimal" — thêm custom accessor thay cast `decimal:2` | ✅ |
+| Checkout sai giá | Checkout dùng giá từ session thay vì lấy lại từ DB (tránh sai khi giá thay đổi) | ✅ |
+| Storage symlink | Tạo `public/storage` symlink cho phép truy cập ảnh upload local | ✅ |
+
+---
+
+## 📝 Cập nhật trước đó (10/03/2026)
+
+<details>
+<summary><b>Xem chi tiết</b></summary>
 | Tính năng | Mô tả | Trạng thái |
 |:----------|:------|:----------:|
 | Giỏ hàng | Session-based cart, AJAX thêm/sửa/xóa, badge trên navbar | ✅ |
@@ -484,6 +526,8 @@ FlashTechMongo/
 | AJAX Cart | Sửa `$request->ajax()` → `$request->wantsJson()` cho fetch API | ✅ |
 | Auth Redirect | Sửa redirect guest về trang login customer thay vì admin | ✅ |
 | Validation trạng thái | Đồng bộ giá trị trạng thái thanh toán giữa form và controller | ✅ |
+
+</details>
 
 ---
 
@@ -515,14 +559,16 @@ FlashTechMongo/
 
 | Ưu tiên | Tính năng | Trạng thái |
 |:-------:|:----------|:----------:|
-| 🟡 | Chỉnh sửa hồ sơ khách hàng | ⏳ |
-| 🟡 | Đổi mật khẩu | ⏳ |
-| 🟡 | Wishlist | ⏳ |
-| 🟡 | Hủy đơn hàng (Customer) | ⏳ |
-| 🟢 | Tìm kiếm sản phẩm | ⏳ |
-| 🟢 | Email notifications | ⏳ |
-| 🟢 | Tích hợp thanh toán VNPay/MoMo | ⏳ |
-| 🟢 | Xuất hóa đơn PDF | ⏳ |
+| � | Tìm kiếm sản phẩm (search bar + gợi ý) | ⏳ |
+| 🔴 | Mã giảm giá / Coupon | ⏳ |
+| 🟡 | Email thông báo đơn hàng (xác nhận, cập nhật trạng thái) | ⏳ |
+| 🟡 | Tích hợp thanh toán VNPay/MoMo thực tế | ⏳ |
+| 🟡 | Xuất hóa đơn PDF | ⏳ |
+| 🟡 | Dashboard thống kê doanh thu (biểu đồ) | ⏳ |
+| 🟢 | So sánh sản phẩm | ⏳ |
+| 🟢 | Chat hỗ trợ trực tuyến | ⏳ |
+| 🟢 | Thông báo realtime (đơn hàng mới, trạng thái) | ⏳ |
+| 🟢 | Đa ngôn ngữ (Việt/Anh) | ⏳ |
 
 ---
 

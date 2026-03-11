@@ -37,7 +37,7 @@
                             <button class="top-link user-link" id="userDropdownBtn">
                                 <div class="user-avatar">
                                     @php
-                                        $avatar = auth('customer')->user()->profile_picture;
+                                        $avatar = auth('customer')->user()->profile_picture_url;
                                     @endphp
                                     @if ($avatar)
                                             <img src="{{ $avatar }}" alt="{{ auth('customer')->user()->full_name }}">
@@ -56,8 +56,8 @@
                             <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <div class="dropdown-header">
                                     <div class="dropdown-avatar">
-                                        @if (auth('customer')->user()->profile_picture)
-                                                <img src="{{ auth('customer')->user()->profile_picture }}"
+                                        @if (auth('customer')->user()->profile_picture_url)
+                                                <img src="{{ auth('customer')->user()->profile_picture_url }}"
                                                     alt="{{ auth('customer')->user()->full_name }}">
                                         @else
                                             <img src="https://ui-avatars.com/api/?name={{ urlencode(auth('customer')->user()->full_name) }}&background=667eea&color=fff&size=128"
@@ -98,7 +98,7 @@
                                     </svg>
                                     <span>Đơn hàng của tôi</span>
                                 </a>
-                                <a href="#" class="dropdown-link">
+                                <a href="{{ route('wishlist.index') }}" class="dropdown-link">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2">
                                         <path

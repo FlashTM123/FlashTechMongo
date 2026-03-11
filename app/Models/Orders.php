@@ -30,11 +30,30 @@ class Orders extends Model
         'notes',
     ];
 
-    protected $casts = [
-        'subtotal' => 'decimal:2',
-        'discount' => 'decimal:2',
-        'total' => 'decimal:2',
-    ];
+    protected $casts = [];
+
+    protected function castDecimal($value): float
+    {
+        if ($value instanceof \MongoDB\BSON\Decimal128) {
+            return (float) (string) $value;
+        }
+        return (float) ($value ?? 0);
+    }
+
+    public function getSubtotalAttribute($value): float
+    {
+        return $this->castDecimal($value);
+    }
+
+    public function getDiscountAttribute($value): float
+    {
+        return $this->castDecimal($value);
+    }
+
+    public function getTotalAttribute($value): float
+    {
+        return $this->castDecimal($value);
+    }
 
     public function customer()
     {

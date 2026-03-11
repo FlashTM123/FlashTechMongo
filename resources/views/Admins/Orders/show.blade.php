@@ -185,7 +185,7 @@
                         <td>
                             <div class="product-cell">
                                 @if($item->product_image)
-                                    <img src="{{ asset('storage/' . $item->product_image) }}" alt="{{ $item->product_name }}" class="product-thumb">
+                                    <img src="{{ $item->product_image }}" alt="{{ $item->product_name }}" class="product-thumb">
                                 @else
                                     <div class="product-thumb-placeholder">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

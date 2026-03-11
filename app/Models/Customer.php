@@ -27,11 +27,32 @@ class Customer extends Model implements Authenticatable
         'profile_picture',
         'loyalty_points',
         'google_id',
+        'wishlist',
     ];
 
     protected $hidden = [
         'password',
     ];
+
+    protected $casts = [
+        'wishlist' => 'array',
+    ];
+
+    public function getProfilePictureUrlAttribute(): ?string
+    {
+        if (!$this->profile_picture) {
+            return null;
+        }
+
+        if (str_starts_with($this->profile_picture, 'http')) {
+            return $this->profile_picture;
+        }
+
+        $path = ltrim($this->profile_picture, '/');
+        $path = str_replace('storage/', '', $path);
+
+        return asset('storage/' . $path);
+    }
 
     public function orders()
     {

@@ -453,6 +453,17 @@
             background: rgba(102, 126, 234, 0.1);
         }
 
+        .btn-secondary.wishlisted {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        .btn-secondary.wishlisted:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -1446,13 +1457,20 @@
                             </svg>
                             Thêm vào giỏ hàng
                         </button>
-                        <button class="btn btn-secondary">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        @php
+                            $isInWishlist = false;
+                            if (auth('customer')->check()) {
+                                $wishlist = auth('customer')->user()->wishlist ?? [];
+                                $isInWishlist = in_array($product->_id, $wishlist);
+                            }
+                        @endphp
+                        <button class="btn btn-secondary {{ $isInWishlist ? 'wishlisted' : '' }}" id="wishlistBtn" onclick="toggleWishlist()">
+                            <svg viewBox="0 0 24 24" fill="{{ $isInWishlist ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
                                 <path
                                     d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                                 </path>
                             </svg>
-                            Yêu thích
+                            <span id="wishlistText">{{ $isInWishlist ? 'Đã yêu thích' : 'Yêu thích' }}</span>
                         </button>
                     </div>
 
@@ -1780,14 +1798,9 @@
                             <div class="review-item">
                                 <div class="review-header">
                                     <div class="reviewer-avatar">
-                                        @if ($review->customer->profile_picture)
-                                            @if (str_starts_with($review->customer->profile_picture, 'http'))
-                                                <img src="{{ $review->customer->profile_picture }}"
-                                                    alt="{{ $review->customer->full_name }}">
-                                            @else
-                                                <img src="{{ asset('storage/' . $review->customer->profile_picture) }}"
-                                                    alt="{{ $review->customer->full_name }}">
-                                            @endif
+                                        @if ($review->customer->profile_picture_url)
+                                            <img src="{{ $review->customer->profile_picture_url }}"
+                                                alt="{{ $review->customer->full_name }}">
                                         @else
                                             <div class="avatar-placeholder">{{ substr($review->customer->full_name, 0, 1) }}</div>
                                         @endif
@@ -2050,6 +2063,42 @@
             toast.textContent = message;
             toast.style.transform = 'translateX(0)';
             setTimeout(() => { toast.style.transform = 'translateX(120%)'; }, 3000);
+        }
+
+        // Toggle wishlist
+        function toggleWishlist() {
+            @auth('customer')
+                const btn = document.getElementById('wishlistBtn');
+                const text = document.getElementById('wishlistText');
+                const svg = btn.querySelector('svg');
+
+                fetch('{{ route('wishlist.toggle') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ product_id: '{{ $product->_id }}' })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.added) {
+                        btn.classList.add('wishlisted');
+                        svg.setAttribute('fill', 'currentColor');
+                        text.textContent = 'Đã yêu thích';
+                        showToast('Đã thêm vào danh sách yêu thích');
+                    } else {
+                        btn.classList.remove('wishlisted');
+                        svg.setAttribute('fill', 'none');
+                        text.textContent = 'Yêu thích';
+                        showToast('Đã xóa khỏi danh sách yêu thích');
+                    }
+                })
+                .catch(() => showToast('Có lỗi xảy ra, vui lòng thử lại'));
+            @else
+                window.location.href = '{{ route('customers.login') }}';
+            @endauth
         }
     </script>
 @endpush

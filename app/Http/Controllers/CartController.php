@@ -16,7 +16,7 @@ class CartController extends Controller
         foreach ($cart as $id => $item) {
             $product = Product::find($id);
             if ($product) {
-                $price = $product->sale_price > 0 ? $product->sale_price : $product->price;
+                $price = $item['price'] ?? ($product->sale_price > 0 ? $product->sale_price : $product->price);
                 $itemTotal = $price * $item['quantity'];
                 $cartItems[] = [
                     'id' => $id,
@@ -43,12 +43,16 @@ class CartController extends Controller
 
         $cart = session()->get('cart', []);
         $id = (string) $product->_id;
+        $price = $product->sale_price > 0 ? $product->sale_price : $product->price;
 
         if (isset($cart[$id])) {
             $cart[$id]['quantity'] += $request->quantity;
         } else {
             $cart[$id] = [
                 'quantity' => $request->quantity,
+                'price' => $price,
+                'original_price' => $product->price,
+                'sale_price' => $product->sale_price,
             ];
         }
 
@@ -85,17 +89,13 @@ class CartController extends Controller
             $cart[$id]['quantity'] = min($request->quantity, $product ? $product->stock_quantity : $request->quantity);
             session()->put('cart', $cart);
 
-            $price = $product && $product->sale_price > 0 ? $product->sale_price : $product->price;
+            $price = $cart[$id]['price'];
             $itemTotal = $price * $cart[$id]['quantity'];
 
             // Tính lại subtotal
             $subtotal = 0;
-            foreach ($cart as $cid => $item) {
-                $p = Product::find($cid);
-                if ($p) {
-                    $pPrice = $p->sale_price > 0 ? $p->sale_price : $p->price;
-                    $subtotal += $pPrice * $item['quantity'];
-                }
+            foreach ($cart as $cid => $cItem) {
+                $subtotal += ($cItem['price'] ?? 0) * $cItem['quantity'];
             }
 
             if ($request->wantsJson()) {
@@ -122,12 +122,8 @@ class CartController extends Controller
 
         if ($request->wantsJson()) {
             $subtotal = 0;
-            foreach ($cart as $cid => $item) {
-                $p = Product::find($cid);
-                if ($p) {
-                    $pPrice = $p->sale_price > 0 ? $p->sale_price : $p->price;
-                    $subtotal += $pPrice * $item['quantity'];
-                }
+            foreach ($cart as $cid => $cItem) {
+                $subtotal += ($cItem['price'] ?? 0) * $cItem['quantity'];
             }
 
             return response()->json([
