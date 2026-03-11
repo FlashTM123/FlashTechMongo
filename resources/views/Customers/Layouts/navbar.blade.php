@@ -213,7 +213,13 @@
                 <!-- Nav Actions -->
                 <div class="nav-actions">
                     <!-- Wishlist -->
-                    <a href="#" class="nav-action" title="Yêu thích">
+                    @php
+                        $wishlistCount = 0;
+                        if (auth('customer')->check()) {
+                            $wishlistCount = count(auth('customer')->user()->wishlist ?? []);
+                        }
+                    @endphp
+                    <a href="{{ route('wishlist.index') }}" class="nav-action" title="Yêu thích">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <path
@@ -221,7 +227,7 @@
                             </path>
                         </svg>
                         <span class="action-label">Yêu thích</span>
-                        <span class="badge">3</span>
+                        <span class="badge wishlist-count" style="{{ $wishlistCount > 0 ? '' : 'display:none' }}">{{ $wishlistCount }}</span>
                     </a>
 
                     <!-- Cart -->

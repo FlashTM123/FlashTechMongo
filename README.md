@@ -5,9 +5,10 @@
 ### 🛒 E-Commerce Technology Store
 
 <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
-<img src="https://img.shields.io/badge/MongoDB-6.0-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
-<img src="https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
-<img src="https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+<img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+<img src="https://img.shields.io/badge/PHP-8.5-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+<img src="https://img.shields.io/badge/Node.js-24.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+<img src="https://img.shields.io/badge/Cloudinary-3.x-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white" alt="Cloudinary">
 <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
 
 <br><br>
@@ -51,11 +52,11 @@
 
 | Công cụ | Phiên bản |
 |:--------|:---------:|
-| PHP | >= 8.2 |
-| Composer | >= 2.0 |
-| Node.js | >= 18.x |
-| NPM | >= 9.x |
-| MongoDB | >= 6.0 |
+| PHP | >= 8.4 |
+| Composer | >= 2.9 |
+| Node.js | >= 24.x |
+| NPM | >= 11.x |
+| MongoDB | Atlas hoặc >= 6.0 |
 
 </div>
 
@@ -65,11 +66,11 @@
 
 <div align="center">
 
-| Backend | Frontend | Database | Tools |
-|:-------:|:--------:|:--------:|:-----:|
-| ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![Blade](https://img.shields.io/badge/Blade-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white) | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) |
-| ![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white) | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) | | ![Composer](https://img.shields.io/badge/Composer-885630?style=flat-square&logo=composer&logoColor=white) |
-| | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | | ![NPM](https://img.shields.io/badge/NPM-CB3837?style=flat-square&logo=npm&logoColor=white) |
+| Backend | Frontend | Database | Cloud | Tools |
+|:-------:|:--------:|:--------:|:-----:|:-----:|
+| ![Laravel](https://img.shields.io/badge/Laravel_12-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![Blade](https://img.shields.io/badge/Blade-FF2D20?style=flat-square&logo=laravel&logoColor=white) | ![MongoDB](https://img.shields.io/badge/MongoDB_Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white) | ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=flat-square&logo=cloudinary&logoColor=white) | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) |
+| ![PHP](https://img.shields.io/badge/PHP_8.5-777BB4?style=flat-square&logo=php&logoColor=white) | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) | | ![Google OAuth](https://img.shields.io/badge/Google_OAuth-4285F4?style=flat-square&logo=google&logoColor=white) | ![Composer](https://img.shields.io/badge/Composer-885630?style=flat-square&logo=composer&logoColor=white) |
+| | ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | | | ![NPM](https://img.shields.io/badge/NPM-CB3837?style=flat-square&logo=npm&logoColor=white) |
 
 </div>
 
@@ -483,7 +484,21 @@ FlashTechMongo/
 
 ---
 
-## 📝 Cập nhật gần đây (11/03/2026)
+## 📝 Cập nhật gần đây (12/03/2026)
+
+### 🔧 Sửa lỗi & Cải thiện
+| Tính năng | Mô tả | Trạng thái |
+|:----------|:------|:----------:|
+| Navbar Wishlist | Sửa link `href="#"` → `route('wishlist.index')`, hiển thị số lượng thực tế thay vì hardcode | ✅ |
+| Wishlist toggle JS | Sửa `data.added` → `data.status === 'added'` khớp với controller response | ✅ |
+| Cập nhật badge wishlist | Tự động cập nhật số lượng wishlist trên navbar khi toggle | ✅ |
+
+---
+
+## 📝 Cập nhật trước đó (11/03/2026)
+
+<details>
+<summary><b>Xem chi tiết</b></summary>
 
 ### 🆕 Tính năng mới
 | Tính năng | Mô tả | Trạng thái |
@@ -503,6 +518,8 @@ FlashTechMongo/
 | MongoDB Decimal128 | Sửa lỗi "Unable to cast value to decimal" — thêm custom accessor thay cast `decimal:2` | ✅ |
 | Checkout sai giá | Checkout dùng giá từ session thay vì lấy lại từ DB (tránh sai khi giá thay đổi) | ✅ |
 | Storage symlink | Tạo `public/storage` symlink cho phép truy cập ảnh upload local | ✅ |
+
+</details>
 
 ---
 
@@ -559,7 +576,7 @@ FlashTechMongo/
 
 | Ưu tiên | Tính năng | Trạng thái |
 |:-------:|:----------|:----------:|
-| � | Tìm kiếm sản phẩm (search bar + gợi ý) | ⏳ |
+| 🔴 | Tìm kiếm sản phẩm (search bar + gợi ý) | ⏳ |
 | 🔴 | Mã giảm giá / Coupon | ⏳ |
 | 🟡 | Email thông báo đơn hàng (xác nhận, cập nhật trạng thái) | ⏳ |
 | 🟡 | Tích hợp thanh toán VNPay/MoMo thực tế | ⏳ |

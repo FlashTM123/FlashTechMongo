@@ -2083,7 +2083,7 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.added) {
+                    if (data.status === 'added') {
                         btn.classList.add('wishlisted');
                         svg.setAttribute('fill', 'currentColor');
                         text.textContent = 'Đã yêu thích';
@@ -2093,6 +2093,12 @@
                         svg.setAttribute('fill', 'none');
                         text.textContent = 'Yêu thích';
                         showToast('Đã xóa khỏi danh sách yêu thích');
+                    }
+                    // Update wishlist badge on navbar
+                    const wishlistBadge = document.querySelector('.wishlist-count');
+                    if (wishlistBadge) {
+                        wishlistBadge.textContent = data.count;
+                        wishlistBadge.style.display = data.count > 0 ? '' : 'none';
                     }
                 })
                 .catch(() => showToast('Có lỗi xảy ra, vui lòng thử lại'));
