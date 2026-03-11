@@ -1,5 +1,5 @@
 # Sử dụng PHP 8.2 có Apache (Phiên bản ổn định cho Filament v3)
-FROM php:8.2-apache
+FROM php:8.4-apache
 
 # 1. Cài đặt các thư viện hệ thống cần thiết cho Laravel, Filament và MongoDB
 RUN apt-get update && apt-get install -y \
