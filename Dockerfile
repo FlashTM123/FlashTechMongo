@@ -21,11 +21,16 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl zip
 # 3. Cài đặt Extension MongoDB
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
-# 4. Cấu hình Apache cho Fly.io (Chạy cổng 8080)
+# 4. Cấu hình Apache cho Fly.io (Ép trỏ vào thư mục public)
 RUN a2enmod rewrite
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
+
+# Thay đổi DocumentRoot trong tất cả các file cấu hình của Apache
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/conf-available/*.conf
+
+# Đổi cổng sang 8080 cho Fly.io
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
 
 # 5. Thiết lập thư mục làm việc
@@ -42,12 +47,18 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     npm install && \
     npm run build
 
-# 8. Cấp quyền và tạo link ảnh (QUAN TRỌNG ĐỂ HIỆN ẢNH)
-RUN php artisan storage:link
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/storage
-RUN chmod -R 775 /var/www/html/storage /var/www/html/public/storage
+# ... (Các bước 1-7 giữ nguyên)
 
-# 9. Fly.io dùng cổng 8080
+# ... (Các bước trên giữ nguyên)
+
+# Bước 8: Ép quyền và Rewrite (Sửa lại đoạn này)
+RUN a2enmod rewrite
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Ép Apache cho phép ghi đè cấu hình từ .htaccess
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# Bước 9: Khởi chạy
 EXPOSE 8080
-
 CMD ["apache2-foreground"]
