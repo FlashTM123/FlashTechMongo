@@ -1,14 +1,17 @@
 {
-  "providers": ["php"],
-  "build": {
-    "cmds": [
-      "composer install --optimize-autoloader --no-interaction --ignore-platform-reqs",
-      "npm install",
-      "npm run build"
-    ]
+  "phases": {
+    "setup": {
+      "aptPkgs": ["libicu-dev", "libzip-dev", "zip", "unzip"]
+    },
+    "build": {
+      "cmds": [
+        "composer install --ignore-platform-reqs",
+        "npm install",
+        "npm run build"
+      ]
+    }
   },
-  "setup": {
-    "aptPkgs": ["libicu-dev", "libzip-dev", "zip", "unzip"],
-    "phpExts": ["intl", "zip", "mongodb", "gd", "bcmath", "pdo_mysql", "redis"]
+  "start": {
+    "cmd": "php artisan serve --host 0.0.0.0 --port $PORT"
   }
 }
