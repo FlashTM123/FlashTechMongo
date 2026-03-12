@@ -18,6 +18,7 @@ class Product extends Model
         'slug',
         'description',
         'color',
+        'colors',
         'category',
         'price',
         'sale_price',
@@ -35,6 +36,7 @@ class Product extends Model
 
     protected $casts = [
         'images' => 'array',
+        'colors' => 'array',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'stock_quantity' => 'integer',
@@ -139,5 +141,43 @@ class Product extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetails::class);
+    }
+
+    /**
+     * Lấy giá cao nhất từ tất cả màu (dùng cho card).
+     */
+    public function getMaxColorPriceAttribute(): float
+    {
+        $colors = $this->colors ?? [];
+        if (empty($colors)) {
+            return $this->price;
+        }
+        return (float) collect($colors)->max('price') ?: $this->price;
+    }
+
+    /**
+     * Lấy giá thấp nhất (sale hoặc gốc) từ tất cả màu.
+     */
+    public function getMinColorPriceAttribute(): float
+    {
+        $colors = $this->colors ?? [];
+        if (empty($colors)) {
+            return $this->sale_price ?: $this->price;
+        }
+        return (float) collect($colors)->min(function ($c) {
+            return !empty($c['sale_price']) ? $c['sale_price'] : $c['price'];
+        });
+    }
+
+    /**
+     * Tổng tồn kho tất cả màu.
+     */
+    public function getTotalColorStockAttribute(): int
+    {
+        $colors = $this->colors ?? [];
+        if (empty($colors)) {
+            return $this->stock_quantity ?? 0;
+        }
+        return (int) collect($colors)->sum('stock');
     }
 }

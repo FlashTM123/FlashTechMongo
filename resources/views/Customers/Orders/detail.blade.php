@@ -536,9 +536,18 @@
                                 <td data-label="Sản phẩm">
                                     <div class="item-product">
                                         <div class="item-image">
-                                            <img src="{{ $detail->product_image }}" alt="{{ $detail->product_name }}">
+                                            @php
+                                                $img = $detail->product_image;
+                                                $imgUrl = $img && Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
+                                            @endphp
+                                            <img src="{{ $imgUrl }}" alt="{{ $detail->product_name }}">
                                         </div>
-                                        <div class="item-name">{{ $detail->product_name }}</div>
+                                        <div class="item-name">
+                                            {{ $detail->product_name }}
+                                            @if(!empty($detail->color))
+                                                <br><small style="color: var(--gray-400);">Màu: {{ $detail->color }}</small>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
                                 <td data-label="Đơn giá" class="item-price-cell">

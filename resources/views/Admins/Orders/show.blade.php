@@ -185,7 +185,11 @@
                         <td>
                             <div class="product-cell">
                                 @if($item->product_image)
-                                    <img src="{{ $item->product_image }}" alt="{{ $item->product_name }}" class="product-thumb">
+                                    @php
+                                        $img = $item->product_image;
+                                        $imgUrl = $img && Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
+                                    @endphp
+                                    <img src="{{ $imgUrl }}" alt="{{ $item->product_name }}" class="product-thumb">
                                 @else
                                     <div class="product-thumb-placeholder">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -197,6 +201,9 @@
                                 @endif
                                 <div class="product-info">
                                     <strong>{{ $item->product_name }}</strong>
+                                    @if(!empty($item->color))
+                                        <br><small style="color: #6b7280;">Màu: {{ $item->color }}</small>
+                                    @endif
                                     @if($item->sale_price && $item->sale_price < $item->price)
                                         <span class="original-price">{{ number_format($item->price, 0, ',', '.') }}₫</span>
                                     @endif

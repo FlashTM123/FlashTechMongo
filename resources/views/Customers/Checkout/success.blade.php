@@ -295,11 +295,20 @@
                         @foreach ($order->orderDetails as $detail)
                             <div class="order-item">
                                 <div class="order-item-image">
-                                    <img src="{{ $detail->product_image }}" alt="{{ $detail->product_name }}">
+                                    @php
+                                        $img = $detail->product_image;
+                                        $imgUrl = $img && Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
+                                    @endphp
+                                    <img src="{{ $imgUrl }}" alt="{{ $detail->product_name }}">
                                 </div>
                                 <div class="order-item-info">
                                     <div class="order-item-name">{{ $detail->product_name }}</div>
-                                    <div class="order-item-qty">SL: {{ $detail->quantity }}</div>
+                                    <div class="order-item-qty">
+                                        SL: {{ $detail->quantity }}
+                                        @if(!empty($detail->color))
+                                            | Màu: {{ $detail->color }}
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="order-item-price">{{ number_format($detail->total, 0, ',', '.') }}₫</div>
                             </div>

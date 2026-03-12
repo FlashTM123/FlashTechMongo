@@ -13,17 +13,19 @@ class CartController extends Controller
         $cartItems = [];
         $subtotal = 0;
 
-        foreach ($cart as $id => $item) {
-            $product = Product::find($id);
+        foreach ($cart as $cartKey => $item) {
+            $productId = $item['product_id'] ?? $cartKey;
+            $product = Product::find($productId);
             if ($product) {
                 $price = $item['price'] ?? ($product->sale_price > 0 ? $product->sale_price : $product->price);
                 $itemTotal = $price * $item['quantity'];
                 $cartItems[] = [
-                    'id' => $id,
+                    'id' => $cartKey,
                     'product' => $product,
                     'quantity' => $item['quantity'],
                     'price' => $price,
                     'total' => $itemTotal,
+                    'color' => $item['color'] ?? null,
                 ];
                 $subtotal += $itemTotal;
             }
@@ -43,22 +45,58 @@ class CartController extends Controller
 
         $cart = session()->get('cart', []);
         $id = (string) $product->_id;
-        $price = $product->sale_price > 0 ? $product->sale_price : $product->price;
 
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity'] += $request->quantity;
+        // Xác định giá theo màu được chọn hoặc giá chung
+        $selectedColor = $request->color;
+        $price = 0;
+        $originalPrice = 0;
+        $salePrice = 0;
+        $stockLimit = $product->stock_quantity ?? 0;
+
+        if ($selectedColor && $product->colors && count($product->colors) > 0) {
+            foreach ($product->colors as $colorItem) {
+                if (($colorItem['color'] ?? '') === $selectedColor) {
+                    $originalPrice = (float) ($colorItem['price'] ?? 0);
+                    $salePrice = (float) ($colorItem['sale_price'] ?? 0);
+                    $price = ($salePrice > 0 && $salePrice < $originalPrice) ? $salePrice : $originalPrice;
+                    $stockLimit = (int) ($colorItem['stock'] ?? 0);
+                    break;
+                }
+            }
+        } elseif ($product->colors && count($product->colors) > 0) {
+            // Không chọn màu, lấy màu đầu tiên
+            $firstColor = $product->colors[0];
+            $originalPrice = (float) ($firstColor['price'] ?? 0);
+            $salePrice = (float) ($firstColor['sale_price'] ?? 0);
+            $price = ($salePrice > 0 && $salePrice < $originalPrice) ? $salePrice : $originalPrice;
+            $stockLimit = (int) ($firstColor['stock'] ?? 0);
+            $selectedColor = $firstColor['color'] ?? null;
         } else {
-            $cart[$id] = [
+            $originalPrice = (float) $product->price;
+            $salePrice = (float) $product->sale_price;
+            $price = ($salePrice > 0 && $salePrice < $originalPrice) ? $salePrice : $originalPrice;
+            $stockLimit = $product->stock_quantity ?? 0;
+        }
+
+        // Tạo cart key theo product + màu
+        $cartKey = $selectedColor ? $id . '_' . $selectedColor : $id;
+
+        if (isset($cart[$cartKey])) {
+            $cart[$cartKey]['quantity'] += $request->quantity;
+        } else {
+            $cart[$cartKey] = [
+                'product_id' => $id,
                 'quantity' => $request->quantity,
                 'price' => $price,
-                'original_price' => $product->price,
-                'sale_price' => $product->sale_price,
+                'original_price' => $originalPrice,
+                'sale_price' => $salePrice,
+                'color' => $selectedColor,
             ];
         }
 
         // Không cho vượt quá stock
-        if ($cart[$id]['quantity'] > $product->stock_quantity) {
-            $cart[$id]['quantity'] = $product->stock_quantity;
+        if ($cart[$cartKey]['quantity'] > $stockLimit) {
+            $cart[$cartKey]['quantity'] = $stockLimit;
         }
 
         session()->put('cart', $cart);
@@ -82,15 +120,29 @@ class CartController extends Controller
         ]);
 
         $cart = session()->get('cart', []);
-        $id = $request->product_id;
+        $cartKey = $request->product_id;
 
-        if (isset($cart[$id])) {
-            $product = Product::find($id);
-            $cart[$id]['quantity'] = min($request->quantity, $product ? $product->stock_quantity : $request->quantity);
+        if (isset($cart[$cartKey])) {
+            $productId = $cart[$cartKey]['product_id'] ?? $cartKey;
+            $product = Product::find($productId);
+
+            // Xác định stock limit theo màu
+            $stockLimit = $product ? ($product->stock_quantity ?? 0) : $request->quantity;
+            $color = $cart[$cartKey]['color'] ?? null;
+            if ($color && $product && $product->colors) {
+                foreach ($product->colors as $c) {
+                    if (($c['color'] ?? '') === $color) {
+                        $stockLimit = (int) ($c['stock'] ?? 0);
+                        break;
+                    }
+                }
+            }
+
+            $cart[$cartKey]['quantity'] = min($request->quantity, $stockLimit);
             session()->put('cart', $cart);
 
-            $price = $cart[$id]['price'];
-            $itemTotal = $price * $cart[$id]['quantity'];
+            $price = $cart[$cartKey]['price'];
+            $itemTotal = $price * $cart[$cartKey]['quantity'];
 
             // Tính lại subtotal
             $subtotal = 0;

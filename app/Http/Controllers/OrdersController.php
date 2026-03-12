@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Orders;
 use App\Models\OrderDetails;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -56,6 +57,7 @@ class OrdersController extends Controller
     public function update(Request $request, $id)
     {
         $order = Orders::findOrFail($id);
+        $oldStatus = $order->order_status;
 
         $validated = $request->validate([
             'order_status' => 'required|in:pending,processing,shipped,delivered,cancelled',
@@ -65,6 +67,32 @@ class OrdersController extends Controller
         $order->order_status = $validated['order_status'];
         $order->payment_status = $validated['payment_status'];
         $order->save();
+
+        // Hoàn lại tồn kho khi hủy đơn
+        if ($validated['order_status'] === 'cancelled' && $oldStatus !== 'cancelled') {
+            foreach ($order->orderDetails as $detail) {
+                // Re-fetch product mỗi lần để tránh ghi đè khi cùng sản phẩm nhiều màu
+                $product = Product::find($detail->product_id);
+                if ($product) {
+                    $color = $detail->color ?? null;
+                    if ($color && $product->colors) {
+                        $colors = $product->colors;
+                        foreach ($colors as $idx => $c) {
+                            if (($c['color'] ?? '') === $color) {
+                                $colors[$idx]['stock'] = (int) ($c['stock'] ?? 0) + $detail->quantity;
+                                break;
+                            }
+                        }
+                        $product->colors = $colors;
+                        $product->save();
+                    } else {
+                        $product->increment('stock_quantity', $detail->quantity);
+                    }
+                    $product = Product::find($detail->product_id);
+                    $product->decrement('sales_count', $detail->quantity);
+                }
+            }
+        }
 
         return redirect()->route('orders.show', $order->id)
             ->with('success', "Đơn hàng #{$order->order_code} đã được cập nhật!");

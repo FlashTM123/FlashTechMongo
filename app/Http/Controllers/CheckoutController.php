@@ -21,17 +21,19 @@ class CheckoutController extends Controller
         $cartItems = [];
         $subtotal = 0;
 
-        foreach ($cart as $id => $item) {
-            $product = Product::find($id);
+        foreach ($cart as $cartKey => $item) {
+            $productId = $item['product_id'] ?? $cartKey;
+            $product = Product::find($productId);
             if ($product) {
                 $price = $item['price'] ?? ($product->sale_price > 0 ? $product->sale_price : $product->price);
                 $itemTotal = $price * $item['quantity'];
                 $cartItems[] = [
-                    'id' => $id,
+                    'id' => $cartKey,
                     'product' => $product,
                     'quantity' => $item['quantity'],
                     'price' => $price,
                     'total' => $itemTotal,
+                    'color' => $item['color'] ?? null,
                 ];
                 $subtotal += $itemTotal;
             }
@@ -60,11 +62,28 @@ class CheckoutController extends Controller
         }
 
         // Kiểm tra stock trước khi đặt hàng
-        foreach ($cart as $id => $item) {
-            $product = Product::find($id);
-            if (!$product || $product->stock_quantity < $item['quantity']) {
-                $name = $product ? $product->name : 'Sản phẩm không tồn tại';
-                return back()->with('error', "Sản phẩm \"{$name}\" không đủ số lượng trong kho!");
+        foreach ($cart as $cartKey => $item) {
+            $productId = $item['product_id'] ?? $cartKey;
+            $product = Product::find($productId);
+            $color = $item['color'] ?? null;
+
+            if (!$product) {
+                return back()->with('error', 'Sản phẩm không tồn tại!');
+            }
+
+            // Kiểm tra stock theo màu
+            $stock = $product->stock_quantity ?? 0;
+            if ($color && $product->colors) {
+                foreach ($product->colors as $c) {
+                    if (($c['color'] ?? '') === $color) {
+                        $stock = (int) ($c['stock'] ?? 0);
+                        break;
+                    }
+                }
+            }
+
+            if ($stock < $item['quantity']) {
+                return back()->with('error', "Sản phẩm \"{$product->name}\" không đủ số lượng trong kho!");
             }
         }
 
@@ -72,8 +91,9 @@ class CheckoutController extends Controller
         $subtotal = 0;
         $orderItems = [];
 
-        foreach ($cart as $id => $item) {
-            $product = Product::find($id);
+        foreach ($cart as $cartKey => $item) {
+            $productId = $item['product_id'] ?? $cartKey;
+            $product = Product::find($productId);
             $price = $item['price'] ?? ($product->sale_price > 0 ? $product->sale_price : $product->price);
             $itemTotal = $price * $item['quantity'];
             $subtotal += $itemTotal;
@@ -84,6 +104,7 @@ class CheckoutController extends Controller
                 'price' => $item['original_price'] ?? $product->price,
                 'sale_price' => $item['sale_price'] ?? $product->sale_price,
                 'total' => $itemTotal,
+                'color' => $item['color'] ?? null,
             ];
         }
 
@@ -111,15 +132,31 @@ class CheckoutController extends Controller
                 'product_id' => (string) $item['product']->_id,
                 'product_name' => $item['product']->name,
                 'product_image' => $item['product']->image,
+                'color' => $item['color'],
                 'price' => $item['price'],
                 'sale_price' => $item['sale_price'],
                 'quantity' => $item['quantity'],
                 'total' => $item['total'],
             ]);
 
-            // Giảm stock_quantity và tăng sales_count
-            $item['product']->decrement('stock_quantity', $item['quantity']);
-            $item['product']->increment('sales_count', $item['quantity']);
+            // Giảm stock theo màu hoặc stock chung
+            // Re-fetch product để tránh ghi đè khi cùng sản phẩm nhiều màu
+            $product = Product::find($item['product']->_id);
+            $color = $item['color'];
+            if ($color && $product->colors) {
+                $colors = $product->colors;
+                foreach ($colors as $idx => $c) {
+                    if (($c['color'] ?? '') === $color) {
+                        $colors[$idx]['stock'] = max(0, (int) ($c['stock'] ?? 0) - $item['quantity']);
+                        break;
+                    }
+                }
+                $product->colors = $colors;
+                $product->save();
+            } else {
+                $product->decrement('stock_quantity', $item['quantity']);
+            }
+            $product->increment('sales_count', $item['quantity']);
         }
 
         // Xóa giỏ hàng

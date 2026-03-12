@@ -377,9 +377,25 @@ class CustomerHomeController extends Controller
 
         // Hoàn lại tồn kho
         foreach ($order->orderDetails as $detail) {
+            // Re-fetch product mỗi lần để tránh ghi đè khi cùng sản phẩm nhiều màu
             $product = Product::find($detail->product_id);
             if ($product) {
-                $product->increment('stock_quantity', $detail->quantity);
+                $color = $detail->color ?? null;
+                if ($color && $product->colors) {
+                    $colors = $product->colors;
+                    foreach ($colors as $idx => $c) {
+                        if (($c['color'] ?? '') === $color) {
+                            $colors[$idx]['stock'] = (int) ($c['stock'] ?? 0) + $detail->quantity;
+                            break;
+                        }
+                    }
+                    $product->colors = $colors;
+                    $product->save();
+                } else {
+                    $product->increment('stock_quantity', $detail->quantity);
+                }
+                // Re-fetch lại trước khi decrement sales_count
+                $product = Product::find($detail->product_id);
                 $product->decrement('sales_count', $detail->quantity);
             }
         }

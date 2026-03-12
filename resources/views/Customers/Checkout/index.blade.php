@@ -558,11 +558,20 @@
                         @foreach ($cartItems as $item)
                             <div class="summary-item">
                                 <div class="summary-item-image">
-                                    <img src="{{ $item['product']->image }}" alt="{{ $item['product']->name }}">
+                                    @php
+                                        $img = $item['product']->image;
+                                        $imgUrl = $img && Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
+                                    @endphp
+                                    <img src="{{ $imgUrl }}" alt="{{ $item['product']->name }}">
                                 </div>
                                 <div class="summary-item-info">
                                     <div class="summary-item-name">{{ $item['product']->name }}</div>
-                                    <div class="summary-item-qty">SL: {{ $item['quantity'] }}</div>
+                                    <div class="summary-item-qty">
+                                        SL: {{ $item['quantity'] }}
+                                        @if(!empty($item['color']))
+                                            | Màu: {{ $item['color'] }}
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="summary-item-price">{{ number_format($item['total'], 0, ',', '.') }}₫</div>
                             </div>

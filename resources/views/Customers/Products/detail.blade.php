@@ -326,6 +326,27 @@
         .color-option.active {
             border-color: var(--primary);
             background: rgba(102, 126, 234, 0.05);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .color-option.active::after {
+            content: '✓';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-option {
+            position: relative;
         }
 
         .color-dot {
@@ -1290,9 +1311,10 @@
                     <div class="main-image-wrapper">
                         @php
                             $mainImage = $product->image;
+                            $mainImageUrl = $mainImage ? (Str::startsWith($mainImage, 'http') ? $mainImage : asset('storage/' . $mainImage)) : null;
                         @endphp
-                        @if ($mainImage)
-                            <img src="{{ $mainImage }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
+                        @if ($mainImageUrl)
+                            <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
                         @else
                             <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" alt="{{ $product->name }}" class="main-image" id="mainImage">
                         @endif
@@ -1316,22 +1338,20 @@
                     @if ($product->images && count($product->images) > 0)
                         <div class="thumbnail-list">
                             <div class="thumbnail-item active"
-                                onclick="changeImage('{{ $product->image ? $product->image : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop' }}', this)">
-                                @php $thumb = $product->image; @endphp
-                                @if ($thumb)
-                                    <img src="{{ $thumb }}" alt="Thumbnail">
+                                onclick="changeImage('{{ $mainImageUrl ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop' }}', this)">
+                                @if ($mainImageUrl)
+                                    <img src="{{ $mainImageUrl }}" alt="Thumbnail">
                                 @else
                                     <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop" alt="Thumbnail">
                                 @endif
                             </div>
                             @foreach ($product->images as $image)
+                                @php
+                                    $imgUrl = Str::startsWith($image, 'http') ? $image : asset('storage/' . $image);
+                                @endphp
                                 <div class="thumbnail-item"
-                                    onclick="changeImage('{{ Str::startsWith($image, 'http') ? $image : asset('storage/' . $image) }}', this)">
-                                    @if (Str::startsWith($image, 'http'))
-                                        <img src="{{ $image }}" alt="Thumbnail">
-                                    @else
-                                        <img src="{{ asset('storage/' . $image) }}" alt="Thumbnail">
-                                    @endif
+                                    onclick="changeImage('{{ $imgUrl }}', this)">
+                                    <img src="{{ $imgUrl }}" alt="Thumbnail">
                                 </div>
                             @endforeach
                         </div>
@@ -1399,22 +1419,78 @@
                     </div>
 
                     <!-- Price -->
-                    <div class="price-section">
-                        <div class="price-row">
-                            @if ($product->sale_price && $product->sale_price < $product->price)
-                                <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
-                                <span class="price-original">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                                <span
-                                    class="discount-badge">-{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%</span>
-                            @else
-                                <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                            @endif
-                        </div>
+                    <div class="price-section" id="priceSection">
+                        @if($product->colors && count($product->colors) > 0)
+                            @php
+                                $firstColor = $product->colors[0];
+                                $displayPrice = $firstColor['price'];
+                                $displaySalePrice = $firstColor['sale_price'] ?? null;
+                            @endphp
+                            <div class="price-row">
+                                @if($displaySalePrice && $displaySalePrice < $displayPrice)
+                                    <span class="price-current" id="colorPrice">{{ number_format($displaySalePrice, 0, ',', '.') }}₫</span>
+                                    <span class="price-original" id="colorOriginalPrice">{{ number_format($displayPrice, 0, ',', '.') }}₫</span>
+                                    <span class="discount-badge" id="colorDiscount">-{{ round((($displayPrice - $displaySalePrice) / $displayPrice) * 100) }}%</span>
+                                @else
+                                    <span class="price-current" id="colorPrice">{{ number_format($displayPrice, 0, ',', '.') }}₫</span>
+                                    <span class="price-original" id="colorOriginalPrice" style="display:none;"></span>
+                                    <span class="discount-badge" id="colorDiscount" style="display:none;"></span>
+                                @endif
+                            </div>
+                        @else
+                            <div class="price-row">
+                                @if ($product->sale_price && $product->sale_price < $product->price)
+                                    <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
+                                    <span class="price-original">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                                    <span class="discount-badge">-{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%</span>
+                                @else
+                                    <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                                @endif
+                            </div>
+                        @endif
                         <p class="price-note">Giá đã bao gồm VAT. Miễn phí vận chuyển cho đơn hàng từ 500.000₫</p>
                     </div>
 
                     <!-- Color Selection -->
-                    @if ($product->color)
+                    @if($product->colors && count($product->colors) > 0)
+                        <div class="option-section">
+                            <label class="option-label">Màu sắc:</label>
+                            <div class="color-options">
+                                @foreach($product->colors as $index => $colorItem)
+                                    @php
+                                        $colorImages = [];
+                                        if (!empty($colorItem['images'])) {
+                                            foreach ((array) $colorItem['images'] as $ci) {
+                                                $colorImages[] = Str::startsWith($ci, 'http') ? $ci : asset('storage/' . $ci);
+                                            }
+                                        }
+                                    @endphp
+                                    <div class="color-option {{ $index === 0 ? 'active' : '' }}"
+                                         onclick="selectColor(this, {{ $index }})"
+                                         data-price="{{ $colorItem['price'] }}"
+                                         data-sale-price="{{ $colorItem['sale_price'] ?? '' }}"
+                                         data-stock="{{ $colorItem['stock'] ?? 0 }}"
+                                         data-images='@json($colorImages)'>
+                                        @if(!empty($colorImages))
+                                            <img src="{{ $colorImages[0] }}" alt="{{ $colorItem['color'] }}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+                                        @else
+                                            <span class="color-dot" style="background: {{ $colorItem['color'] == 'Đen' ? '#1a1a1a' : ($colorItem['color'] == 'Trắng' ? '#ffffff' : ($colorItem['color'] == 'Xanh' || $colorItem['color'] == 'Xanh Đậm' ? '#3b82f6' : ($colorItem['color'] == 'Đỏ' ? '#ef4444' : ($colorItem['color'] == 'Vàng' ? '#fbbf24' : ($colorItem['color'] == 'Cam' || $colorItem['color'] == 'Cam Vũ Trụ' ? '#f97316' : ($colorItem['color'] == 'Bạc' ? '#c0c0c0' : '#9ca3af')))))) }};"></span>
+                                        @endif
+                                        <div style="display:flex;flex-direction:column;">
+                                            <span class="color-name">{{ $colorItem['color'] }}</span>
+                                            <span style="font-size:0.8rem;color:var(--gray-500);">
+                                                @if(!empty($colorItem['sale_price']) && $colorItem['sale_price'] < $colorItem['price'])
+                                                    {{ number_format($colorItem['sale_price'], 0, ',', '.') }}₫
+                                                @else
+                                                    {{ number_format($colorItem['price'], 0, ',', '.') }}₫
+                                                @endif
+                                            </span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @elseif($product->color)
                         <div class="option-section">
                             <label class="option-label">Màu sắc:</label>
                             <div class="color-options">
@@ -1434,16 +1510,21 @@
                             <div class="quantity-selector">
                                 <button class="qty-btn" onclick="decreaseQty()" id="decreaseBtn">−</button>
                                 <input type="number" class="qty-input" value="1" min="1"
-                                    max="{{ $product->stock_quantity }}" id="qtyInput" onchange="validateQty()">
+                                    max="{{ $product->colors && count($product->colors) > 0 ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity }}" id="qtyInput" onchange="validateQty()">
                                 <button class="qty-btn" onclick="increaseQty()" id="increaseBtn">+</button>
                             </div>
-                            @if ($product->stock_quantity > 10)
-                                <span class="stock-info in-stock">✓ Còn {{ $product->stock_quantity }} sản phẩm</span>
-                            @elseif($product->stock_quantity > 0)
-                                <span class="stock-info low-stock">⚠ Chỉ còn {{ $product->stock_quantity }} sản phẩm</span>
-                            @else
-                                <span class="stock-info out-of-stock">✕ Hết hàng</span>
-                            @endif
+                            <span class="stock-info" id="stockInfo">
+                                @php
+                                    $displayStock = ($product->colors && count($product->colors) > 0) ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity;
+                                @endphp
+                                @if($displayStock > 10)
+                                    <span class="in-stock">✓ Còn {{ $displayStock }} sản phẩm</span>
+                                @elseif($displayStock > 0)
+                                    <span class="low-stock">⚠ Chỉ còn {{ $displayStock }} sản phẩm</span>
+                                @else
+                                    <span class="out-of-stock">✕ Hết hàng</span>
+                                @endif
+                            </span>
                         </div>
                     </div>
 
@@ -1904,8 +1985,98 @@
             element.classList.add('active');
         }
 
+        // Color selection
+        function selectColor(element, index) {
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+
+            const price = parseFloat(element.dataset.price) || 0;
+            const salePrice = parseFloat(element.dataset.salePrice) || 0;
+            const stock = parseInt(element.dataset.stock) || 0;
+
+            // Update price display
+            const priceEl = document.getElementById('colorPrice');
+            const originalPriceEl = document.getElementById('colorOriginalPrice');
+            const discountEl = document.getElementById('colorDiscount');
+
+            if (salePrice > 0 && salePrice < price) {
+                priceEl.textContent = formatPrice(salePrice) + '₫';
+                originalPriceEl.textContent = formatPrice(price) + '₫';
+                originalPriceEl.style.display = '';
+                const discount = Math.round(((price - salePrice) / price) * 100);
+                discountEl.textContent = '-' + discount + '%';
+                discountEl.style.display = '';
+            } else {
+                priceEl.textContent = formatPrice(price) + '₫';
+                if (originalPriceEl) originalPriceEl.style.display = 'none';
+                if (discountEl) discountEl.style.display = 'none';
+            }
+
+            // Update gallery with color images
+            let colorImages = [];
+            try {
+                colorImages = JSON.parse(element.dataset.images || '[]');
+            } catch(e) {}
+
+            if (colorImages.length > 0) {
+                // Update main image
+                document.getElementById('mainImage').src = colorImages[0];
+
+                // Update thumbnails
+                const thumbList = document.querySelector('.thumbnail-list');
+                if (thumbList) {
+                    thumbList.innerHTML = '';
+                    colorImages.forEach(function(imgUrl, i) {
+                        const div = document.createElement('div');
+                        div.className = 'thumbnail-item' + (i === 0 ? ' active' : '');
+                        div.onclick = function() { changeImage(imgUrl, div); };
+                        const img = document.createElement('img');
+                        img.src = imgUrl;
+                        img.alt = 'Thumbnail';
+                        div.appendChild(img);
+                        thumbList.appendChild(div);
+                    });
+                }
+            }
+
+            // Update stock display
+            updateStockDisplay(stock);
+
+            // Update quantity max
+            maxQty = stock;
+            const qtyInput = document.getElementById('qtyInput');
+            qtyInput.max = stock;
+            if (parseInt(qtyInput.value) > stock) {
+                qtyInput.value = Math.max(stock, 1);
+            }
+            updateBtns();
+
+            // Update add to cart button
+            const addBtn = document.getElementById('addToCartBtn');
+            if (stock <= 0) {
+                addBtn.disabled = true;
+            } else {
+                addBtn.disabled = false;
+            }
+        }
+
+        function updateStockDisplay(stock) {
+            const stockInfo = document.getElementById('stockInfo');
+            if (stock > 10) {
+                stockInfo.innerHTML = '<span class="in-stock">✓ Còn ' + stock + ' sản phẩm</span>';
+            } else if (stock > 0) {
+                stockInfo.innerHTML = '<span class="low-stock">⚠ Chỉ còn ' + stock + ' sản phẩm</span>';
+            } else {
+                stockInfo.innerHTML = '<span class="out-of-stock">✕ Hết hàng</span>';
+            }
+        }
+
+        function formatPrice(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
         // Quantity functions
-        const maxQty = {{ $product->stock_quantity }};
+        var maxQty = {{ ($product->colors && count($product->colors) > 0) ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity }};
 
         function decreaseQty() {
             const input = document.getElementById('qtyInput');
@@ -2019,6 +2190,16 @@
             btn.disabled = true;
             btn.innerHTML = '<svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Đang thêm...';
 
+            // Get selected color
+            const activeColor = document.querySelector('.color-option.active');
+            let selectedColor = null;
+            if (activeColor) {
+                const colorNameEl = activeColor.querySelector('.color-name');
+                if (colorNameEl) {
+                    selectedColor = colorNameEl.textContent.trim();
+                }
+            }
+
             fetch('{{ route('cart.add') }}', {
                 method: 'POST',
                 headers: {
@@ -2028,7 +2209,8 @@
                 },
                 body: JSON.stringify({
                     product_id: '{{ $product->_id }}',
-                    quantity: qty
+                    quantity: qty,
+                    color: selectedColor
                 })
             })
             .then(res => res.json())

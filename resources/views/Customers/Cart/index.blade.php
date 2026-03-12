@@ -519,13 +519,20 @@
                             <div class="cart-item" id="cart-item-{{ $item['id'] }}">
                                 <div class="cart-item-image">
                                     <a href="{{ route('product.detail', $item['product']->slug) }}">
-                                        <img src="{{ $item['product']->image }}" alt="{{ $item['product']->name }}">
+                                        @php
+                                            $cartImg = $item['product']->image;
+                                            $cartImgUrl = $cartImg ? (Str::startsWith($cartImg, 'http') ? $cartImg : asset('storage/' . $cartImg)) : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop';
+                                        @endphp
+                                        <img src="{{ $cartImgUrl }}" alt="{{ $item['product']->name }}">
                                     </a>
                                 </div>
                                 <div class="cart-item-info">
                                     <a href="{{ route('product.detail', $item['product']->slug) }}" class="cart-item-name">
                                         {{ $item['product']->name }}
                                     </a>
+                                    @if(!empty($item['color']))
+                                        <span style="font-size:0.8rem;color:#6b7280;">Màu: {{ $item['color'] }}</span>
+                                    @endif
                                     <div class="cart-item-price">
                                         <span class="price-current">{{ number_format($item['price'], 0, ',', '.') }}₫</span>
                                         @if ($item['product']->sale_price > 0 && $item['product']->sale_price < $item['product']->price)
@@ -536,8 +543,19 @@
                                 <div class="cart-item-actions">
                                     <div class="quantity-selector">
                                         <button class="qty-btn" onclick="updateQuantity('{{ $item['id'] }}', -1)">−</button>
+                                        @php
+                                            $colorStock = $item['product']->stock_quantity ?? 0;
+                                            if (!empty($item['color']) && $item['product']->colors) {
+                                                foreach ($item['product']->colors as $c) {
+                                                    if (($c['color'] ?? '') === $item['color']) {
+                                                        $colorStock = (int) ($c['stock'] ?? 0);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        @endphp
                                         <input type="number" class="qty-input" value="{{ $item['quantity'] }}" min="1"
-                                            max="{{ $item['product']->stock_quantity }}"
+                                            max="{{ $colorStock }}"
                                             id="qty-{{ $item['id'] }}"
                                             onchange="setQuantity('{{ $item['id'] }}')">
                                         <button class="qty-btn" onclick="updateQuantity('{{ $item['id'] }}', 1)">+</button>

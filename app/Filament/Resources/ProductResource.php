@@ -46,28 +46,65 @@ class ProductResource extends Resource
                         Forms\Components\Select::make('category')
                             ->label('Danh mục')
                             ->options([
-                                'smartphone' => 'Smartphone',
-                                'laptop' => 'Laptop',
-                                'tablet' => 'Tablet',
-                                'computer' => 'Computer',
-                                'accessory' => 'Accessory',
+                                'Smartphone' => 'Smartphone',
+                                'Laptop' => 'Laptop',
+                                'Tablet' => 'Tablet',
+                                'Computer' => 'Computer',
+                                'Accessory' => 'Accessory',
                             ])
                             ->required(),
                         Forms\Components\Select::make('brand_id')
                             ->label('Thương hiệu')
                             ->options(fn () => Brand::all()->pluck('name', 'id'))
                             ->searchable(),
-                        Forms\Components\TextInput::make('color')
-                            ->label('Màu sắc'),
                     ])->columns(2),
 
-                \Filament\Schemas\Components\Section::make('Giá & Kho')
+                \Filament\Schemas\Components\Section::make('Màu sắc & Giá theo màu')
+                    ->schema([
+                        Forms\Components\Repeater::make('colors')
+                            ->label('Danh sách màu')
+                            ->schema([
+                                Forms\Components\FileUpload::make('images')
+                                    ->label('Ảnh màu')
+                                    ->image()
+                                    ->multiple()
+                                    ->disk('public')
+                                    ->directory('products/colors')
+                                    ->maxSize(10240)
+                                    ->maxFiles(10)
+                                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('color')
+                                    ->label('Tên màu')
+                                    ->required(),
+                                Forms\Components\TextInput::make('price')
+                                    ->label('Giá gốc (₫)')
+                                    ->numeric()
+                                    ->required()
+                                    ->prefix('₫'),
+                                Forms\Components\TextInput::make('sale_price')
+                                    ->label('Giá khuyến mãi (₫)')
+                                    ->numeric()
+                                    ->prefix('₫'),
+                                Forms\Components\TextInput::make('stock')
+                                    ->label('Tồn kho')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->required(),
+                            ])
+                            ->columns(3)
+                            ->defaultItems(1)
+                            ->addActionLabel('Thêm màu')
+                            ->collapsible()
+                            ->columnSpanFull(),
+                    ]),
+
+                \Filament\Schemas\Components\Section::make('Giá & Kho (tổng)')
                     ->schema([
                         Forms\Components\TextInput::make('price')
                             ->label('Giá gốc (₫)')
                             ->numeric()
-                            ->required()
-                            ->prefix('₫'),
+                            ->prefix('₫')
+                            ->helperText('Để trống nếu dùng giá theo màu'),
                         Forms\Components\TextInput::make('sale_price')
                             ->label('Giá khuyến mãi (₫)')
                             ->numeric()
@@ -85,10 +122,22 @@ class ProductResource extends Resource
 
                 \Filament\Schemas\Components\Section::make('Hình ảnh')
                     ->schema([
-                        Forms\Components\TextInput::make('image')
-                            ->label('URL ảnh chính')
-                            ->url()
-                            ->maxLength(500),
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Ảnh chính')
+                            ->image()
+                            ->disk('public')
+                            ->directory('products')
+                            ->imageEditor()
+                            ->maxSize(5120),
+                        Forms\Components\FileUpload::make('images')
+                            ->label('Ảnh phụ')
+                            ->image()
+                            ->multiple()
+                            ->disk('public')
+                            ->directory('products')
+                            ->imageEditor()
+                            ->maxSize(5120)
+                            ->maxFiles(10),
                     ]),
 
                 \Filament\Schemas\Components\Section::make('Mô tả')
@@ -96,6 +145,30 @@ class ProductResource extends Resource
                         Forms\Components\Textarea::make('description')
                             ->label('Mô tả sản phẩm')
                             ->rows(5)
+                            ->columnSpanFull(),
+                    ]),
+
+                \Filament\Schemas\Components\Section::make('Thông số kỹ thuật')
+                    ->schema([
+                        Forms\Components\Repeater::make('specs')
+                            ->label('Danh sách thông số')
+                            ->schema([
+                                Forms\Components\TextInput::make('label')
+                                    ->label('Tên thông số')
+                                    ->required()
+                                    ->placeholder('VD: Màn hình, RAM, Pin...'),
+                                Forms\Components\TextInput::make('value')
+                                    ->label('Giá trị')
+                                    ->required()
+                                    ->placeholder('VD: 6.7 inch, 8GB, 5000mAh...'),
+                                Forms\Components\TextInput::make('unit')
+                                    ->label('Đơn vị')
+                                    ->placeholder('VD: inch, GB, mAh...'),
+                            ])
+                            ->columns(3)
+                            ->defaultItems(0)
+                            ->addActionLabel('Thêm thông số')
+                            ->collapsible()
                             ->columnSpanFull(),
                     ]),
 
@@ -118,7 +191,13 @@ class ProductResource extends Resource
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Ảnh')
                     ->circular()
-                    ->size(50),
+                    ->size(50)
+                    ->getStateUsing(function ($record) {
+                        $image = $record->image;
+                        if (!$image) return null;
+                        if (str_starts_with($image, 'http')) return $image;
+                        return asset('storage/' . $image);
+                    }),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Tên sản phẩm')
                     ->searchable()
@@ -171,11 +250,11 @@ class ProductResource extends Resource
                 Tables\Filters\SelectFilter::make('category')
                     ->label('Danh mục')
                     ->options([
-                        'smartphone' => 'Smartphone',
-                        'laptop' => 'Laptop',
-                        'tablet' => 'Tablet',
-                        'computer' => 'Computer',
-                        'accessory' => 'Accessory',
+                        'Smartphone' => 'Smartphone',
+                        'Laptop' => 'Laptop',
+                        'Tablet' => 'Tablet',
+                        'Computer' => 'Computer',
+                        'Accessory' => 'Accessory',
                     ]),
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Trạng thái'),

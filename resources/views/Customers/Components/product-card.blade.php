@@ -3,7 +3,10 @@
 <div class="product-card">
     <div class="product-image-wrapper">
         @if($product->image)
-            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="product-image">
+            @php
+                $cardImgUrl = Str::startsWith($product->image, 'http') ? $product->image : asset('storage/' . $product->image);
+            @endphp
+            <img src="{{ $cardImgUrl }}" alt="{{ $product->name }}" class="product-image">
         @else
             <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=400&fit=crop" alt="{{ $product->name }}" class="product-image">
         @endif
@@ -56,24 +59,41 @@
         </div>
 
         <div class="product-price">
-            @if($product->sale_price && $product->sale_price < $product->price)
+            @php
+                // Nếu có colors, dùng giá cao nhất
+                $hasColors = $product->colors && count($product->colors) > 0;
+                if ($hasColors) {
+                    $colorPrices = collect($product->colors);
+                    $cardPrice = $colorPrices->max('price');
+                    $cardSalePrice = $colorPrices->max('sale_price');
+                } else {
+                    $cardPrice = $product->price;
+                    $cardSalePrice = $product->sale_price;
+                }
+            @endphp
+            @if($cardSalePrice && $cardSalePrice < $cardPrice)
                 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
-                    <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
-                    <span class="price-original">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                    <span class="price-current">{{ number_format($cardSalePrice, 0, ',', '.') }}₫</span>
+                    <span class="price-original">{{ number_format($cardPrice, 0, ',', '.') }}₫</span>
                 </div>
                 @php
-                    $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+                    $discount = round((($cardPrice - $cardSalePrice) / $cardPrice) * 100);
                 @endphp
                 <span class="price-discount" style="margin-top: 0.25rem; display: inline-block;">-{{ $discount }}%</span>
             @else
-                <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                <span class="price-current">{{ number_format($cardPrice, 0, ',', '.') }}₫</span>
             @endif
         </div>
     </div>
 
     <div class="product-footer">
+        @php
+            $cardStock = ($product->colors && count($product->colors) > 0)
+                ? collect($product->colors)->sum('stock')
+                : $product->stock_quantity;
+        @endphp
         <div class="stock-status">
-            @if($product->stock_quantity > 0)
+            @if($cardStock > 0)
                 <span class="stock-dot"></span>
                 Còn hàng
             @else
@@ -81,7 +101,7 @@
                 <span style="color: #ef4444;">Hết hàng</span>
             @endif
         </div>
-        <button class="add-to-cart-btn" {{ $product->stock_quantity <= 0 ? 'disabled' : '' }} onclick="event.preventDefault(); event.stopPropagation(); addToCartFromCard('{{ $product->_id }}')">
+        <button class="add-to-cart-btn" {{ $cardStock <= 0 ? 'disabled' : '' }} onclick="event.preventDefault(); event.stopPropagation(); addToCartFromCard('{{ $product->_id }}')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="9" cy="21" r="1"></circle>
                 <circle cx="20" cy="21" r="1"></circle>
