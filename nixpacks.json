@@ -1,13 +1,25 @@
 {
+  "providers": ["php"],
   "phases": {
     "setup": {
-      "aptPkgs": ["libicu-dev", "libzip-dev", "zip", "unzip"]
+      "aptPkgs": [
+        "libicu-dev",
+        "libzip-dev",
+        "zip",
+        "unzip"
+      ]
+    },
+    "install": {
+      "cmds": [
+        "composer install --optimize-autoloader --no-interaction --ignore-platform-reqs",
+        "npm ci"
+      ]
     },
     "build": {
       "cmds": [
-        "composer install --ignore-platform-reqs",
-        "npm install",
-        "npm run build"
+        "npm run build",
+        "php artisan storage:link",
+        "chmod -R 775 storage bootstrap/cache"
       ]
     }
   },
