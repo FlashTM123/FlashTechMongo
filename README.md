@@ -92,8 +92,9 @@
 | Tính năng | Mô tả |
 |:----------|:------|
 | CRUD sản phẩm | Thêm, sửa, xóa, xem chi tiết |
-| Upload hình ảnh | Multiple images upload |
-| Specifications | Thông số kỹ thuật động |
+| Upload hình ảnh | Multiple images upload từ file (FileUpload) |
+| 🆕 Biến thể màu sắc | Nhiều màu/sản phẩm, mỗi màu có giá, giá khuyến mãi, tồn kho, nhiều ảnh riêng |
+| 🆕 Thông số kỹ thuật | Repeater động trong form tạo/sửa sản phẩm (label, value, unit) |
 | Danh mục | Smartphone, Laptop, Tablet, Computer, Accessory |
 | Filters | Lọc theo brand, category, status |
 
@@ -113,10 +114,11 @@
 | 🆕 Giỏ hàng (Cart) | Session-based, AJAX thêm/cập nhật/xóa sản phẩm |
 | 🆕 Thêm vào giỏ | Nút thêm giỏ hàng trên trang chi tiết & product card (AJAX) |
 | 🆕 Giữ giá giỏ hàng | Lưu giá tại thời điểm thêm, không đổi khi admin cập nhật giá |
+| 🆕 Giỏ hàng theo màu | Cùng sản phẩm khác màu = 2 dòng riêng, giá/stock theo màu |
 | 🆕 Badge giỏ hàng | Hiển thị số lượng sản phẩm trên navbar |
 | 🆕 Trang thanh toán | Form nhập thông tin giao hàng, chọn phương thức thanh toán |
 | 🆕 Phương thức TT | COD, Chuyển khoản ngân hàng, MoMo, VNPay |
-| 🆕 Đặt hàng | Tạo đơn hàng, trừ tồn kho, tăng số lượng bán |
+| 🆕 Đặt hàng | Tạo đơn hàng, trừ tồn kho theo màu, tăng số lượng bán |
 | 🆕 Trang thành công | Trang xác nhận đơn hàng sau khi đặt thành công |
 | 🆕 Bảo vệ route | Giỏ hàng & thanh toán yêu cầu đăng nhập customer |
 
@@ -457,8 +459,8 @@ FlashTechMongo/
 | | Quản lý Đánh giá (duyệt, sửa, xóa) | ✅ |
 | **Frontend** | Homepage | ✅ |
 | | Navbar responsive + cart badge | ✅ |
-| | Product cards | ✅ |
-| | Product detail page | ✅ |
+| | Product cards (hiển thị giá cao nhất từ biến thể màu) | ✅ |
+| | Product detail page (chọn màu, gallery động, giá/stock theo màu) | ✅ |
 | | Category page với filters | ✅ |
 | | Pagination component | ✅ |
 | | Flash sale timer | ✅ |
@@ -473,19 +475,21 @@ FlashTechMongo/
 | | Nút "Hữu ích" (AJAX) | ✅ |
 | | Thống kê rating | ✅ |
 | **🆕 Giỏ hàng** | Thêm sản phẩm vào giỏ (AJAX) | ✅ |
-| | Cập nhật số lượng (AJAX) | ✅ |
+| | 🆕 Giỏ hàng hỗ trợ biến thể màu (cart key theo màu) | ✅ |
+| | Cập nhật số lượng (AJAX, giới hạn stock theo màu) | ✅ |
 | | Xóa sản phẩm / Xóa toàn bộ giỏ | ✅ |
 | | Badge số lượng trên navbar | ✅ |
 | | Yêu cầu đăng nhập customer | ✅ |
 | **🆕 Thanh toán** | Form thông tin giao hàng | ✅ |
 | | Chọn phương thức thanh toán (COD, CK, MoMo, VNPay) | ✅ |
-| | Tạo đơn hàng + trừ tồn kho | ✅ |
+| | 🆕 Đặt hàng + trừ tồn kho theo biến thể màu | ✅ |
+| | 🆕 Lưu thông tin màu vào chi tiết đơn hàng | ✅ |
 | | Trang xác nhận đơn hàng thành công | ✅ |
 | **🆕 Lịch sử đơn hàng** | Danh sách đơn hàng của khách hàng | ✅ |
 | | Lọc theo trạng thái (tabs) | ✅ |
-| | Chi tiết đơn hàng | ✅ |
+| | Chi tiết đơn hàng (hiển thị màu sắc) | ✅ |
 | | Phân trang | ✅ |
-| | 🆕 Hủy đơn hàng (chờ xử lý/đang xử lý, hoàn kho) | ✅ |
+| | 🆕 Hủy đơn hàng (hoàn kho theo biến thể màu) | ✅ |
 
 ---
 
@@ -494,6 +498,13 @@ FlashTechMongo/
 ### 🆕 Tính năng mới
 | Tính năng | Mô tả | Trạng thái |
 |:----------|:------|:----------:|
+| Biến thể màu sắc | Mỗi sản phẩm hỗ trợ nhiều màu, mỗi màu có giá, giá khuyến mãi, tồn kho, nhiều ảnh riêng | ✅ |
+| Upload ảnh từ file | Thay thế nhập URL bằng FileUpload, hỗ trợ nhiều ảnh sản phẩm & nhiều ảnh theo màu | ✅ |
+| Gallery động theo màu | Trang chi tiết: chọn màu → gallery, giá, tồn kho cập nhật realtime (kiểu CellphoneS) | ✅ |
+| Thông số kỹ thuật | Repeater động trong form tạo/sửa sản phẩm (label, value, unit), lưu vào collection riêng | ✅ |
+| Giỏ hàng theo màu | Cùng sản phẩm khác màu = 2 dòng riêng, cart key format `productId_colorName` | ✅ |
+| Đặt hàng theo màu | Trừ tồn kho chính xác theo từng biến thể màu, lưu màu vào chi tiết đơn hàng | ✅ |
+| Hủy đơn hoàn kho theo màu | Hủy đơn (khách/admin) hoàn stock đúng biến thể màu đã mua | ✅ |
 | Filament Admin Panel | Thay thế admin panel cũ bằng Filament v3.3 tại `/admin` | ✅ |
 | Admin Resources | 6 Resources: Product, Brand, Order, User, Customer, Review | ✅ |
 | Dashboard Widget | Thống kê: tổng đơn, chờ xử lý, đang giao, đã giao, sản phẩm, khách hàng | ✅ |
@@ -504,6 +515,15 @@ FlashTechMongo/
 ### 🔧 Sửa lỗi & Cải thiện
 | Tính năng | Mô tả | Trạng thái |
 |:----------|:------|:----------:|
+| Checkout 0 sản phẩm/0₫ | Sửa cart key lookup — dùng `product_id` từ session thay vì cart key trực tiếp | ✅ |
+| Race condition stock | Re-fetch product trước mỗi lần cập nhật stock, tránh ghi đè khi cùng SP nhiều màu | ✅ |
+| Ảnh không hiển thị | Xử lý URL ảnh đúng cho cả Cloudinary (http) và local storage (`asset('storage/...')`) | ✅ |
+| Upload ảnh bị treo | Tăng `upload_max_filesize=20M`, `post_max_size=50M` trong php.ini | ✅ |
+| Danh mục 0 sản phẩm | Sửa Filament category select dùng đúng chữ hoa (Smartphone thay vì smartphone) | ✅ |
+| Giỏ hàng giá 0₫ | Sửa cart đọc giá từ biến thể màu thay vì `product.price` (đã chuyển sang colors array) | ✅ |
+| Admin hủy đơn | Admin đổi trạng thái sang cancelled → tự động hoàn kho theo biến thể màu | ✅ |
+| Max số lượng giỏ hàng | Giới hạn max quantity theo stock của biến thể màu, không dùng stock chung | ✅ |
+| Hiển thị màu đơn hàng | Thêm thông tin màu sắc ở trang thanh toán, đơn thành công, lịch sử đơn, chi tiết đơn | ✅ |
 | Filament + PHP 8.5 | Sửa type compatibility (`$navigationIcon`, `$navigationGroup`, `form()` signature) | ✅ |
 | Filament + MongoDB | Sửa `CACHE_STORE=database` → `file` (MongoDB không hỗ trợ `insertOrIgnore`) | ✅ |
 | Policy 403 errors | Sửa 7 Policy files trả về `true` thay vì `false`, fix wrong model types | ✅ |
