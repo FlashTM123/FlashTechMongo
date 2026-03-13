@@ -1,4 +1,11 @@
 <?php
+/**
+ * ⚡ STORAGE CONFIGURATION:
+ * - Logo được lưu trong storage/app/public/brands/
+ * - KHÔNG dùng Cloudinary
+ * - URL hiển thị: /storage/brands/...
+ * - FILESYSTEM_DISK=public (.env)
+ */
 
 namespace App\Filament\Resources;
 
@@ -41,10 +48,12 @@ class BrandResource extends Resource
                             ->maxLength(255)
                             ->disabled()
                             ->dehydrated(),
-                        Forms\Components\TextInput::make('logo')
-                            ->label('URL Logo')
-                            ->url()
-                            ->maxLength(500),
+                        Forms\Components\FileUpload::make('logo')
+                            ->label('Logo')
+                            ->image()
+                            ->disk('public')
+                            ->directory('brands')
+                            ->maxSize(5120),
                         Forms\Components\TextInput::make('website')
                             ->label('Website')
                             ->url()

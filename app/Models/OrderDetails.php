@@ -61,4 +61,16 @@ class OrderDetails extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    /**
+     * Format product image URL from storage
+     */
+    public function getProductImageAttribute($value)
+    {
+        if (!$value) return null;
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://') || str_starts_with($value, '/storage/')) {
+            return $value;
+        }
+        return '/storage/' . $value;
+    }
 }

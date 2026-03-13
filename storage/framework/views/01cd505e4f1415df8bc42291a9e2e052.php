@@ -1,7 +1,6 @@
-@extends('Customers.Layouts.master')
-@section('title', 'Sản phẩm yêu thích - FlashTech')
+<?php $__env->startSection('title', 'Sản phẩm yêu thích - FlashTech'); ?>
 
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         :root {
             --primary: #667eea;
@@ -278,13 +277,13 @@
             .price-current { font-size: 0.9375rem; }
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="wishlist-page">
         <div class="container">
             <div class="breadcrumb">
-                <a href="{{ route('home') }}">Trang chủ</a>
+                <a href="<?php echo e(route('home')); ?>">Trang chủ</a>
                 <span>›</span>
                 <span class="current">Sản phẩm yêu thích</span>
             </div>
@@ -295,55 +294,57 @@
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                     </svg>
                     Sản phẩm yêu thích
-                    @if($wishlistProducts->count() > 0)
-                        <span class="wishlist-count">{{ $wishlistProducts->count() }} sản phẩm</span>
-                    @endif
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($wishlistProducts->count() > 0): ?>
+                        <span class="wishlist-count"><?php echo e($wishlistProducts->count()); ?> sản phẩm</span>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </h1>
             </div>
 
-            @if(session('success'))
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('success')): ?>
                 <div class="alert-success">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    {{ session('success') }}
-                </div>
-            @endif
+                    <?php echo e(session('success')); ?>
 
-            @if($wishlistProducts->count() > 0)
+                </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($wishlistProducts->count() > 0): ?>
                 <div class="wishlist-grid">
-                    @foreach($wishlistProducts as $product)
-                        <div class="wishlist-card" id="wishlist-item-{{ $product->_id }}">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $wishlistProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                        <div class="wishlist-card" id="wishlist-item-<?php echo e($product->_id); ?>">
                             <div class="wishlist-card-image">
-                                <button class="btn-remove-wishlist" onclick="removeWishlist('{{ $product->_id }}')" title="Xóa khỏi yêu thích">
+                                <button class="btn-remove-wishlist" onclick="removeWishlist('<?php echo e($product->_id); ?>')" title="Xóa khỏi yêu thích">
                                     <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
                                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                                     </svg>
                                 </button>
-                                @if($product->sale_price && $product->sale_price < $product->price)
-                                    <span class="sale-badge">-{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%</span>
-                                @endif
-                                <a href="{{ route('product.detail', $product->slug) }}">
-                                    <img src="{{ $product->image ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop' }}" alt="{{ $product->name }}">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->sale_price && $product->sale_price < $product->price): ?>
+                                    <span class="sale-badge">-<?php echo e(round((($product->price - $product->sale_price) / $product->price) * 100)); ?>%</span>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                <a href="<?php echo e(route('product.detail', $product->slug)); ?>">
+                                    <img src="<?php echo e($product->image ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop'); ?>" alt="<?php echo e($product->name); ?>">
                                 </a>
                             </div>
                             <div class="wishlist-card-body">
-                                @if($product->brand)
-                                    <div class="wishlist-card-brand">{{ $product->brand->name }}</div>
-                                @endif
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->brand): ?>
+                                    <div class="wishlist-card-brand"><?php echo e($product->brand->name); ?></div>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 <div class="wishlist-card-name">
-                                    <a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a>
+                                    <a href="<?php echo e(route('product.detail', $product->slug)); ?>"><?php echo e($product->name); ?></a>
                                 </div>
                                 <div class="wishlist-card-price">
-                                    @if($product->sale_price && $product->sale_price < $product->price)
-                                        <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
-                                        <span class="price-old">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                                    @else
-                                        <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                                    @endif
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->sale_price && $product->sale_price < $product->price): ?>
+                                        <span class="price-current"><?php echo e(number_format($product->sale_price, 0, ',', '.')); ?>₫</span>
+                                        <span class="price-old"><?php echo e(number_format($product->price, 0, ',', '.')); ?>₫</span>
+                                    <?php else: ?>
+                                        <span class="price-current"><?php echo e(number_format($product->price, 0, ',', '.')); ?>₫</span>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
-                                <div class="wishlist-card-stock {{ $product->stock_quantity > 0 ? 'stock-in' : 'stock-out' }}">
-                                    {{ $product->stock_quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}
+                                <div class="wishlist-card-stock <?php echo e($product->stock_quantity > 0 ? 'stock-in' : 'stock-out'); ?>">
+                                    <?php echo e($product->stock_quantity > 0 ? 'Còn hàng' : 'Hết hàng'); ?>
+
                                 </div>
-                                <button class="btn-add-cart" {{ $product->stock_quantity <= 0 ? 'disabled' : '' }} onclick="addToCartFromWishlist('{{ $product->_id }}')">
+                                <button class="btn-add-cart" <?php echo e($product->stock_quantity <= 0 ? 'disabled' : ''); ?> onclick="addToCartFromWishlist('<?php echo e($product->_id); ?>')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                                         <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
@@ -352,16 +353,16 @@
                                 </button>
                             </div>
                         </div>
-                    @endforeach
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="empty-wishlist">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                     </svg>
                     <h3>Chưa có sản phẩm yêu thích</h3>
                     <p>Hãy khám phá và thêm sản phẩm bạn yêu thích vào danh sách!</p>
-                    <a href="{{ route('home') }}" class="btn-shop">
+                    <a href="<?php echo e(route('home')); ?>" class="btn-shop">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
                             <polyline points="9 22 9 12 15 12 15 22"/>
@@ -369,21 +370,21 @@
                         Khám phá sản phẩm
                     </a>
                 </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         function removeWishlist(productId) {
             if (!confirm('Bạn có chắc muốn xóa sản phẩm này khỏi danh sách yêu thích?')) return;
 
-            fetch('{{ route("wishlist.toggle") }}', {
+            fetch('<?php echo e(route("wishlist.toggle")); ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({ product_id: productId })
@@ -407,11 +408,11 @@
         }
 
         function addToCartFromWishlist(productId) {
-            fetch('{{ route("cart.add") }}', {
+            fetch('<?php echo e(route("cart.add")); ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({ product_id: productId, quantity: 1 })
@@ -426,4 +427,6 @@
             });
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('Customers.Layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/Wishlist/index.blade.php ENDPATH**/ ?>

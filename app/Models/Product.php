@@ -35,8 +35,9 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'images' => 'array',
-        'colors' => 'array',
+        // Don't use array/json casts for images and colors - handle manually in getAttribute/setAttribute
+        // 'images' => 'json',
+        // 'colors' => 'json',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'stock_quantity' => 'integer',
@@ -56,6 +57,48 @@ class Product extends Model
                 $product->sku = null;
             }
         });
+    }
+
+    /**
+     * ⚡ Override getAttribute to handle JSON parsing for images & colors
+     * MongoDB stores these as JSON strings, we need to parse them into arrays
+     */
+    public function getAttribute($key)
+    {
+        $value = parent::getAttribute($key);
+        
+        // Parse JSON strings to arrays for images and colors
+        if (in_array($key, ['images', 'colors']) && is_string($value)) {
+            $value = json_decode($value, true) ?? [];
+        }
+        
+        // Format image URLs
+        if ($key === 'images' && is_array($value)) {
+            return array_map(function ($img) {
+                if (!$img) return null;
+                if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://') || str_starts_with($img, '/storage/')) {
+                    return $img;
+                }
+                return '/storage/' . $img;
+            }, $value);
+        }
+        
+        if ($key === 'colors' && is_array($value)) {
+            return collect($value)->map(function ($color) {
+                if (isset($color['images']) && is_array($color['images'])) {
+                    $color['images'] = array_map(function ($img) {
+                        if (!$img) return null;
+                        if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://') || str_starts_with($img, '/storage/')) {
+                            return $img;
+                        }
+                        return '/storage/' . $img;
+                    }, $color['images']);
+                }
+                return $color;
+            })->toArray();
+        }
+        
+        return $value;
     }
 
     protected function castDecimal($value): float
@@ -79,6 +122,45 @@ class Product extends Model
     public function getRatingAttribute($value): float
     {
         return $this->castDecimal($value);
+    }
+
+    /**
+     * ⚡ IMAGE ACCESSORS - Auto format image URLs
+     * Store path: "products/abc123.jpg"
+     * Display as: "/storage/products/abc123.jpg"
+     */
+    public function getImageAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
+        // If already a full URL, return as is
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+        // If starts with /storage/, return as is
+        if (str_starts_with($value, '/storage/')) {
+            return $value;
+        }
+        // Otherwise, prepend /storage/
+        return '/storage/' . $value;
+    }
+
+    public function getImagesAttribute($value)
+    {
+        if (!$value || !is_array($value)) {
+            return $value ?? [];
+        }
+        // Format each image path
+        return array_map(function($image) {
+            if (!$image) {
+                return null;
+            }
+            if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '/storage/')) {
+                return $image;
+            }
+            return '/storage/' . $image;
+        }, $value);
     }
 
     public function brand()

@@ -3,10 +3,7 @@
 <div class="product-card">
     <div class="product-image-wrapper">
         @if($product->image)
-            @php
-                $cardImgUrl = Str::startsWith($product->image, 'http') ? $product->image : asset('storage/' . $product->image);
-            @endphp
-            <img src="{{ $cardImgUrl }}" alt="{{ $product->name }}" class="product-image">
+            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="product-image">
         @else
             <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=400&fit=crop" alt="{{ $product->name }}" class="product-image">
         @endif

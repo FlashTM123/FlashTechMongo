@@ -38,20 +38,28 @@ class Customer extends Model implements Authenticatable
         'wishlist' => 'array',
     ];
 
-    public function getProfilePictureUrlAttribute(): ?string
+    /**
+     * ⚡ PROFILE PICTURE ACCESSOR - Auto format profile picture URL
+     * Store path: "profile_pictures/abc123.jpg"
+     * Display as: "/storage/profile_pictures/abc123.jpg"
+     */
+    public function getProfilePictureAttribute($value)
     {
-        if (!$this->profile_picture) {
+        if (!$value) {
             return null;
         }
-
-        if (str_starts_with($this->profile_picture, 'http')) {
-            return $this->profile_picture;
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
         }
+        if (str_starts_with($value, '/storage/')) {
+            return $value;
+        }
+        return '/storage/' . $value;
+    }
 
-        $path = ltrim($this->profile_picture, '/');
-        $path = str_replace('storage/', '', $path);
-
-        return asset('storage/' . $path);
+    public function getProfilePictureUrlAttribute(): ?string
+    {
+        return $this->profile_picture;  // Use accessor above
     }
 
     public function orders()

@@ -1,8 +1,6 @@
-@extends('Customers.Layouts.master')
+<?php $__env->startSection('title', $product->name . ' - FlashTech'); ?>
 
-@section('title', $product->name . ' - FlashTech')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         :root {
             --primary: #667eea;
@@ -1286,22 +1284,22 @@
             }
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="product-detail-page">
         <div class="container">
             <!-- Breadcrumb -->
             <nav class="breadcrumb">
-                <a href="{{ route('home') }}">Trang chủ</a>
+                <a href="<?php echo e(route('home')); ?>">Trang chủ</a>
                 <span>›</span>
-                <a href="#">{{ $product->category }}</a>
+                <a href="#"><?php echo e($product->category); ?></a>
                 <span>›</span>
-                @if ($product->brand)
-                    <a href="#">{{ $product->brand->name }}</a>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->brand): ?>
+                    <a href="#"><?php echo e($product->brand->name); ?></a>
                     <span>›</span>
-                @endif
-                <span class="current">{{ Str::limit($product->name, 40) }}</span>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <span class="current"><?php echo e(Str::limit($product->name, 40)); ?></span>
             </nav>
 
             <!-- Main Product Detail -->
@@ -1309,51 +1307,51 @@
                 <!-- Gallery -->
                 <div class="product-gallery">
                     <div class="main-image-wrapper">
-                        @if ($product->image)
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
-                        @else
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" alt="{{ $product->name }}" class="main-image" id="mainImage">
-                        @endif
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->image): ?>
+                            <img src="<?php echo e($product->image); ?>" alt="<?php echo e($product->name); ?>" class="main-image" id="mainImage">
+                        <?php else: ?>
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" alt="<?php echo e($product->name); ?>" class="main-image" id="mainImage">
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                         <div class="image-badges">
-                            @if ($product->is_featured)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->is_featured): ?>
                                 <span class="badge badge-hot">🔥 Hot</span>
-                            @endif
-                            @if ($product->sale_price && $product->sale_price < $product->price)
-                                @php
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->sale_price && $product->sale_price < $product->price): ?>
+                                <?php
                                     $discount = round(
                                         (($product->price - $product->sale_price) / $product->price) * 100,
                                     );
-                                @endphp
-                                <span class="badge badge-sale">-{{ $discount }}%</span>
-                            @endif
+                                ?>
+                                <span class="badge badge-sale">-<?php echo e($discount); ?>%</span>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </div>
 
                     <!-- Thumbnails -->
-                    @if ($product->images && count($product->images) > 0)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->images && count($product->images) > 0): ?>
                         <div class="thumbnail-list">
                             <div class="thumbnail-item active"
-                                onclick="changeImage('{{ $product->image ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop' }}', this)">
-                                @if ($product->image)
-                                    <img src="{{ $product->image }}" alt="Thumbnail">
-                                @else
+                                onclick="changeImage('<?php echo e($product->image ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop'); ?>', this)">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->image): ?>
+                                    <img src="<?php echo e($product->image); ?>" alt="Thumbnail">
+                                <?php else: ?>
                                     <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop" alt="Thumbnail">
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                            @foreach ($product->images as $image)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $product->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                                 <div class="thumbnail-item"
-                                    onclick="changeImage('{{ $image }}', this)">
-                                    <img src="{{ $image }}" alt="Thumbnail">
+                                    onclick="changeImage('<?php echo e($image); ?>', this)">
+                                    <img src="<?php echo e($image); ?>" alt="Thumbnail">
                                 </div>
-                            @endforeach
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                         </div>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- Product Info -->
                 <div class="product-info">
-                    @if ($product->brand)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->brand): ?>
                         <span class="product-brand">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -1361,31 +1359,33 @@
                                 </path>
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                             </svg>
-                            {{ $product->brand->name }}
-                        </span>
-                    @endif
+                            <?php echo e($product->brand->name); ?>
 
-                    <h1 class="product-title">{{ $product->name }}</h1>
+                        </span>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+                    <h1 class="product-title"><?php echo e($product->name); ?></h1>
 
                     <div class="product-meta">
                         <div class="rating-wrapper">
                             <div class="stars">
-                                @php
+                                <?php
                                     $rating = $product->rating ?? 5;
                                     $fullStars = floor($rating);
                                     $halfStar = $rating - $fullStars >= 0.5;
-                                @endphp
-                                @for ($i = 0; $i < $fullStars; $i++)
+                                ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i = 0; $i < $fullStars; $i++): ?>
                                     ★
-                                @endfor
-                                @if ($halfStar)
+                                <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($halfStar): ?>
                                     ☆
-                                @endif
-                                @for ($i = 0; $i < 5 - $fullStars - ($halfStar ? 1 : 0); $i++)
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i = 0; $i < 5 - $fullStars - ($halfStar ? 1 : 0); $i++): ?>
                                     ☆
-                                @endfor
+                                <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                            <span class="rating-text">{{ number_format($rating, 1) }} ({{ $product->sales_count ?? 0 }}
+                            <span class="rating-text"><?php echo e(number_format($rating, 1)); ?> (<?php echo e($product->sales_count ?? 0); ?>
+
                                 đánh giá)</span>
                         </div>
 
@@ -1396,7 +1396,7 @@
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
                             </svg>
-                            {{ number_format($product->views_count ?? 0) }} lượt xem
+                            <?php echo e(number_format($product->views_count ?? 0)); ?> lượt xem
                         </div>
 
                         <div class="meta-divider"></div>
@@ -1407,90 +1407,90 @@
                                 <circle cx="20" cy="21" r="1"></circle>
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                             </svg>
-                            {{ number_format($product->sales_count ?? 0) }} đã bán
+                            <?php echo e(number_format($product->sales_count ?? 0)); ?> đã bán
                         </div>
                     </div>
 
                     <!-- Price -->
                     <div class="price-section" id="priceSection">
-                        @if($product->colors && count($product->colors) > 0)
-                            @php
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->colors && count($product->colors) > 0): ?>
+                            <?php
                                 $firstColor = $product->colors[0];
                                 $displayPrice = $firstColor['price'];
                                 $displaySalePrice = $firstColor['sale_price'] ?? null;
-                            @endphp
+                            ?>
                             <div class="price-row">
-                                @if($displaySalePrice && $displaySalePrice < $displayPrice)
-                                    <span class="price-current" id="colorPrice">{{ number_format($displaySalePrice, 0, ',', '.') }}₫</span>
-                                    <span class="price-original" id="colorOriginalPrice">{{ number_format($displayPrice, 0, ',', '.') }}₫</span>
-                                    <span class="discount-badge" id="colorDiscount">-{{ round((($displayPrice - $displaySalePrice) / $displayPrice) * 100) }}%</span>
-                                @else
-                                    <span class="price-current" id="colorPrice">{{ number_format($displayPrice, 0, ',', '.') }}₫</span>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($displaySalePrice && $displaySalePrice < $displayPrice): ?>
+                                    <span class="price-current" id="colorPrice"><?php echo e(number_format($displaySalePrice, 0, ',', '.')); ?>₫</span>
+                                    <span class="price-original" id="colorOriginalPrice"><?php echo e(number_format($displayPrice, 0, ',', '.')); ?>₫</span>
+                                    <span class="discount-badge" id="colorDiscount">-<?php echo e(round((($displayPrice - $displaySalePrice) / $displayPrice) * 100)); ?>%</span>
+                                <?php else: ?>
+                                    <span class="price-current" id="colorPrice"><?php echo e(number_format($displayPrice, 0, ',', '.')); ?>₫</span>
                                     <span class="price-original" id="colorOriginalPrice" style="display:none;"></span>
                                     <span class="discount-badge" id="colorDiscount" style="display:none;"></span>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="price-row">
-                                @if ($product->sale_price && $product->sale_price < $product->price)
-                                    <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
-                                    <span class="price-original">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                                    <span class="discount-badge">-{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%</span>
-                                @else
-                                    <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                                @endif
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->sale_price && $product->sale_price < $product->price): ?>
+                                    <span class="price-current"><?php echo e(number_format($product->sale_price, 0, ',', '.')); ?>₫</span>
+                                    <span class="price-original"><?php echo e(number_format($product->price, 0, ',', '.')); ?>₫</span>
+                                    <span class="discount-badge">-<?php echo e(round((($product->price - $product->sale_price) / $product->price) * 100)); ?>%</span>
+                                <?php else: ?>
+                                    <span class="price-current"><?php echo e(number_format($product->price, 0, ',', '.')); ?>₫</span>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                        @endif
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <p class="price-note">Giá đã bao gồm VAT. Miễn phí vận chuyển cho đơn hàng từ 500.000₫</p>
                     </div>
 
                     <!-- Color Selection -->
-                    @if($product->colors && count($product->colors) > 0)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->colors && count($product->colors) > 0): ?>
                         <div class="option-section">
                             <label class="option-label">Màu sắc:</label>
                             <div class="color-options">
-                                @foreach($product->colors as $index => $colorItem)
-                                    @php
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $product->colors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $colorItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                    <?php
                                         // Color images array - accessor already formatted URLs
                                         $colorImages = $colorItem['images'] ?? [];
-                                    @endphp
-                                    <div class="color-option {{ $index === 0 ? 'active' : '' }}"
-                                         onclick="selectColor(this, {{ $index }})"
-                                         data-price="{{ $colorItem['price'] }}"
-                                         data-sale-price="{{ $colorItem['sale_price'] ?? '' }}"
-                                         data-stock="{{ $colorItem['stock'] ?? 0 }}"
-                                         data-images='@json($colorImages)'>
-                                        @if(!empty($colorImages))
-                                            <img src="{{ $colorImages[0] }}" alt="{{ $colorItem['color'] }}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
-                                        @else
-                                            <span class="color-dot" style="background: {{ $colorItem['color'] == 'Đen' ? '#1a1a1a' : ($colorItem['color'] == 'Trắng' ? '#ffffff' : ($colorItem['color'] == 'Xanh' || $colorItem['color'] == 'Xanh Đậm' ? '#3b82f6' : ($colorItem['color'] == 'Đỏ' ? '#ef4444' : ($colorItem['color'] == 'Vàng' ? '#fbbf24' : ($colorItem['color'] == 'Cam' || $colorItem['color'] == 'Cam Vũ Trụ' ? '#f97316' : ($colorItem['color'] == 'Bạc' ? '#c0c0c0' : '#9ca3af')))))) }};"></span>
-                                        @endif
+                                    ?>
+                                    <div class="color-option <?php echo e($index === 0 ? 'active' : ''); ?>"
+                                         onclick="selectColor(this, <?php echo e($index); ?>)"
+                                         data-price="<?php echo e($colorItem['price']); ?>"
+                                         data-sale-price="<?php echo e($colorItem['sale_price'] ?? ''); ?>"
+                                         data-stock="<?php echo e($colorItem['stock'] ?? 0); ?>"
+                                         data-images='<?php echo json_encode($colorImages, 15, 512) ?>'>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($colorImages)): ?>
+                                            <img src="<?php echo e($colorImages[0]); ?>" alt="<?php echo e($colorItem['color']); ?>" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+                                        <?php else: ?>
+                                            <span class="color-dot" style="background: <?php echo e($colorItem['color'] == 'Đen' ? '#1a1a1a' : ($colorItem['color'] == 'Trắng' ? '#ffffff' : ($colorItem['color'] == 'Xanh' || $colorItem['color'] == 'Xanh Đậm' ? '#3b82f6' : ($colorItem['color'] == 'Đỏ' ? '#ef4444' : ($colorItem['color'] == 'Vàng' ? '#fbbf24' : ($colorItem['color'] == 'Cam' || $colorItem['color'] == 'Cam Vũ Trụ' ? '#f97316' : ($colorItem['color'] == 'Bạc' ? '#c0c0c0' : '#9ca3af'))))))); ?>;"></span>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         <div style="display:flex;flex-direction:column;">
-                                            <span class="color-name">{{ $colorItem['color'] }}</span>
+                                            <span class="color-name"><?php echo e($colorItem['color']); ?></span>
                                             <span style="font-size:0.8rem;color:var(--gray-500);">
-                                                @if(!empty($colorItem['sale_price']) && $colorItem['sale_price'] < $colorItem['price'])
-                                                    {{ number_format($colorItem['sale_price'], 0, ',', '.') }}₫
-                                                @else
-                                                    {{ number_format($colorItem['price'], 0, ',', '.') }}₫
-                                                @endif
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($colorItem['sale_price']) && $colorItem['sale_price'] < $colorItem['price']): ?>
+                                                    <?php echo e(number_format($colorItem['sale_price'], 0, ',', '.')); ?>₫
+                                                <?php else: ?>
+                                                    <?php echo e(number_format($colorItem['price'], 0, ',', '.')); ?>₫
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                             </span>
                                         </div>
                                     </div>
-                                @endforeach
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                             </div>
                         </div>
-                    @elseif($product->color)
+                    <?php elseif($product->color): ?>
                         <div class="option-section">
                             <label class="option-label">Màu sắc:</label>
                             <div class="color-options">
                                 <div class="color-option active">
                                     <span class="color-dot"
-                                        style="background: {{ $product->color == 'Đen' ? '#1a1a1a' : ($product->color == 'Trắng' ? '#ffffff' : ($product->color == 'Xanh' ? '#3b82f6' : ($product->color == 'Đỏ' ? '#ef4444' : ($product->color == 'Vàng' ? '#fbbf24' : '#9ca3af')))) }};"></span>
-                                    <span class="color-name">{{ $product->color }}</span>
+                                        style="background: <?php echo e($product->color == 'Đen' ? '#1a1a1a' : ($product->color == 'Trắng' ? '#ffffff' : ($product->color == 'Xanh' ? '#3b82f6' : ($product->color == 'Đỏ' ? '#ef4444' : ($product->color == 'Vàng' ? '#fbbf24' : '#9ca3af'))))); ?>;"></span>
+                                    <span class="color-name"><?php echo e($product->color); ?></span>
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                     <!-- Quantity -->
                     <div class="option-section">
@@ -1499,27 +1499,27 @@
                             <div class="quantity-selector">
                                 <button class="qty-btn" onclick="decreaseQty()" id="decreaseBtn">−</button>
                                 <input type="number" class="qty-input" value="1" min="1"
-                                    max="{{ $product->colors && count($product->colors) > 0 ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity }}" id="qtyInput" onchange="validateQty()">
+                                    max="<?php echo e($product->colors && count($product->colors) > 0 ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity); ?>" id="qtyInput" onchange="validateQty()">
                                 <button class="qty-btn" onclick="increaseQty()" id="increaseBtn">+</button>
                             </div>
                             <span class="stock-info" id="stockInfo">
-                                @php
+                                <?php
                                     $displayStock = ($product->colors && count($product->colors) > 0) ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity;
-                                @endphp
-                                @if($displayStock > 10)
-                                    <span class="in-stock">✓ Còn {{ $displayStock }} sản phẩm</span>
-                                @elseif($displayStock > 0)
-                                    <span class="low-stock">⚠ Chỉ còn {{ $displayStock }} sản phẩm</span>
-                                @else
+                                ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($displayStock > 10): ?>
+                                    <span class="in-stock">✓ Còn <?php echo e($displayStock); ?> sản phẩm</span>
+                                <?php elseif($displayStock > 0): ?>
+                                    <span class="low-stock">⚠ Chỉ còn <?php echo e($displayStock); ?> sản phẩm</span>
+                                <?php else: ?>
                                     <span class="out-of-stock">✕ Hết hàng</span>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </span>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        <button class="btn btn-primary" id="addToCartBtn" {{ $product->stock_quantity <= 0 ? 'disabled' : '' }} onclick="addToCart()">
+                        <button class="btn btn-primary" id="addToCartBtn" <?php echo e($product->stock_quantity <= 0 ? 'disabled' : ''); ?> onclick="addToCart()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
@@ -1527,20 +1527,20 @@
                             </svg>
                             Thêm vào giỏ hàng
                         </button>
-                        @php
+                        <?php
                             $isInWishlist = false;
                             if (auth('customer')->check()) {
                                 $wishlist = auth('customer')->user()->wishlist ?? [];
                                 $isInWishlist = in_array($product->_id, $wishlist);
                             }
-                        @endphp
-                        <button class="btn btn-secondary {{ $isInWishlist ? 'wishlisted' : '' }}" id="wishlistBtn" onclick="toggleWishlist()">
-                            <svg viewBox="0 0 24 24" fill="{{ $isInWishlist ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
+                        ?>
+                        <button class="btn btn-secondary <?php echo e($isInWishlist ? 'wishlisted' : ''); ?>" id="wishlistBtn" onclick="toggleWishlist()">
+                            <svg viewBox="0 0 24 24" fill="<?php echo e($isInWishlist ? 'currentColor' : 'none'); ?>" stroke="currentColor" stroke-width="2">
                                 <path
                                     d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                                 </path>
                             </svg>
-                            <span id="wishlistText">{{ $isInWishlist ? 'Đã yêu thích' : 'Yêu thích' }}</span>
+                            <span id="wishlistText"><?php echo e($isInWishlist ? 'Đã yêu thích' : 'Yêu thích'); ?></span>
                         </button>
                     </div>
 
@@ -1605,17 +1605,18 @@
                     <button class="tab-btn active" onclick="switchTab('description')">Mô tả sản phẩm</button>
                     <button class="tab-btn" onclick="switchTab('specifications')">Thông số kỹ thuật</button>
                     <button class="tab-btn" onclick="switchTab('reviews')">Đánh giá
-                        ({{ $reviews->count() ?? 0 }})</button>
+                        (<?php echo e($reviews->count() ?? 0); ?>)</button>
                 </div>
 
                 <!-- Description Tab -->
                 <div class="tab-content active" id="tab-description">
                     <div class="product-description">
-                        @if ($product->description)
-                            {!! nl2br(e($product->description)) !!}
-                        @else
-                            <p>{{ $product->name }} là sản phẩm công nghệ cao cấp đến từ thương hiệu
-                                {{ $product->brand->name ?? 'uy tín' }}.</p>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->description): ?>
+                            <?php echo nl2br(e($product->description)); ?>
+
+                        <?php else: ?>
+                            <p><?php echo e($product->name); ?> là sản phẩm công nghệ cao cấp đến từ thương hiệu
+                                <?php echo e($product->brand->name ?? 'uy tín'); ?>.</p>
 
                             <h3>Điểm nổi bật</h3>
                             <ul>
@@ -1628,68 +1629,68 @@
 
                             <h3>Trong hộp bao gồm</h3>
                             <ul>
-                                <li>1 x {{ $product->name }}</li>
+                                <li>1 x <?php echo e($product->name); ?></li>
                                 <li>1 x Sạc và cáp kết nối</li>
                                 <li>1 x Sách hướng dẫn sử dụng</li>
                                 <li>1 x Phiếu bảo hành</li>
                             </ul>
-                        @endif
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 
                 <!-- Specifications Tab -->
                 <div class="tab-content" id="tab-specifications">
-                    @if ($specifications && count($specifications) > 0)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($specifications && count($specifications) > 0): ?>
                         <table class="specs-table">
-                            @php
+                            <?php
                                 $currentGroup = '';
-                            @endphp
-                            @foreach ($specifications as $spec)
+                            ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $specifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $spec): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                                 <tr>
-                                    <td>{{ $spec->label ?? $spec->key }}</td>
-                                    <td>{{ $spec->value }}{{ $spec->unit ? ' ' . $spec->unit : '' }}</td>
+                                    <td><?php echo e($spec->label ?? $spec->key); ?></td>
+                                    <td><?php echo e($spec->value); ?><?php echo e($spec->unit ? ' ' . $spec->unit : ''); ?></td>
                                 </tr>
-                            @endforeach
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                         </table>
-                    @else
+                    <?php else: ?>
                         <table class="specs-table">
                             <tr class="specs-group-title">
                                 <td colspan="2">Thông tin chung</td>
                             </tr>
                             <tr>
                                 <td>Tên sản phẩm</td>
-                                <td>{{ $product->name }}</td>
+                                <td><?php echo e($product->name); ?></td>
                             </tr>
                             <tr>
                                 <td>Thương hiệu</td>
-                                <td>{{ $product->brand->name ?? 'N/A' }}</td>
+                                <td><?php echo e($product->brand->name ?? 'N/A'); ?></td>
                             </tr>
                             <tr>
                                 <td>Danh mục</td>
-                                <td>{{ $product->category }}</td>
+                                <td><?php echo e($product->category); ?></td>
                             </tr>
-                            @if ($product->color)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->color): ?>
                                 <tr>
                                     <td>Màu sắc</td>
-                                    <td>{{ $product->color }}</td>
+                                    <td><?php echo e($product->color); ?></td>
                                 </tr>
-                            @endif
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <tr>
                                 <td>Mã SKU</td>
-                                <td>{{ $product->sku ?? 'N/A' }}</td>
+                                <td><?php echo e($product->sku ?? 'N/A'); ?></td>
                             </tr>
                             <tr>
                                 <td>Tình trạng</td>
-                                <td>{{ $product->stock_quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}</td>
+                                <td><?php echo e($product->stock_quantity > 0 ? 'Còn hàng' : 'Hết hàng'); ?></td>
                             </tr>
                         </table>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- Reviews Tab -->
                 <div class="tab-content" id="tab-reviews">
                     <!-- Tổng quan đánh giá -->
-                    @php
+                    <?php
                         $totalReviews = $reviews->count();
                         $avgRating = $totalReviews > 0 ? $reviews->avg('rating') : 0;
                         $ratingStats = [];
@@ -1700,70 +1701,78 @@
                                 'percent' => $totalReviews > 0 ? round(($count / $totalReviews) * 100) : 0,
                             ];
                         }
-                    @endphp
+                    ?>
                     <div class="reviews-summary">
                         <div class="rating-big">
-                            <div class="rating-number">{{ number_format($avgRating, 1) }}</div>
+                            <div class="rating-number"><?php echo e(number_format($avgRating, 1)); ?></div>
                             <div class="rating-stars">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    @if ($i <= round($avgRating))
-                                    ★@else☆
-                                    @endif
-                                @endfor
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i = 1; $i <= 5; $i++): ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($i <= round($avgRating)): ?>
+                                    ★<?php else: ?>☆
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                            <div class="rating-count">{{ $totalReviews }} đánh giá</div>
+                            <div class="rating-count"><?php echo e($totalReviews); ?> đánh giá</div>
                         </div>
                         <div class="rating-bars">
-                            @for ($i = 5; $i >= 1; $i--)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i = 5; $i >= 1; $i--): ?>
                                 <div class="rating-bar-item">
-                                    <span class="rating-bar-label">{{ $i }} sao</span>
+                                    <span class="rating-bar-label"><?php echo e($i); ?> sao</span>
                                     <div class="rating-bar">
-                                        <div class="rating-bar-fill" style="width: {{ $ratingStats[$i]['percent'] }}%;">
+                                        <div class="rating-bar-fill" style="width: <?php echo e($ratingStats[$i]['percent']); ?>%;">
                                         </div>
                                     </div>
-                                    <span class="rating-bar-count">{{ $ratingStats[$i]['count'] }}</span>
+                                    <span class="rating-bar-count"><?php echo e($ratingStats[$i]['count']); ?></span>
                                 </div>
-                            @endfor
+                            <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </div>
 
                     <!-- Form đánh giá -->
-                    @if (auth('customer')->check())
-                        @php
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth('customer')->check()): ?>
+                        <?php
                             $existingReview = $reviews->where('customer_id', auth('customer')->id())->first();
-                        @endphp
+                        ?>
 
                         <div class="review-form-section">
                             <h4 class="review-form-title">
-                                {{ $existingReview ? 'Sửa đánh giá của bạn' : 'Viết đánh giá của bạn' }}
+                                <?php echo e($existingReview ? 'Sửa đánh giá của bạn' : 'Viết đánh giá của bạn'); ?>
+
                             </h4>
 
-                            @if (session('review_success'))
-                                <div class="alert alert-success">{{ session('review_success') }}</div>
-                            @endif
-                            @if (session('review_error'))
-                                <div class="alert alert-error">{{ session('review_error') }}</div>
-                            @endif
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('review_success')): ?>
+                                <div class="alert alert-success"><?php echo e(session('review_success')); ?></div>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('review_error')): ?>
+                                <div class="alert alert-error"><?php echo e(session('review_error')); ?></div>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                            <form action="{{ route('reviews.store', $product->slug) }}" method="POST"
+                            <form action="<?php echo e(route('reviews.store', $product->slug)); ?>" method="POST"
                                 enctype="multipart/form-data" class="review-form">
-                                @csrf
+                                <?php echo csrf_field(); ?>
 
                                 <!-- Chọn số sao -->
                                 <div class="form-group">
                                     <label class="form-label">Đánh giá của bạn <span class="required">*</span></label>
                                     <div class="star-rating-input">
-                                        @for ($i = 5; $i >= 1; $i--)
-                                            <input type="radio" name="rating" value="{{ $i }}"
-                                                id="star{{ $i }}"
-                                                {{ old('rating', $existingReview->rating ?? 5) == $i ? 'checked' : '' }}>
-                                            <label for="star{{ $i }}"
-                                                title="{{ $i }} sao">★</label>
-                                        @endfor
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i = 5; $i >= 1; $i--): ?>
+                                            <input type="radio" name="rating" value="<?php echo e($i); ?>"
+                                                id="star<?php echo e($i); ?>"
+                                                <?php echo e(old('rating', $existingReview->rating ?? 5) == $i ? 'checked' : ''); ?>>
+                                            <label for="star<?php echo e($i); ?>"
+                                                title="<?php echo e($i); ?> sao">★</label>
+                                        <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
-                                    @error('rating')
-                                        <span class="error-text">{{ $message }}</span>
-                                    @enderror
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['rating'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="error-text"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
 
                                 <!-- Tiêu đề -->
@@ -1771,7 +1780,7 @@
                                     <label class="form-label" for="review-title">Tiêu đề</label>
                                     <input type="text" name="title" id="review-title" class="form-input"
                                         placeholder="Tóm tắt đánh giá của bạn"
-                                        value="{{ old('title', $existingReview->title ?? '') }}">
+                                        value="<?php echo e(old('title', $existingReview->title ?? '')); ?>">
                                 </div>
 
                                 <!-- Nội dung -->
@@ -1779,30 +1788,37 @@
                                     <label class="form-label" for="review-comment">Nội dung đánh giá <span
                                             class="required">*</span></label>
                                     <textarea name="comment" id="review-comment" class="form-textarea" rows="4"
-                                        placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này...">{{ old('comment', $existingReview->comment ?? '') }}</textarea>
-                                    @error('comment')
-                                        <span class="error-text">{{ $message }}</span>
-                                    @enderror
+                                        placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."><?php echo e(old('comment', $existingReview->comment ?? '')); ?></textarea>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['comment'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="error-text"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
 
                                 <!-- Ảnh hiện tại (nếu đang sửa) -->
-                                @if ($existingReview && $existingReview->images && count($existingReview->images) > 0)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($existingReview && $existingReview->images && count($existingReview->images) > 0): ?>
                                     <div class="form-group">
                                         <label class="form-label">Ảnh hiện tại</label>
                                         <div class="current-review-images">
-                                            @foreach ($existingReview->images as $image)
-                                                <img src="{{ $image }}" alt="Current review image"
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $existingReview->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                                <img src="<?php echo e($image); ?>" alt="Current review image"
                                                     class="current-review-image">
-                                            @endforeach
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                         </div>
                                         <p class="form-hint">Tải ảnh mới sẽ thay thế tất cả ảnh cũ</p>
                                     </div>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                 <!-- Upload ảnh -->
                                 <div class="form-group">
                                     <label
-                                        class="form-label">{{ $existingReview ? 'Thay đổi hình ảnh' : 'Thêm hình ảnh' }}</label>
+                                        class="form-label"><?php echo e($existingReview ? 'Thay đổi hình ảnh' : 'Thêm hình ảnh'); ?></label>
                                     <div class="image-upload-area">
                                         <input type="file" name="images[]" id="review-images" multiple
                                             accept="image/*" class="file-input-hidden">
@@ -1826,12 +1842,13 @@
                                             stroke="currentColor" stroke-width="2">
                                             <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
                                         </svg>
-                                        {{ $existingReview ? 'Cập nhật đánh giá' : 'Gửi đánh giá' }}
+                                        <?php echo e($existingReview ? 'Cập nhật đánh giá' : 'Gửi đánh giá'); ?>
+
                                     </button>
 
-                                    @if ($existingReview)
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($existingReview): ?>
                                         <button type="button" class="btn btn-danger btn-delete-review"
-                                            onclick="confirmDeleteReview('{{ $existingReview->_id }}')">
+                                            onclick="confirmDeleteReview('<?php echo e($existingReview->_id); ?>')">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                                 stroke="currentColor" stroke-width="2">
                                                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -1841,44 +1858,45 @@
                                             </svg>
                                             Xóa đánh giá
                                         </button>
-                                    @endif
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
                             </form>
 
-                            @if ($existingReview)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($existingReview): ?>
                                 <form id="delete-review-form"
-                                    action="{{ route('reviews.destroy', $existingReview->_id) }}" method="POST"
+                                    action="<?php echo e(route('reviews.destroy', $existingReview->_id)); ?>" method="POST"
                                     style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
                                 </form>
-                            @endif
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
-                    @else
+                    <?php else: ?>
                         <div class="login-to-review">
-                            <p>Vui lòng <a href="{{ route('customers.login') }}">đăng nhập</a> để đánh giá sản phẩm</p>
+                            <p>Vui lòng <a href="<?php echo e(route('customers.login')); ?>">đăng nhập</a> để đánh giá sản phẩm</p>
                         </div>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                     <!-- Danh sách đánh giá -->
                     <div class="reviews-list">
-                        <h4 class="reviews-list-title">Tất cả đánh giá ({{ $reviews->count() }})</h4>
+                        <h4 class="reviews-list-title">Tất cả đánh giá (<?php echo e($reviews->count()); ?>)</h4>
 
-                        @forelse($reviews as $review)
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                             <div class="review-item">
                                 <div class="review-header">
                                     <div class="reviewer-avatar">
-                                        @if ($review->customer->profile_picture_url)
-                                            <img src="{{ $review->customer->profile_picture_url }}"
-                                                alt="{{ $review->customer->full_name }}">
-                                        @else
-                                            <div class="avatar-placeholder">{{ substr($review->customer->full_name, 0, 1) }}</div>
-                                        @endif
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($review->customer->profile_picture_url): ?>
+                                            <img src="<?php echo e($review->customer->profile_picture_url); ?>"
+                                                alt="<?php echo e($review->customer->full_name); ?>">
+                                        <?php else: ?>
+                                            <div class="avatar-placeholder"><?php echo e(substr($review->customer->full_name, 0, 1)); ?></div>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                     <div class="reviewer-info">
                                         <div class="reviewer-name">
-                                            {{ $review->customer->full_name ?? 'Khách hàng' }}
-                                            @if ($review->is_verified)
+                                            <?php echo e($review->customer->full_name ?? 'Khách hàng'); ?>
+
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($review->is_verified): ?>
                                                 <span class="verified-badge">
                                                     <svg width="12" height="12" viewBox="0 0 24 24"
                                                         fill="currentColor">
@@ -1886,49 +1904,49 @@
                                                     </svg>
                                                     Đã mua hàng
                                                 </span>
-                                            @endif
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </div>
                                         <div class="review-meta">
                                             <span class="review-stars">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    @if ($i <= $review->rating)
-                                                    ★@else☆
-                                                    @endif
-                                                @endfor
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i = 1; $i <= 5; $i++): ?>
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($i <= $review->rating): ?>
+                                                    ★<?php else: ?>☆
+                                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                             </span>
-                                            <span class="review-date">{{ $review->created_at->diffForHumans() }}</span>
+                                            <span class="review-date"><?php echo e($review->created_at->diffForHumans()); ?></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                @if ($review->title)
-                                    <h5 class="review-title">{{ $review->title }}</h5>
-                                @endif
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($review->title): ?>
+                                    <h5 class="review-title"><?php echo e($review->title); ?></h5>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <p class="review-content">{{ $review->comment }}</p>
+                                <p class="review-content"><?php echo e($review->comment); ?></p>
 
-                                @if ($review->images && count($review->images) > 0)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($review->images && count($review->images) > 0): ?>
                                     <div class="review-images">
-                                        @foreach ($review->images as $image)
-                                            <img src="{{ $image }}" alt="Review image"
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $review->images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                                            <img src="<?php echo e($image); ?>" alt="Review image"
                                                 class="review-image" onclick="openImageModal(this.src)">
-                                        @endforeach
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                     </div>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                 <div class="review-actions">
-                                    <button class="helpful-btn" onclick="markHelpful('{{ $review->_id }}')">
+                                    <button class="helpful-btn" onclick="markHelpful('<?php echo e($review->_id); ?>')">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2">
                                             <path
                                                 d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
                                             </path>
                                         </svg>
-                                        Hữu ích (<span class="helpful-count">{{ $review->helpful_count ?? 0 }}</span>)
+                                        Hữu ích (<span class="helpful-count"><?php echo e($review->helpful_count ?? 0); ?></span>)
                                     </button>
                                 </div>
                             </div>
-                        @empty
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                             <div class="no-reviews">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -1936,13 +1954,13 @@
                                 <p>Chưa có đánh giá nào cho sản phẩm này.</p>
                                 <p>Hãy là người đầu tiên đánh giá!</p>
                             </div>
-                        @endforelse
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
             </div>
 
             <!-- Related Products -->
-            @if ($relatedProducts && count($relatedProducts) > 0)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($relatedProducts && count($relatedProducts) > 0): ?>
                 <section class="related-products-section">
                     <div class="section-header">
                         <h2 class="section-title">Sản phẩm liên quan</h2>
@@ -1955,17 +1973,17 @@
                         </a>
                     </div>
                     <div class="products-grid">
-                        @foreach ($relatedProducts as $relatedProduct)
-                            @include('Customers.Components.product-card', ['product' => $relatedProduct])
-                        @endforeach
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $relatedProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $relatedProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                            <?php echo $__env->make('Customers.Components.product-card', ['product' => $relatedProduct], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                     </div>
                 </section>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         // Change main image
         function changeImage(src, element) {
@@ -2065,7 +2083,7 @@
         }
 
         // Quantity functions
-        var maxQty = {{ ($product->colors && count($product->colors) > 0) ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity }};
+        var maxQty = <?php echo e(($product->colors && count($product->colors) > 0) ? ($product->colors[0]['stock'] ?? 0) : $product->stock_quantity); ?>;
 
         function decreaseQty() {
             const input = document.getElementById('qtyInput');
@@ -2133,7 +2151,7 @@
             fetch(`/danh-gia/${reviewId}/helpful`, {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                         'Content-Type': 'application/json',
                     }
                 })
@@ -2189,15 +2207,15 @@
                 }
             }
 
-            fetch('{{ route('cart.add') }}', {
+            fetch('<?php echo e(route('cart.add')); ?>', {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
                 body: JSON.stringify({
-                    product_id: '{{ $product->_id }}',
+                    product_id: '<?php echo e($product->_id); ?>',
                     quantity: qty,
                     color: selectedColor
                 })
@@ -2238,19 +2256,19 @@
 
         // Toggle wishlist
         function toggleWishlist() {
-            @auth('customer')
+            <?php if(auth()->guard('customer')->check()): ?>
                 const btn = document.getElementById('wishlistBtn');
                 const text = document.getElementById('wishlistText');
                 const svg = btn.querySelector('svg');
 
-                fetch('{{ route('wishlist.toggle') }}', {
+                fetch('<?php echo e(route('wishlist.toggle')); ?>', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                         'Accept': 'application/json'
                     },
-                    body: JSON.stringify({ product_id: '{{ $product->_id }}' })
+                    body: JSON.stringify({ product_id: '<?php echo e($product->_id); ?>' })
                 })
                 .then(res => res.json())
                 .then(data => {
@@ -2273,9 +2291,11 @@
                     }
                 })
                 .catch(() => showToast('Có lỗi xảy ra, vui lòng thử lại'));
-            @else
-                window.location.href = '{{ route('customers.login') }}';
-            @endauth
+            <?php else: ?>
+                window.location.href = '<?php echo e(route('customers.login')); ?>';
+            <?php endif; ?>
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('Customers.Layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/Products/detail.blade.php ENDPATH**/ ?>

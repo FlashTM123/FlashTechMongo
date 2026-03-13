@@ -274,7 +274,7 @@ class CustomerHomeController extends Controller
 
         if ($request->hasFile('profile_picture')) {
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-            $validated['profile_picture'] = '/storage/' . $path;
+            $validated['profile_picture'] = $path;  // Store path only
         }
 
         $customer->update($validated);

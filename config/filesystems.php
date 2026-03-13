@@ -1,4 +1,11 @@
 <?php
+/**
+ * ⚡ STORAGE CONFIGURATION:
+ * - Local storage: storage/app/public/
+ * - Images serving via: /storage/
+ * - FILESYSTEM_DISK=public (.env)
+ * - Command: php artisan storage:link
+ */
 
 return [
     /*

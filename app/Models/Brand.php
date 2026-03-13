@@ -19,6 +19,25 @@ class Brand extends Model
         'is_active' => 'boolean',
     ];
 
+    /**
+     * ⚡ LOGO ACCESSOR - Auto format logo URL
+     * Store path: "brands/abc123.png"
+     * Display as: "/storage/brands/abc123.png"
+     */
+    public function getLogoAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+        if (str_starts_with($value, '/storage/')) {
+            return $value;
+        }
+        return '/storage/' . $value;
+    }
+
     protected static function boot(){
         parent::boot();
 

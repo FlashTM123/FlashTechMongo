@@ -1,4 +1,12 @@
 <?php
+/**
+ * ⚡ STORAGE CONFIGURATION:
+ * Hình ảnh sản phẩm được lưu trong storage/app/public (local disk)
+ * - KHÔNG dùng Cloudinary
+ * - URL hiển thị: /storage/products/...
+ * - Đảm bảo đã chạy: php artisan storage:link
+ * - FILESYSTEM_DISK=public (trong .env)
+ */
 
 namespace App\Filament\Resources;
 

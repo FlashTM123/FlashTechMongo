@@ -1,4 +1,11 @@
 <?php
+/**
+ * ⚡ STORAGE CONFIGURATION:
+ * - Avatar được lưu trong storage/app/public/users/
+ * - KHÔNG dùng Cloudinary
+ * - URL hiển thị: /storage/users/...
+ * - FILESYSTEM_DISK=public (.env)
+ */
 
 namespace App\Filament\Resources;
 
@@ -70,6 +77,17 @@ class UserResource extends Resource
                             ->label('Khóa tài khoản')
                             ->default(false),
                     ])->columns(2),
+
+                \Filament\Schemas\Components\Section::make('Avatar')
+                    ->schema([
+                        Forms\Components\FileUpload::make('avatar')
+                            ->label('Ảnh đại diện')
+                            ->image()
+                            ->disk('public')
+                            ->directory('users')
+                            ->maxSize(5120)
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 

@@ -493,7 +493,17 @@ FlashTechMongo/
 
 ---
 
-## 📝 Cập nhật gần đây (12/03/2026)
+## 📝 Cập nhật gần đây (13/03/2026)
+
+### 🔧 Sửa lỗi
+| Lỗi | Mô tả | Chi tiết | Trạng thái |
+|:----|:------|:--------|:----------:|
+| **MongoDB JSON String Casting** | **500 Server Error** khi truy cập `$product->colors` - `count()` gọi trên string thay vì array | **Root cause:** MongoDB driver lưu colors/images dưới dạng JSON string. Eloquent casts áp dụng AFTER `__get` accessor, nên Blade template gọi `count()` trước khi casting xảy ra. **Giải pháp:** Override `getAttribute($key)` trong Product model để parse JSON string → array ngay khi truy cập, đảm bảo template luôn nhận được array | ✅ |
+| Ảnh không hiển thị Wishlist | Sản phẩm yêu thích không hiển thị ảnh | Simplified URL handling - remove unnecessary `asset()` wrapping vì Product model accessor đã format URL | ✅ |
+| Ảnh không hiển thị Cart | Giỏ hàng không hiển thị ảnh sản phẩm | Removed complex URL logic - dùng `$item['product']->image` trực tiếp từ Product model accessor | ✅ |
+| Ảnh không hiển thị Orders | Đơn hàng không hiển thị ảnh sản phẩm | Thêm `getProductImageAttribute()` accessor vào OrderDetails model để format `product_image` URL | ✅ |
+
+### 📝 Cập nhật trước đó (12/03/2026)
 
 ### 🆕 Tính năng mới
 | Tính năng | Mô tả | Trạng thái |

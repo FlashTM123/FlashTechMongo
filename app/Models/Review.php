@@ -31,6 +31,30 @@ class Review extends Model
     ];
 
     /**
+     * ⚡ IMAGES ACCESSOR - Auto format review image URLs
+     * Store path: ["images/abc123.jpg"]
+     * Display as: ["/storage/images/abc123.jpg"]
+     */
+    public function getImagesAttribute($value)
+    {
+        if (!$value || !is_array($value)) {
+            return $value ?? [];
+        }
+        return array_map(function ($image) {
+            if (!$image) {
+                return null;
+            }
+            if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
+                return $image;
+            }
+            if (str_starts_with($image, '/storage/')) {
+                return $image;
+            }
+            return '/storage/' . $image;
+        }, $value);
+    }
+
+    /**
      * Review thuộc về Product
      */
     public function product(): BelongsTo

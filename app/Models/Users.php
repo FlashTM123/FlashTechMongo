@@ -19,7 +19,7 @@ class Users extends Model implements \Illuminate\Contracts\Auth\Authenticatable,
         'phone_number',
         'address',
         'role',
-
+        'avatar',
         'is_blocked',
     ];
 
@@ -32,9 +32,27 @@ class Users extends Model implements \Illuminate\Contracts\Auth\Authenticatable,
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-
             'is_blocked' => 'boolean',
         ];
+    }
+
+    /**
+     * ⚡ AVATAR ACCESSOR - Auto format avatar URL
+     * Store path: "users/abc123.jpg"
+     * Display as: "/storage/users/abc123.jpg"
+     */
+    public function getAvatarAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+        if (str_starts_with($value, '/storage/')) {
+            return $value;
+        }
+        return '/storage/' . $value;
     }
 
     public function canAccessPanel(Panel $panel): bool

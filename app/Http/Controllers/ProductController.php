@@ -111,18 +111,18 @@ class ProductController extends Controller
             $validated['stock_quantity'] = (int)$validated['stock_quantity'];
         }
 
-        // Handle main image upload with Cloudinary
+        // Handle main image upload to LOCAL STORAGE (NOT Cloudinary)
         if ($request->hasFile('image')) {
-            $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $request->file('image'));
-            $validated['image'] = Storage::disk('cloudinary')->url($uploadedFilePath);
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;  // Store path only
         }
 
-        // Handle multiple images upload with Cloudinary
+        // Handle multiple images upload to LOCAL STORAGE (NOT Cloudinary)
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $image) {
-                $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $image);
-                $images[] = Storage::disk('cloudinary')->url($uploadedFilePath);
+                $imagePath = $image->store('products', 'public');
+                $images[] = $imagePath;  // Store path only
             }
             $validated['images'] = $images;
         }
@@ -198,18 +198,18 @@ class ProductController extends Controller
             $validated['stock_quantity'] = (int)$validated['stock_quantity'];
         }
 
-        // Handle main image upload with Cloudinary
+        // Handle main image upload to LOCAL STORAGE (NOT Cloudinary)
         if ($request->hasFile('image')) {
-            $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $request->file('image'));
-            $validated['image'] = Storage::disk('cloudinary')->url($uploadedFilePath);
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;  // Store path only
         }
 
-        // Handle multiple images upload with Cloudinary
+        // Handle multiple images upload to LOCAL STORAGE (NOT Cloudinary)
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $image) {
-                $uploadedFilePath = Storage::disk('cloudinary')->putFile('products', $image);
-                $images[] = Storage::disk('cloudinary')->url($uploadedFilePath);
+                $imagePath = $image->store('products', 'public');
+                $images[] = $imagePath;  // Store path only
             }
             $validated['images'] = $images;
         }

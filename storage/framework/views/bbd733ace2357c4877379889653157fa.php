@@ -1,8 +1,6 @@
-@extends('Customers.Layouts.master')
+<?php $__env->startSection('title', 'Giỏ hàng - FlashTech'); ?>
 
-@section('title', 'Giỏ hàng - FlashTech')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         :root {
             --primary: #667eea;
@@ -475,14 +473,14 @@
             }
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="cart-page">
         <div class="container">
             <!-- Breadcrumb -->
             <div class="breadcrumb">
-                <a href="{{ route('home') }}">Trang chủ</a>
+                <a href="<?php echo e(route('home')); ?>">Trang chủ</a>
                 <span>/</span>
                 <span class="current">Giỏ hàng</span>
             </div>
@@ -496,15 +494,15 @@
                 Giỏ hàng của bạn
             </h1>
 
-            @if (count($cartItems) > 0)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($cartItems) > 0): ?>
                 <div class="cart-layout">
                     <!-- Cart Items -->
                     <div class="cart-items-card">
                         <div class="cart-header">
-                            <h3>Sản phẩm <span class="item-count" id="itemCount">({{ count($cartItems) }} sản phẩm)</span></h3>
-                            <form action="{{ route('cart.clear') }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa toàn bộ giỏ hàng?')">
-                                @csrf
-                                @method('DELETE')
+                            <h3>Sản phẩm <span class="item-count" id="itemCount">(<?php echo e(count($cartItems)); ?> sản phẩm)</span></h3>
+                            <form action="<?php echo e(route('cart.clear')); ?>" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa toàn bộ giỏ hàng?')">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
                                 <button type="submit" class="btn-clear-cart">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <polyline points="3 6 5 6 21 6"></polyline>
@@ -515,34 +513,35 @@
                             </form>
                         </div>
 
-                        @foreach ($cartItems as $item)
-                            <div class="cart-item" id="cart-item-{{ $item['id'] }}">
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                            <div class="cart-item" id="cart-item-<?php echo e($item['id']); ?>">
                                 <div class="cart-item-image">
-                                    <a href="{{ route('product.detail', $item['product']->slug) }}">
-                                        @php
+                                    <a href="<?php echo e(route('product.detail', $item['product']->slug)); ?>">
+                                        <?php
                                             $cartImg = $item['product']->image ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop';
-                                        @endphp
-                                        <img src="{{ $cartImg }}" alt="{{ $item['product']->name }}">
+                                        ?>
+                                        <img src="<?php echo e($cartImg); ?>" alt="<?php echo e($item['product']->name); ?>">
                                     </a>
                                 </div>
                                 <div class="cart-item-info">
-                                    <a href="{{ route('product.detail', $item['product']->slug) }}" class="cart-item-name">
-                                        {{ $item['product']->name }}
+                                    <a href="<?php echo e(route('product.detail', $item['product']->slug)); ?>" class="cart-item-name">
+                                        <?php echo e($item['product']->name); ?>
+
                                     </a>
-                                    @if(!empty($item['color']))
-                                        <span style="font-size:0.8rem;color:#6b7280;">Màu: {{ $item['color'] }}</span>
-                                    @endif
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($item['color'])): ?>
+                                        <span style="font-size:0.8rem;color:#6b7280;">Màu: <?php echo e($item['color']); ?></span>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     <div class="cart-item-price">
-                                        <span class="price-current">{{ number_format($item['price'], 0, ',', '.') }}₫</span>
-                                        @if ($item['product']->sale_price > 0 && $item['product']->sale_price < $item['product']->price)
-                                            <span class="price-original">{{ number_format($item['product']->price, 0, ',', '.') }}₫</span>
-                                        @endif
+                                        <span class="price-current"><?php echo e(number_format($item['price'], 0, ',', '.')); ?>₫</span>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item['product']->sale_price > 0 && $item['product']->sale_price < $item['product']->price): ?>
+                                            <span class="price-original"><?php echo e(number_format($item['product']->price, 0, ',', '.')); ?>₫</span>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="cart-item-actions">
                                     <div class="quantity-selector">
-                                        <button class="qty-btn" onclick="updateQuantity('{{ $item['id'] }}', -1)">−</button>
-                                        @php
+                                        <button class="qty-btn" onclick="updateQuantity('<?php echo e($item['id']); ?>', -1)">−</button>
+                                        <?php
                                             $colorStock = $item['product']->stock_quantity ?? 0;
                                             if (!empty($item['color']) && $item['product']->colors) {
                                                 foreach ($item['product']->colors as $c) {
@@ -552,15 +551,15 @@
                                                     }
                                                 }
                                             }
-                                        @endphp
-                                        <input type="number" class="qty-input" value="{{ $item['quantity'] }}" min="1"
-                                            max="{{ $colorStock }}"
-                                            id="qty-{{ $item['id'] }}"
-                                            onchange="setQuantity('{{ $item['id'] }}')">
-                                        <button class="qty-btn" onclick="updateQuantity('{{ $item['id'] }}', 1)">+</button>
+                                        ?>
+                                        <input type="number" class="qty-input" value="<?php echo e($item['quantity']); ?>" min="1"
+                                            max="<?php echo e($colorStock); ?>"
+                                            id="qty-<?php echo e($item['id']); ?>"
+                                            onchange="setQuantity('<?php echo e($item['id']); ?>')">
+                                        <button class="qty-btn" onclick="updateQuantity('<?php echo e($item['id']); ?>', 1)">+</button>
                                     </div>
-                                    <span class="item-total" id="total-{{ $item['id'] }}">{{ number_format($item['total'], 0, ',', '.') }}₫</span>
-                                    <button class="btn-remove" onclick="removeItem('{{ $item['id'] }}')" title="Xóa sản phẩm">
+                                    <span class="item-total" id="total-<?php echo e($item['id']); ?>"><?php echo e(number_format($item['total'], 0, ',', '.')); ?>₫</span>
+                                    <button class="btn-remove" onclick="removeItem('<?php echo e($item['id']); ?>')" title="Xóa sản phẩm">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <polyline points="3 6 5 6 21 6"></polyline>
                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -570,7 +569,7 @@
                                     </button>
                                 </div>
                             </div>
-                        @endforeach
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                     </div>
 
                     <!-- Cart Summary -->
@@ -578,7 +577,7 @@
                         <h3>Tóm tắt đơn hàng</h3>
                         <div class="summary-row">
                             <span>Tạm tính</span>
-                            <span id="subtotalValue">{{ number_format($subtotal, 0, ',', '.') }}₫</span>
+                            <span id="subtotalValue"><?php echo e(number_format($subtotal, 0, ',', '.')); ?>₫</span>
                         </div>
                         <div class="summary-row">
                             <span>Phí vận chuyển</span>
@@ -586,21 +585,21 @@
                         </div>
                         <div class="summary-row total">
                             <span>Tổng cộng</span>
-                            <span class="total-price" id="totalValue">{{ number_format($subtotal, 0, ',', '.') }}₫</span>
+                            <span class="total-price" id="totalValue"><?php echo e(number_format($subtotal, 0, ',', '.')); ?>₫</span>
                         </div>
 
-                        @if(auth('customer')->check())
-                            <a href="{{ route('checkout.index') }}" class="btn-checkout">
-                        @else
-                            <a href="{{ route('customers.login') }}" class="btn-checkout">
-                        @endif
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth('customer')->check()): ?>
+                            <a href="<?php echo e(route('checkout.index')); ?>" class="btn-checkout">
+                        <?php else: ?>
+                            <a href="<?php echo e(route('customers.login')); ?>" class="btn-checkout">
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
                                 <line x1="1" y1="10" x2="23" y2="10"></line>
                             </svg>
                             Tiến hành thanh toán
                         </a>
-                        <a href="{{ route('home') }}" class="btn-continue">
+                        <a href="<?php echo e(route('home')); ?>" class="btn-continue">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="19" y1="12" x2="5" y2="12"></line>
                                 <polyline points="12 19 5 12 12 5"></polyline>
@@ -609,7 +608,7 @@
                         </a>
                     </div>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="cart-items-card">
                     <div class="cart-empty">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -619,7 +618,7 @@
                         </svg>
                         <h3>Giỏ hàng trống</h3>
                         <p>Bạn chưa có sản phẩm nào trong giỏ hàng. Hãy khám phá các sản phẩm của chúng tôi!</p>
-                        <a href="{{ route('home') }}" class="btn-shop-now">
+                        <a href="<?php echo e(route('home')); ?>" class="btn-shop-now">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
@@ -628,17 +627,17 @@
                         </a>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 
     <!-- Toast -->
     <div class="toast" id="toast"></div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
-        const csrfToken = '{{ csrf_token() }}';
+        const csrfToken = '<?php echo e(csrf_token()); ?>';
 
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
@@ -664,7 +663,7 @@
             if (qty > parseInt(input.max)) qty = parseInt(input.max);
             input.value = qty;
 
-            fetch('{{ route('cart.update') }}', {
+            fetch('<?php echo e(route('cart.update')); ?>', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
@@ -729,4 +728,6 @@
             });
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('Customers.Layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/Cart/index.blade.php ENDPATH**/ ?>

@@ -1,8 +1,6 @@
-@extends('Customers.Layouts.master')
+<?php $__env->startSection('title', 'Đơn hàng của tôi - FlashTech'); ?>
 
-@section('title', 'Đơn hàng của tôi - FlashTech')
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <style>
         :root {
             --primary: #667eea;
@@ -462,13 +460,13 @@
             }
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="orders-page">
         <div class="container">
             <div class="breadcrumb">
-                <a href="{{ route('home') }}">Trang chủ</a>
+                <a href="<?php echo e(route('home')); ?>">Trang chủ</a>
                 <span>/</span>
                 <span class="current">Đơn hàng của tôi</span>
             </div>
@@ -483,17 +481,17 @@
                 </h1>
 
                 <div class="filter-tabs">
-                    <a href="{{ route('customers.orders') }}" class="filter-tab {{ !request('status') ? 'active' : '' }}">Tất cả</a>
-                    <a href="{{ route('customers.orders', ['status' => 'pending']) }}" class="filter-tab {{ request('status') === 'pending' ? 'active' : '' }}">Chờ xử lý</a>
-                    <a href="{{ route('customers.orders', ['status' => 'processing']) }}" class="filter-tab {{ request('status') === 'processing' ? 'active' : '' }}">Đang xử lý</a>
-                    <a href="{{ route('customers.orders', ['status' => 'shipped']) }}" class="filter-tab {{ request('status') === 'shipped' ? 'active' : '' }}">Đang giao hàng</a>
-                    <a href="{{ route('customers.orders', ['status' => 'delivered']) }}" class="filter-tab {{ request('status') === 'delivered' ? 'active' : '' }}">Đã giao</a>
-                    <a href="{{ route('customers.orders', ['status' => 'cancelled']) }}" class="filter-tab {{ request('status') === 'cancelled' ? 'active' : '' }}">Đã hủy</a>
+                    <a href="<?php echo e(route('customers.orders')); ?>" class="filter-tab <?php echo e(!request('status') ? 'active' : ''); ?>">Tất cả</a>
+                    <a href="<?php echo e(route('customers.orders', ['status' => 'pending'])); ?>" class="filter-tab <?php echo e(request('status') === 'pending' ? 'active' : ''); ?>">Chờ xử lý</a>
+                    <a href="<?php echo e(route('customers.orders', ['status' => 'processing'])); ?>" class="filter-tab <?php echo e(request('status') === 'processing' ? 'active' : ''); ?>">Đang xử lý</a>
+                    <a href="<?php echo e(route('customers.orders', ['status' => 'shipped'])); ?>" class="filter-tab <?php echo e(request('status') === 'shipped' ? 'active' : ''); ?>">Đang giao hàng</a>
+                    <a href="<?php echo e(route('customers.orders', ['status' => 'delivered'])); ?>" class="filter-tab <?php echo e(request('status') === 'delivered' ? 'active' : ''); ?>">Đã giao</a>
+                    <a href="<?php echo e(route('customers.orders', ['status' => 'cancelled'])); ?>" class="filter-tab <?php echo e(request('status') === 'cancelled' ? 'active' : ''); ?>">Đã hủy</a>
                 </div>
             </div>
 
-            @if ($orders->count() > 0)
-                @foreach ($orders as $order)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($orders->count() > 0): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                     <div class="order-card">
                         <div class="order-card-header">
                             <div>
@@ -502,12 +500,13 @@
                                         <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                                         <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                                     </svg>
-                                    {{ $order->order_code }}
+                                    <?php echo e($order->order_code); ?>
+
                                 </div>
-                                <div class="order-date">{{ $order->created_at->format('d/m/Y H:i') }}</div>
+                                <div class="order-date"><?php echo e($order->created_at->format('d/m/Y H:i')); ?></div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                @php
+                                <?php
                                     $statusMap = [
                                         'pending' => ['class' => 'status-pending', 'label' => 'Chờ xử lý'],
                                         'processing' => ['class' => 'status-processing', 'label' => 'Đang xử lý'],
@@ -516,38 +515,40 @@
                                         'cancelled' => ['class' => 'status-cancelled', 'label' => 'Đã hủy'],
                                     ];
                                     $status = $statusMap[$order->order_status] ?? ['class' => 'status-pending', 'label' => $order->order_status];
-                                @endphp
-                                <span class="order-status {{ $status['class'] }}">{{ $status['label'] }}</span>
+                                ?>
+                                <span class="order-status <?php echo e($status['class']); ?>"><?php echo e($status['label']); ?></span>
                             </div>
                         </div>
 
                         <div class="order-card-body">
                             <div class="order-items-preview">
-                                @foreach ($order->orderDetails->take(3) as $detail)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $order->orderDetails->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $detail): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                                     <div class="order-item-row">
                                         <div class="order-item-image">
-                                            @php
+                                            <?php
                                                 $img = $detail->product_image ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop';
-                                            @endphp
-                                            <img src="{{ $img }}" alt="{{ $detail->product_name }}">
+                                            ?>
+                                            <img src="<?php echo e($img); ?>" alt="<?php echo e($detail->product_name); ?>">
                                         </div>
                                         <div class="order-item-info">
-                                            <div class="order-item-name">{{ $detail->product_name }}</div>
+                                            <div class="order-item-name"><?php echo e($detail->product_name); ?></div>
                                             <div class="order-item-qty">
-                                                x{{ $detail->quantity }}
-                                                @if(!empty($detail->color))
-                                                    | Màu: {{ $detail->color }}
-                                                @endif
+                                                x<?php echo e($detail->quantity); ?>
+
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($detail->color)): ?>
+                                                    | Màu: <?php echo e($detail->color); ?>
+
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                             </div>
                                         </div>
-                                        <div class="order-item-price">{{ number_format($detail->total, 0, ',', '.') }}₫</div>
+                                        <div class="order-item-price"><?php echo e(number_format($detail->total, 0, ',', '.')); ?>₫</div>
                                     </div>
-                                @endforeach
-                                @if ($order->orderDetails->count() > 3)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($order->orderDetails->count() > 3): ?>
                                     <div style="font-size: 0.8125rem; color: var(--gray-400); padding-left: 0.5rem;">
-                                        và {{ $order->orderDetails->count() - 3 }} sản phẩm khác...
+                                        và <?php echo e($order->orderDetails->count() - 3); ?> sản phẩm khác...
                                     </div>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
 
@@ -555,33 +556,33 @@
                             <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
                                 <div class="order-total">
                                     <span class="order-total-label">Tổng:</span>
-                                    <span class="order-total-value">{{ number_format($order->total, 0, ',', '.') }}₫</span>
+                                    <span class="order-total-value"><?php echo e(number_format($order->total, 0, ',', '.')); ?>₫</span>
                                 </div>
                                 <div class="payment-info">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
                                         <line x1="1" y1="10" x2="23" y2="10"></line>
                                     </svg>
-                                    @switch($order->payment_method)
-                                        @case('cod') Thanh toán khi nhận hàng @break
-                                        @case('bank_transfer') Chuyển khoản @break
-                                        @case('momo') Ví MoMo @break
-                                        @case('vnpay') VNPay @break
-                                    @endswitch
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($order->payment_method):
+                                        case ('cod'): ?> Thanh toán khi nhận hàng <?php break; ?>
+                                        <?php case ('bank_transfer'): ?> Chuyển khoản <?php break; ?>
+                                        <?php case ('momo'): ?> Ví MoMo <?php break; ?>
+                                        <?php case ('vnpay'): ?> VNPay <?php break; ?>
+                                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
                             </div>
                             <div class="order-actions">
-                                <a href="{{ route('customers.orders.detail', $order->_id) }}" class="btn-view-detail">
+                                <a href="<?php echo e(route('customers.orders.detail', $order->_id)); ?>" class="btn-view-detail">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                         <circle cx="12" cy="12" r="3"></circle>
                                     </svg>
                                     Xem chi tiết
                                 </a>
-                                @if (in_array($order->order_status, ['pending', 'processing']))
-                                    <form action="{{ route('customers.orders.cancel', $order->_id) }}" method="POST"
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(in_array($order->order_status, ['pending', 'processing'])): ?>
+                                    <form action="<?php echo e(route('customers.orders.cancel', $order->_id)); ?>" method="POST"
                                         onsubmit="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
-                                        @csrf
+                                        <?php echo csrf_field(); ?>
                                         <button type="submit" class="btn-cancel-order">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <circle cx="12" cy="12" r="10"></circle>
@@ -591,18 +592,19 @@
                                             Hủy
                                         </button>
                                     </form>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
 
-                @if ($orders->hasPages())
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($orders->hasPages()): ?>
                     <div class="pagination-wrapper">
-                        {{ $orders->links() }}
+                        <?php echo e($orders->links()); ?>
+
                     </div>
-                @endif
-            @else
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <?php else: ?>
                 <div class="empty-orders">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
@@ -610,7 +612,7 @@
                     </svg>
                     <h3>Chưa có đơn hàng nào</h3>
                     <p>Bạn chưa có đơn hàng nào. Hãy mua sắm ngay!</p>
-                    <a href="{{ route('home') }}" class="btn-shop">
+                    <a href="<?php echo e(route('home')); ?>" class="btn-shop">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
@@ -618,7 +620,9 @@
                         Mua sắm ngay
                     </a>
                 </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('Customers.Layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/Orders/index.blade.php ENDPATH**/ ?>

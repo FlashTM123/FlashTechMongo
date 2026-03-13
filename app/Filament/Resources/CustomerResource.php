@@ -1,4 +1,11 @@
 <?php
+/**
+ * ⚡ STORAGE CONFIGURATION:
+ * - Profile picture được lưu trong storage/app/public/customers/
+ * - KHÔNG dùng Cloudinary
+ * - URL hiển thị: /storage/customers/...
+ * - FILESYSTEM_DISK=public (.env)
+ */
 
 namespace App\Filament\Resources;
 
@@ -60,19 +67,22 @@ class CustomerResource extends Resource
                             ]),
                     ])->columns(2),
 
-                \Filament\Schemas\Components\Section::make('Địa chỉ & Khác')
+                \Filament\Schemas\Components\Section::make('Địa chỉ, Avatar & Khác')
                     ->schema([
                         Forms\Components\Textarea::make('address')
                             ->label('Địa chỉ')
                             ->rows(2)
                             ->columnSpanFull(),
+                        Forms\Components\FileUpload::make('profile_picture')
+                            ->label('Ảnh đại diện')
+                            ->image()
+                            ->disk('public')
+                            ->directory('customers')
+                            ->maxSize(5120),
                         Forms\Components\TextInput::make('loyalty_points')
                             ->label('Điểm tích lũy')
                             ->numeric()
                             ->default(0),
-                        Forms\Components\TextInput::make('profile_picture')
-                            ->label('URL Avatar')
-                            ->maxLength(500),
                         Forms\Components\TextInput::make('google_id')
                             ->label('Google ID')
                             ->disabled()
