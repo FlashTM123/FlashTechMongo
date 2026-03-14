@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Specifications;
 use App\Models\Orders;
+use App\Models\Reviews;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 
@@ -219,7 +220,13 @@ class CustomerHomeController extends Controller
                 ->with('error', 'Vui lòng đăng nhập để xem thông tin cá nhân');
         }
 
-        return view('Customers.profile_detail', compact('customer'));
+        // Tính số đơn hàng
+        $ordersCount = Orders::where('customer_id', (string) $customer->_id)->count();
+        
+        // Tính số đánh giá
+        $reviewsCount = Reviews::where('customer_id', (string) $customer->_id)->count();
+
+        return view('Customers.profile_detail', compact('customer', 'ordersCount', 'reviewsCount'));
     }
 
     public function orderHistory(Request $request)

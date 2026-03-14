@@ -990,7 +990,6 @@
     // Add to Cart
     document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            alert('Sản phẩm đã được thêm vào giỏ hàng!');
         });
     });
 
@@ -999,7 +998,6 @@
         btn.addEventListener('click', function() {
             const svg = this.querySelector('svg');
             if (svg.querySelector('path').getAttribute('d').includes('M20.84')) {
-                alert('Đã thêm vào danh sách yêu thích!');
             }
         });
     });

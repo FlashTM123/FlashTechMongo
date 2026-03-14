@@ -301,13 +301,6 @@
                 </h1>
             </div>
 
-            @if(session('success'))
-                <div class="alert-success">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    {{ session('success') }}
-                </div>
-            @endif
-
             @if($wishlistProducts->count() > 0)
                 <div class="wishlist-grid">
                     @foreach($wishlistProducts as $product)
@@ -318,8 +311,13 @@
                                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                                     </svg>
                                 </button>
-                                @if($product->sale_price && $product->sale_price < $product->price)
-                                    <span class="sale-badge">-{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%</span>
+                                @php
+                                    $price = (int)($product->price ?? 0);
+                                    $salePrice = (int)($product->sale_price ?? 0);
+                                    $discount = ($price > 0 && $salePrice > 0 && $salePrice < $price) ? round((($price - $salePrice) / $price) * 100) : 0;
+                                @endphp
+                                @if($discount > 0)
+                                    <span class="sale-badge">-{{ $discount }}%</span>
                                 @endif
                                 <a href="{{ route('product.detail', $product->slug) }}">
                                     <img src="{{ $product->image ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop' }}" alt="{{ $product->name }}">
@@ -333,11 +331,11 @@
                                     <a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a>
                                 </div>
                                 <div class="wishlist-card-price">
-                                    @if($product->sale_price && $product->sale_price < $product->price)
-                                        <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
-                                        <span class="price-old">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                                    @if((int)($product->sale_price ?? 0) > 0 && (int)($product->sale_price ?? 0) < (int)($product->price ?? 0))
+                                        <span class="price-current">{{ number_format((int)($product->sale_price ?? 0), 0, ',', '.') }}₫</span>
+                                        <span class="price-old">{{ number_format((int)($product->price ?? 0), 0, ',', '.') }}₫</span>
                                     @else
-                                        <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                                        <span class="price-current">{{ number_format((int)($product->price ?? 0), 0, ',', '.') }}₫</span>
                                     @endif
                                 </div>
                                 <div class="wishlist-card-stock {{ $product->stock_quantity > 0 ? 'stock-in' : 'stock-out' }}">
@@ -419,7 +417,6 @@
             .then(r => r.json())
             .then(data => {
                 if (data.success) {
-                    alert('Đã thêm vào giỏ hàng!');
                     const badge = document.querySelector('.cart-count');
                     if (badge) badge.textContent = data.cartCount;
                 }

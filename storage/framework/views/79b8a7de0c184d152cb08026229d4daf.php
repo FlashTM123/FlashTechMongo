@@ -50,23 +50,9 @@
                         cartBadge.textContent = data.cartCount;
                         cartBadge.style.display = data.cartCount > 0 ? '' : 'none';
                     }
-                    showGlobalToast(data.message);
                 }
             })
-            .catch(() => showGlobalToast('Có lỗi xảy ra, vui lòng thử lại'));
-        }
-
-        function showGlobalToast(message) {
-            let toast = document.getElementById('globalToast');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'globalToast';
-                toast.style.cssText = 'position:fixed;top:20px;right:20px;padding:1rem 1.5rem;border-radius:12px;background:#10b981;color:#fff;font-weight:600;z-index:9999;transform:translateX(120%);transition:transform 0.3s;display:flex;align-items:center;gap:0.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
-                document.body.appendChild(toast);
-            }
-            toast.textContent = message;
-            toast.style.transform = 'translateX(0)';
-            setTimeout(() => { toast.style.transform = 'translateX(120%)'; }, 3000);
+            .catch(() => {});
         }
     </script>
 

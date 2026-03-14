@@ -493,7 +493,18 @@ FlashTechMongo/
 
 ---
 
-## 📝 Cập nhật gần đây (13/03/2026)
+## 📝 Cập nhật gần đây (15/03/2026)
+
+### 🔧 Sửa lỗi
+| Lỗi | Mô tả | Chi tiết | Trạng thái |
+|:----|:------|:--------|:----------:|
+| **Thông báo không cần thiết** | Loại bỏ popup/alert từ tất cả trang khách | Xóa `alert()` JavaScript, session alerts (success/error), và `showGlobalToast()` function từ các trang: Wishlist, Cart, Orders, Product Detail, Account (Register, Login, Profile, Change Password) | ✅ |
+| **Giá wishlist hiển thị lỗi** | Wishlist card hiển thị "Ơ" thay vì giá | Fix: Cast price/sale_price sang int với fallback 0 nếu null, improve discount calculation logic | ✅ |
+| **Số liệu profile sai** | Profile hiển thị cứng 0 cho đơn hàng & đánh giá | Import Reviews model, query Orders & Reviews tables, count theo customer_id, pass các tính toán vào view | ✅ |
+
+### 📝 Cập nhật gần đây (13/03/2026)
+
+
 
 ### 🔧 Sửa lỗi
 | Lỗi | Mô tả | Chi tiết | Trạng thái |

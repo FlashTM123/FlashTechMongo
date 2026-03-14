@@ -1738,13 +1738,6 @@
                                 {{ $existingReview ? 'Sửa đánh giá của bạn' : 'Viết đánh giá của bạn' }}
                             </h4>
 
-                            @if (session('review_success'))
-                                <div class="alert alert-success">{{ session('review_success') }}</div>
-                            @endif
-                            @if (session('review_error'))
-                                <div class="alert alert-error">{{ session('review_error') }}</div>
-                            @endif
-
                             <form action="{{ route('reviews.store', $product->slug) }}" method="POST"
                                 enctype="multipart/form-data" class="review-form">
                                 @csrf

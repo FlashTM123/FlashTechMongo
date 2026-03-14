@@ -573,31 +573,16 @@
                     <p>Đã có tài khoản? <a href="{{ route('customers.login') }}">Đăng nhập ngay</a></p>
                 </div>
 
-                @if(session('success'))
-                <div class="alert alert-success">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                    <span>{{ session('success') }}</span>
-                </div>
-                @endif
+
 
                 @if($errors->any())
-                <div class="alert alert-error">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    <div>
-                        <strong>Có lỗi xảy ra:</strong>
-                        <ul style="margin: 0.5rem 0 0 1.25rem; padding: 0;">
-                            @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <!-- Error alerts removed -->
+                <div style="display:none;">
+                    <ul style="margin: 0.5rem 0 0 1.25rem; padding: 0;">
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
                 @endif
 
@@ -879,14 +864,12 @@
 
         if (password !== passwordConfirm) {
             e.preventDefault();
-            alert('Mật khẩu xác nhận không khớp!');
             return false;
         }
 
         const terms = document.getElementById('terms');
         if (!terms.checked) {
             e.preventDefault();
-            alert('Vui lòng đồng ý với điều khoản dịch vụ!');
             return false;
         }
     });

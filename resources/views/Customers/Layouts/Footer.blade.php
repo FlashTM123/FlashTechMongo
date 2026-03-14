@@ -629,7 +629,6 @@
     if (newsletterForm) {
         newsletterForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Cảm ơn bạn đã đăng ký! Chúng tôi sẽ gửi thông tin khuyến mãi qua email của bạn.');
             newsletterForm.reset();
         });
     }

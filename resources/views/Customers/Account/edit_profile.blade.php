@@ -327,15 +327,11 @@
                 </a>
             </div>
 
-            @if(session('success'))
-                <div class="alert-success">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    {{ session('success') }}
-                </div>
-            @endif
+
 
             @if($errors->any())
-                <div class="alert-error">
+                <!-- Error alerts removed -->
+                <div style="display:none;">
                     <ul style="margin:0;padding-left:1.25rem;">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -459,7 +455,6 @@
             const file = e.target.files[0];
             if (!file) return;
             if (file.size > 2 * 1024 * 1024) {
-                alert('Ảnh không được vượt quá 2MB');
                 e.target.value = '';
                 return;
             }

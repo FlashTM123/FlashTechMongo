@@ -1,6 +1,5 @@
-@extends('Customers.Layouts.master')
-@section('title', 'Thông tin cá nhân')
-@section('content')
+<?php $__env->startSection('title', 'Thông tin cá nhân'); ?>
+<?php $__env->startSection('content'); ?>
 
 <div class="profile-page">
     <div class="profile-container">
@@ -14,25 +13,26 @@
             <!-- Avatar -->
             <div class="profile-avatar-wrapper">
                 <div class="profile-avatar">
-                    @if($customer->profile_picture_url)
-                        <img src="{{ $customer->profile_picture_url }}" alt="{{ $customer->full_name }}">
-                    @else
-                        <div class="avatar-placeholder">{{ substr($customer->full_name, 0, 1) }}</div>
-                    @endif
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer->profile_picture_url): ?>
+                        <img src="<?php echo e($customer->profile_picture_url); ?>" alt="<?php echo e($customer->full_name); ?>">
+                    <?php else: ?>
+                        <div class="avatar-placeholder"><?php echo e(substr($customer->full_name, 0, 1)); ?></div>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
                 <span class="status-badge online"></span>
             </div>
 
             <!-- User Info -->
             <div class="profile-info">
-                <h1 class="profile-name">{{ $customer->full_name }}</h1>
+                <h1 class="profile-name"><?php echo e($customer->full_name); ?></h1>
                 <p class="profile-email">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
-                    {{ $customer->email }}
+                    <?php echo e($customer->email); ?>
+
                 </p>
-                @if($customer->google_id)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer->google_id): ?>
                 <span class="google-badge">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -42,7 +42,7 @@
                     </svg>
                     Đăng nhập bằng Google
                 </span>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <!-- Stats Row -->
@@ -54,7 +54,7 @@
                         </svg>
                     </div>
                     <div class="stat-content">
-                        <span class="stat-value">{{ $ordersCount ?? 0 }}</span>
+                        <span class="stat-value"><?php echo e($ordersCount ?? 0); ?></span>
                         <span class="stat-label">Đơn hàng</span>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                         </svg>
                     </div>
                     <div class="stat-content">
-                        <span class="stat-value">{{ number_format($customer->loyalty_points ?? 0) }}</span>
+                        <span class="stat-value"><?php echo e(number_format($customer->loyalty_points ?? 0)); ?></span>
                         <span class="stat-label">Điểm tích lũy</span>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                         </svg>
                     </div>
                     <div class="stat-content">
-                        <span class="stat-value">{{ $reviewsCount ?? 0 }}</span>
+                        <span class="stat-value"><?php echo e($reviewsCount ?? 0); ?></span>
                         <span class="stat-label">Đánh giá</span>
                     </div>
                 </div>
@@ -98,23 +98,23 @@
                     <div class="detail-body">
                         <div class="detail-row">
                             <span class="detail-label">Mã khách hàng</span>
-                            <span class="detail-value highlight">{{ $customer->customer_code }}</span>
+                            <span class="detail-value highlight"><?php echo e($customer->customer_code); ?></span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Số điện thoại</span>
-                            <span class="detail-value">{{ $customer->phone_number ?? 'Chưa cập nhật' }}</span>
+                            <span class="detail-value"><?php echo e($customer->phone_number ?? 'Chưa cập nhật'); ?></span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Địa chỉ</span>
-                            <span class="detail-value">{{ $customer->address ?? 'Chưa cập nhật' }}</span>
+                            <span class="detail-value"><?php echo e($customer->address ?? 'Chưa cập nhật'); ?></span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Giới tính</span>
                             <span class="detail-value">
-                                @if($customer->gender == 'male') Nam
-                                @elseif($customer->gender == 'female') Nữ
-                                @else Chưa cập nhật
-                                @endif
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer->gender == 'male'): ?> Nam
+                                <?php elseif($customer->gender == 'female'): ?> Nữ
+                                <?php else: ?> Chưa cập nhật
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </span>
                         </div>
                     </div>
@@ -136,21 +136,21 @@
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Xác thực</span>
-                            @if($customer->google_id)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer->google_id): ?>
                                 <span class="status-tag google">Google</span>
-                            @elseif($customer->email_verified_at)
+                            <?php elseif($customer->email_verified_at): ?>
                                 <span class="status-tag verified">Đã xác thực</span>
-                            @else
+                            <?php else: ?>
                                 <span class="status-tag pending">Chưa xác thực</span>
-                            @endif
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Ngày tham gia</span>
-                            <span class="detail-value">{{ $customer->created_at->format('d/m/Y') }}</span>
+                            <span class="detail-value"><?php echo e($customer->created_at->format('d/m/Y')); ?></span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Cập nhật cuối</span>
-                            <span class="detail-value">{{ $customer->updated_at->format('d/m/Y H:i') }}</span>
+                            <span class="detail-value"><?php echo e($customer->updated_at->format('d/m/Y H:i')); ?></span>
                         </div>
                     </div>
                 </div>
@@ -158,20 +158,20 @@
 
             <!-- Action Buttons -->
             <div class="profile-actions">
-                <a href="{{ route('customers.profile.edit') }}" class="btn btn-primary">
+                <a href="<?php echo e(route('customers.profile.edit')); ?>" class="btn btn-primary">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                     Chỉnh sửa hồ sơ
                 </a>
-                <a href="{{ route('customers.password.change') }}" class="btn btn-secondary">
+                <a href="<?php echo e(route('customers.password.change')); ?>" class="btn btn-secondary">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
                     Đổi mật khẩu
                 </a>
-                <a href="{{ route('home') }}" class="btn btn-outline">
+                <a href="<?php echo e(route('home')); ?>" class="btn btn-outline">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9 22 9 12 15 12 15 22"/>
@@ -563,4 +563,6 @@
 }
 </style>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('Customers.Layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/profile_detail.blade.php ENDPATH**/ ?>
