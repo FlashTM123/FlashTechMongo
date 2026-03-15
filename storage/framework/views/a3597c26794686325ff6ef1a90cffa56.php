@@ -633,4 +633,4 @@
         });
     }
 </script>
-<?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/Layouts/Footer.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/flashtm/FlashTechMongo/resources/views/Customers/Layouts/Footer.blade.php ENDPATH**/ ?>

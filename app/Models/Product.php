@@ -12,7 +12,8 @@ class Product extends Model
     use HasFactory;
     protected $connection = 'mongodb';
     protected $table = 'products';
-    protected $primaryKey = 'id';
+    protected $primaryKey = '_id';
+    protected $keyType = 'string';
     protected $fillable = [
         'name',
         'slug',
@@ -66,12 +67,12 @@ class Product extends Model
     public function getAttribute($key)
     {
         $value = parent::getAttribute($key);
-        
+
         // Parse JSON strings to arrays for images and colors
         if (in_array($key, ['images', 'colors']) && is_string($value)) {
             $value = json_decode($value, true) ?? [];
         }
-        
+
         // Format image URLs
         if ($key === 'images' && is_array($value)) {
             return array_map(function ($img) {
@@ -82,7 +83,7 @@ class Product extends Model
                 return '/storage/' . $img;
             }, $value);
         }
-        
+
         if ($key === 'colors' && is_array($value)) {
             return collect($value)->map(function ($color) {
                 if (isset($color['images']) && is_array($color['images'])) {
@@ -97,7 +98,7 @@ class Product extends Model
                 return $color;
             })->toArray();
         }
-        
+
         return $value;
     }
 
@@ -161,6 +162,37 @@ class Product extends Model
             }
             return '/storage/' . $image;
         }, $value);
+    }
+
+    /**
+     * Strip /storage/ prefix khi save từ Filament (convert URL → raw path)
+     */
+    public function setImageAttribute($value)
+    {
+        if (is_string($value) && str_starts_with($value, '/storage/')) {
+            $this->attributes['image'] = substr($value, 9); // Bỏ "/storage/"
+            return;
+        }
+        $this->attributes['image'] = $value;
+    }
+
+    public function setImagesAttribute($value)
+    {
+        if (!$value) {
+            $this->attributes['images'] = $value;
+            return;
+        }
+
+        if (is_array($value)) {
+            $value = array_map(function($image) {
+                if (is_string($image) && str_starts_with($image, '/storage/')) {
+                    return substr($image, 9); // Bỏ "/storage/"
+                }
+                return $image;
+            }, $value);
+        }
+
+        $this->attributes['images'] = $value;
     }
 
     public function brand()

@@ -201,11 +201,20 @@
     }
 
     .category-icon {
-        font-size: 3rem;
+        width: 56px;
+        height: 56px;
         margin-bottom: 1rem;
-        display: block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         z-index: 1;
+        color: #334155;
+    }
+
+    .category-icon svg {
+        width: 100%;
+        height: 100%;
     }
 
     .category-name {
@@ -751,37 +760,75 @@
         </div>
         <div class="categories-grid">
             <a href="#smartphones" class="category-card">
-                <span class="category-icon">📱</span>
+                <span class="category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="7" y="2" width="10" height="20" rx="2"></rect>
+                        <line x1="11" y1="18" x2="13" y2="18"></line>
+                    </svg>
+                </span>
                 <h3 class="category-name">Smartphone</h3>
                 <p class="category-count">{{ $categoryCounts['Smartphone'] ?? 0 }} sản phẩm</p>
             </a>
             <a href="#laptops" class="category-card">
-                <span class="category-icon">💻</span>
+                <span class="category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="5" width="16" height="11" rx="1.5"></rect>
+                        <path d="M2 19h20"></path>
+                    </svg>
+                </span>
                 <h3 class="category-name">Laptop</h3>
                 <p class="category-count">{{ $categoryCounts['Laptop'] ?? 0 }} sản phẩm</p>
             </a>
             <a href="#tablets" class="category-card">
-                <span class="category-icon">📲</span>
+                <span class="category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2"></rect>
+                        <circle cx="12" cy="18" r="0.8" fill="currentColor" stroke="none"></circle>
+                    </svg>
+                </span>
                 <h3 class="category-name">Tablet</h3>
                 <p class="category-count">{{ $categoryCounts['Tablet'] ?? 0 }} sản phẩm</p>
             </a>
             <a href="#computers" class="category-card">
-                <span class="category-icon">🖥️</span>
+                <span class="category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="12" rx="1.5"></rect>
+                        <path d="M8 20h8"></path>
+                        <path d="M12 16v4"></path>
+                    </svg>
+                </span>
                 <h3 class="category-name">Computer</h3>
                 <p class="category-count">{{ $categoryCounts['Computer'] ?? 0 }} sản phẩm</p>
             </a>
             <a href="#accessories" class="category-card">
-                <span class="category-icon">🎧</span>
+                <span class="category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12a8 8 0 0 1 16 0"></path>
+                        <rect x="3" y="12" width="4" height="7" rx="1.5"></rect>
+                        <rect x="17" y="12" width="4" height="7" rx="1.5"></rect>
+                    </svg>
+                </span>
                 <h3 class="category-name">Phụ kiện</h3>
                 <p class="category-count">{{ $categoryCounts['Accessory'] ?? 0 }} sản phẩm</p>
             </a>
             <a href="#components" class="category-card">
-                <span class="category-icon">🛠️</span>
+                <span class="category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 6a4 4 0 0 0 4 4l-6.5 6.5a2.1 2.1 0 1 1-3-3L15 7a4 4 0 0 0-1-1z"></path>
+                        <path d="M5 19l2 2"></path>
+                    </svg>
+                </span>
                 <h3 class="category-name">Linh kiện</h3>
                 <p class="category-count">{{ $categoryCounts['Component'] ?? 0 }} sản phẩm</p>
             </a>
             <a href="#accessories" class="category-card">
-                <span class="category-icon">📦</span>
+                <span class="category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 8l9-5 9 5-9 5-9-5z"></path>
+                        <path d="M3 8v8l9 5 9-5V8"></path>
+                        <path d="M12 13v8"></path>
+                    </svg>
+                </span>
                 <h3 class="category-name">Khác</h3>
                 <p class="category-count">{{ $categoryCounts['Other'] ?? 0 }} sản phẩm</p>
             </a>
@@ -814,7 +861,13 @@
 <section class="featured-section" id="smartphones" style="background: #f8fafc;">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">📱 Smartphone</span>
+            <span class="section-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
+                    <rect x="7" y="2" width="10" height="20" rx="2"></rect>
+                    <line x1="11" y1="18" x2="13" y2="18"></line>
+                </svg>
+                Smartphone
+            </span>
             <h2 class="section-title">Điện Thoại Thông Minh</h2>
             <p class="section-description">Các mẫu smartphone mới nhất</p>
         </div>
@@ -832,7 +885,13 @@
 <section class="featured-section" id="laptops">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">💻 Laptop</span>
+            <span class="section-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
+                    <rect x="4" y="5" width="16" height="11" rx="1.5"></rect>
+                    <path d="M2 19h20"></path>
+                </svg>
+                Laptop
+            </span>
             <h2 class="section-title">Laptop & Máy Tính Xách Tay</h2>
             <p class="section-description">Laptop cho mọi nhu cầu làm việc và giải trí</p>
         </div>
@@ -850,7 +909,13 @@
 <section class="featured-section" id="tablets" style="background: #f8fafc;">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">📲 Tablet</span>
+            <span class="section-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
+                    <rect x="5" y="2" width="14" height="20" rx="2"></rect>
+                    <circle cx="12" cy="18" r="0.9" fill="currentColor" stroke="none"></circle>
+                </svg>
+                Tablet
+            </span>
             <h2 class="section-title">Máy Tính Bảng</h2>
             <p class="section-description">Tablet tiện lợi cho học tập và giải trí</p>
         </div>
@@ -868,7 +933,14 @@
 <section class="featured-section" id="computers">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">🖥️ Computer</span>
+            <span class="section-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
+                    <rect x="3" y="4" width="18" height="12" rx="1.5"></rect>
+                    <path d="M8 20h8"></path>
+                    <path d="M12 16v4"></path>
+                </svg>
+                Computer
+            </span>
             <h2 class="section-title">PC & Máy Tính Để Bàn</h2>
             <p class="section-description">Máy tính bàn hiệu năng cao</p>
         </div>
@@ -886,7 +958,14 @@
 <section class="featured-section" id="accessories" style="background: #f8fafc;">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">🎧 Phụ Kiện</span>
+            <span class="section-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
+                    <path d="M4 12a8 8 0 0 1 16 0"></path>
+                    <rect x="3" y="12" width="4" height="7" rx="1.5"></rect>
+                    <rect x="17" y="12" width="4" height="7" rx="1.5"></rect>
+                </svg>
+                Phụ Kiện
+            </span>
             <h2 class="section-title">Phụ Kiện Công Nghệ</h2>
             <p class="section-description">Phụ kiện chất lượng cao cho thiết bị của bạn</p>
         </div>

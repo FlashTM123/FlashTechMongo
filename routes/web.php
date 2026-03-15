@@ -36,6 +36,9 @@ Route::get('/product/{slug}', [\App\Http\Controllers\CustomerHomeController::cla
 // Category Route
 Route::get('/danh-muc/{category}', [\App\Http\Controllers\CustomerHomeController::class, 'category'])->name('products.category');
 
+// API Routes
+Route::get('/api/products/search', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
+
 
 // Reviews
 Route::middleware(['auth:customer'])->group(function () {
@@ -58,6 +61,8 @@ Route::middleware(['auth:customer'])->prefix('thanh-toan')->group(function () {
     Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/dat-hang', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
     Route::get('/thanh-cong/{id}', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::post('/api/validate-coupon', [CheckoutController::class, 'validateCoupon'])->name('checkout.validateCoupon');
+    Route::post('/api/remove-coupon', [CheckoutController::class, 'removeCoupon'])->name('checkout.removeCoupon');
 });
 
 // Customer Profile Routes

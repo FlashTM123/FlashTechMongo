@@ -47,7 +47,7 @@ class BrandResource extends Resource
                             ->label('Slug')
                             ->maxLength(255)
                             ->disabled()
-                            ->dehydrated(),
+                            ->dehydrated(false),
                         Forms\Components\FileUpload::make('logo')
                             ->label('Logo')
                             ->image()

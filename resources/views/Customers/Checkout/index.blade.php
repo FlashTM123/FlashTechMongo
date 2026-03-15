@@ -371,6 +371,108 @@
             height: 18px;
         }
 
+        /* Coupon Section */
+        .coupon-section {
+            background: rgba(102, 126, 234, 0.03);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .coupon-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .coupon-input-group input {
+            flex: 1;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-family: inherit;
+        }
+
+        .coupon-input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .coupon-btn {
+            padding: 0.625rem 1rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+
+        .coupon-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .coupon-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .coupon-message {
+            font-size: 0.8125rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+
+        .coupon-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .coupon-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .applied-coupon {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .applied-coupon-info {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .applied-coupon-code {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .remove-coupon-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0;
+        }
+
         /* Alert */
         .alert {
             padding: 1rem 1.25rem;
@@ -544,6 +646,26 @@
                     <div class="order-summary">
                         <h3>Đơn hàng của bạn ({{ count($cartItems) }} sản phẩm)</h3>
 
+                        <!-- Coupon Section -->
+                        <div class="coupon-section">
+                            @if ($appliedCoupon)
+                                <div class="applied-coupon">
+                                    <div class="applied-coupon-info">
+                                        Mã giảm giá: <span class="applied-coupon-code">{{ $appliedCoupon['code'] }}</span>
+                                    </div>
+                                    <button type="button" class="remove-coupon-btn" onclick="removeCoupon()">Hủy</button>
+                                </div>
+                                <input type="hidden" name="coupon_code" value="{{ $appliedCoupon['code'] }}">
+                            @else
+                                <div class="coupon-input-group">
+                                    <input type="text" id="couponCode" class="form-control" placeholder="Nhập mã giảm giá..."
+                                        maxlength="50">
+                                    <button type="button" class="coupon-btn" onclick="applyCoupon()">Áp dụng</button>
+                                </div>
+                                <div id="couponMessage"></div>
+                            @endif
+                        </div>
+
                         @foreach ($cartItems as $item)
                             <div class="summary-item">
                                 <div class="summary-item-image">
@@ -569,15 +691,26 @@
                         <div style="margin-top: 1rem;">
                             <div class="summary-row">
                                 <span>Tạm tính</span>
-                                <span>{{ number_format($subtotal, 0, ',', '.') }}₫</span>
+                                <span id="subtotalDisplay">{{ number_format($subtotal, 0, ',', '.') }}₫</span>
                             </div>
+                            @if ($appliedCoupon)
+                                <div class="summary-row" style="color: var(--success);">
+                                    <span>Giảm giá</span>
+                                    <span id="discountDisplay">-{{ number_format($appliedCoupon['discount'], 0, ',', '.') }}₫</span>
+                                </div>
+                            @else
+                                <div class="summary-row" id="discountRow" style="display: none; color: var(--success);">
+                                    <span>Giảm giá</span>
+                                    <span id="discountDisplay">-0₫</span>
+                                </div>
+                            @endif
                             <div class="summary-row">
                                 <span>Phí vận chuyển</span>
                                 <span style="color: var(--success)">Miễn phí</span>
                             </div>
                             <div class="summary-row total">
                                 <span>Tổng cộng</span>
-                                <span class="total-price">{{ number_format($subtotal, 0, ',', '.') }}₫</span>
+                                <span class="total-price" id="totalDisplay">{{ number_format($subtotal - ($appliedCoupon['discount'] ?? 0), 0, ',', '.') }}₫</span>
                             </div>
                         </div>
 
@@ -605,10 +738,99 @@
 
 @push('scripts')
     <script>
+        const subtotal = {{ $subtotal }};
+
+        async function applyCoupon() {
+            const code = document.getElementById('couponCode').value.trim();
+            const btn = event.target;
+
+            if (!code) {
+                showCouponMessage('Vui lòng nhập mã giảm giá!', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Đang kiểm tra...';
+
+            try {
+                const response = await fetch('{{ route("checkout.validateCoupon") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('[name="_token"]').value,
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        subtotal: subtotal,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Reload page to show applied coupon
+                    window.location.reload();
+                } else {
+                    showCouponMessage(data.message || 'Mã giảm giá không hợp lệ!', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Áp dụng';
+                }
+            } catch (error) {
+                console.error('Coupon error:', error);
+                showCouponMessage('Có lỗi xảy ra, vui lòng thử lại!', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Áp dụng';
+            }
+        }
+
+        async function removeCoupon() {
+            try {
+                const response = await fetch('{{ route("checkout.removeCoupon") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('[name="_token"]').value,
+                    },
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Remove coupon error:', error);
+            }
+        }
+
+        function showCouponMessage(message, type) {
+            const msgEl = document.getElementById('couponMessage');
+            msgEl.className = `coupon-message ${type}`;
+            msgEl.textContent = message;
+            msgEl.style.display = 'block';
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    msgEl.style.display = 'none';
+                }, 3000);
+            }
+        }
+
         document.getElementById('checkoutForm').addEventListener('submit', function() {
             const btn = document.getElementById('placeOrderBtn');
             btn.disabled = true;
             btn.innerHTML = '<svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Đang xử lý...';
+        });
+
+        // Allow Enter key to apply coupon
+        document.addEventListener('DOMContentLoaded', function() {
+            const couponInput = document.getElementById('couponCode');
+            if (couponInput) {
+                couponInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        applyCoupon();
+                    }
+                });
+            }
         });
     </script>
 @endpush

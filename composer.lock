@@ -3882,21 +3882,21 @@
         },
         {
             "name": "mongodb/mongodb",
-            "version": "2.2.0",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mongodb/mongo-php-library.git",
-                "reference": "bbb13f969e37e047fd822527543df55fdc1c9298"
+                "reference": "0a2472ba9cbb932f7e43a8770aedb2fc30612a67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/bbb13f969e37e047fd822527543df55fdc1c9298",
-                "reference": "bbb13f969e37e047fd822527543df55fdc1c9298",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/0a2472ba9cbb932f7e43a8770aedb2fc30612a67",
+                "reference": "0a2472ba9cbb932f7e43a8770aedb2fc30612a67",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "ext-mongodb": "^2.2",
+                "ext-mongodb": "^2.1",
                 "php": "^8.1",
                 "psr/log": "^1.1.4|^2|^3",
                 "symfony/polyfill-php85": "^1.32"
@@ -3907,9 +3907,9 @@
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
                 "phpunit/phpunit": "^10.5.35",
-                "rector/rector": "^2.3.4",
+                "rector/rector": "^2.1.4",
                 "squizlabs/php_codesniffer": "^3.7",
-                "vimeo/psalm": "~6.14.2"
+                "vimeo/psalm": "6.5.*"
             },
             "type": "library",
             "extra": {
@@ -3953,9 +3953,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mongodb/mongo-php-library/issues",
-                "source": "https://github.com/mongodb/mongo-php-library/tree/2.2.0"
+                "source": "https://github.com/mongodb/mongo-php-library/tree/2.1.2"
             },
-            "time": "2026-02-11T11:39:56+00:00"
+            "time": "2025-10-06T12:12:40+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -7633,20 +7633,19 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.33.0",
+            "version": "v1.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "6d857f4d76bd4b343eac26d6b539585d2bc56493"
+                "reference": "85181ba99b2345b0ef10ce42ecac37612d9fd341"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/6d857f4d76bd4b343eac26d6b539585d2bc56493",
-                "reference": "6d857f4d76bd4b343eac26d6b539585d2bc56493",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/85181ba99b2345b0ef10ce42ecac37612d9fd341",
+                "reference": "85181ba99b2345b0ef10ce42ecac37612d9fd341",
                 "shasum": ""
             },
             "require": {
-                "ext-iconv": "*",
                 "php": ">=7.2"
             },
             "provide": {
@@ -7694,7 +7693,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.33.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.31.0"
             },
             "funding": [
                 {
@@ -7706,15 +7705,11 @@
                     "type": "github"
                 },
                 {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-23T08:48:59+00:00"
+            "time": "2024-09-09T11:45:10+00:00"
         },
         {
             "name": "symfony/polyfill-php80",

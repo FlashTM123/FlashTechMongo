@@ -269,4 +269,77 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được xóa thành công.');
     }
+
+    /**
+     * Search products with suggestions (API endpoint for autocomplete)
+     */
+    public function search()
+    {
+        $query = request('q') ?? request('search') ?? '';
+
+        // Minimum 1 character to search
+        if (strlen($query) < 1) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Nhập ít nhất 1 ký tự',
+                'suggestions' => []
+            ]);
+        }
+
+        // Search active products only
+        $products = Product::where('is_active', true)
+            ->where(function($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                  ->orWhere('sku', 'like', "%{$query}%");
+            })
+            ->select('_id', 'name', 'sku', 'slug', 'image', 'price', 'sale_price', 'stock_quantity')
+            ->limit(8)
+            ->get();
+
+        // Format suggestions for autocomplete
+        $suggestions = $products->map(function($product) {
+            // Handle price when product has multiple colors
+            $price = $product->price ?? 0;
+            $salePrice = $product->sale_price ?? 0;
+
+            if ($product->colors && is_array($product->colors) && count($product->colors) > 0) {
+                // Get price from first color variation
+                $firstColor = $product->colors[0];
+                if (isset($firstColor['price'])) {
+                    $price = $firstColor['price'];
+                }
+                if (isset($firstColor['sale_price'])) {
+                    $salePrice = $firstColor['sale_price'];
+                }
+            }
+
+            $currentPrice = $salePrice > 0 ? $salePrice : $price;
+
+            // Handle stock when product has multiple colors
+            $stock = (int) ($product->stock_quantity ?? 0);
+            if ($product->colors && is_array($product->colors) && count($product->colors) > 0) {
+                // Get stock from first color
+                $firstColor = $product->colors[0];
+                $stock = (int) ($firstColor['stock'] ?? $stock);
+            }
+
+            return [
+                'id' => (string) $product->_id,
+                'slug' => $product->slug,
+                'name' => $product->name,
+                'sku' => $product->sku ?? 'N/A',
+                'image' => $product->image ? asset('storage/' . $product->image) : null,
+                'price' => number_format($currentPrice, 0, ',', '.') . ' ₫',
+                'stock' => $stock,
+                'inStock' => $stock > 0,
+                'stockText' => $stock > 0 ? 'Còn hàng' : 'Hết hàng',
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'suggestions' => $suggestions,
+            'count' => $suggestions->count()
+        ]);
+    }
 }

@@ -122,7 +122,7 @@
 | 🆕 Trang thành công | Trang xác nhận đơn hàng sau khi đặt thành công |
 | 🆕 Bảo vệ route | Giỏ hàng & thanh toán yêu cầu đăng nhập customer |
 
-### �️ Admin Panel (Filament v3)
+###️ Admin Panel (Filament v3)
 | Tính năng | Mô tả |
 |:----------|:------|
 | 🆕 Filament Admin | Thay thế admin panel cũ bằng Filament v3.3 tại `/admin` |
@@ -495,20 +495,36 @@ FlashTechMongo/
 
 ## 📝 Cập nhật gần đây (15/03/2026)
 
+### 🆕 Tính năng mới
+| Tính năng | Mô tả | Trạng thái |
+|:----------|:------|:----------:|
+| **🔍 Tìm kiếm sản phẩm** | Tìm kiếm thời gian thực với autocomplete, gợi ý tên sản phẩm (AJAX) | ✅ |
+| | Hỗ trợ sản phẩm màu: hiển thị giá từ biến thể màu đầu tiên | ✅ |
+| **💰 Mã giảm giá (Coupon)** | Tạo, sửa, xóa mã giảm giá trong admin panel Filament | ✅ |
+| | Hỗ trợ 2 loại giảm: % (phần trăm) và cố định (VNĐ) | ✅ |
+| | Giảm giá theo điều kiện: min_order, max_discount, usage_limit, ngày hết hạn | ✅ |
+| | Áp dụng coupon trong checkout: validate, hiển thị discount, loại bỏ | ✅ |
+| **📧 Email thông báo** | Gửi email xác nhận đơn hàng tự động (Gmail SMTP) | ✅ |
+| | Hiển thị chi tiết đơn hàng, sản phẩm, tổng cộng trong email | ✅ |
+
 ### 🔧 Sửa lỗi
-| Lỗi | Mô tả | Chi tiết | Trạng thái |
-|:----|:------|:--------|:----------:|
-| **Thông báo không cần thiết** | Loại bỏ popup/alert từ tất cả trang khách | Xóa `alert()` JavaScript, session alerts (success/error), và `showGlobalToast()` function từ các trang: Wishlist, Cart, Orders, Product Detail, Account (Register, Login, Profile, Change Password) | ✅ |
-| **Giá wishlist hiển thị lỗi** | Wishlist card hiển thị "Ơ" thay vì giá | Fix: Cast price/sale_price sang int với fallback 0 nếu null, improve discount calculation logic | ✅ |
-| **Số liệu profile sai** | Profile hiển thị cứng 0 cho đơn hàng & đánh giá | Import Reviews model, query Orders & Reviews tables, count theo customer_id, pass các tính toán vào view | ✅ |
+| Lỗi | Giải pháp | Trạng thái |
+|:----|:---------|:----------:|
+| Relationship `[details]` không tồn tại | Thêm `details()` alias vào Orders model | ✅ |
+| Filament `.uppercase()` lỗi | Xóa method không tồn tại | ✅ |
+| Filament `DateTimePickerInput` lỗi | Thay thành `DateTimePicker` | ✅ |
+| Product images array không pre-populate | Thêm form data handler + setter | ✅ |
+| Email SMTP password sai | Thêm quotes cho password | ✅ |
 
-### 📝 Cập nhật gần đây (13/03/2026)
+---
+
+## 📝 Cập nhật gần đây (13/03/2026)
 
 
 
 ### 🔧 Sửa lỗi
-| Lỗi | Mô tả | Chi tiết | Trạng thái |
-|:----|:------|:--------|:----------:|
+| Lỗi | Mô tả | Trạng thái |
+|:----|:------|:----------:|
 | **MongoDB JSON String Casting** | **500 Server Error** khi truy cập `$product->colors` - `count()` gọi trên string thay vì array | **Root cause:** MongoDB driver lưu colors/images dưới dạng JSON string. Eloquent casts áp dụng AFTER `__get` accessor, nên Blade template gọi `count()` trước khi casting xảy ra. **Giải pháp:** Override `getAttribute($key)` trong Product model để parse JSON string → array ngay khi truy cập, đảm bảo template luôn nhận được array | ✅ |
 | Ảnh không hiển thị Wishlist | Sản phẩm yêu thích không hiển thị ảnh | Simplified URL handling - remove unnecessary `asset()` wrapping vì Product model accessor đã format URL | ✅ |
 | Ảnh không hiển thị Cart | Giỏ hàng không hiển thị ảnh sản phẩm | Removed complex URL logic - dùng `$item['product']->image` trực tiếp từ Product model accessor | ✅ |

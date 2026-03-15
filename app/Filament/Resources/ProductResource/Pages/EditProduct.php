@@ -25,6 +25,22 @@ class EditProduct extends EditRecord
             ->toArray();
 
         $data['specs'] = $specs;
+
+        // Strip /storage/ prefix từ images để Filament FileUpload nhận dạng
+        if (isset($data['images']) && is_array($data['images'])) {
+            $data['images'] = array_map(function($image) {
+                if (is_string($image) && str_starts_with($image, '/storage/')) {
+                    return substr($image, 9); // Bỏ "/storage/"
+                }
+                return $image;
+            }, $data['images']);
+        }
+
+        // Cũng strip /storage/ từ image chính
+        if (isset($data['image']) && is_string($data['image']) && str_starts_with($data['image'], '/storage/')) {
+            $data['image'] = substr($data['image'], 9);
+        }
+
         return $data;
     }
 

@@ -109,4 +109,4 @@
     </div>
 </div>
 </a>
-<?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/Components/product-card.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/flashtm/FlashTechMongo/resources/views/Customers/Components/product-card.blade.php ENDPATH**/ ?>

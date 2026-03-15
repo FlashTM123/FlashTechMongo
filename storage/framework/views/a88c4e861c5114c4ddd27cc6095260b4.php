@@ -59,4 +59,4 @@
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
-<?php /**PATH C:\Users\minhz\Documents\FlashTechMongo\resources\views/Customers/Layouts/master.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/flashtm/FlashTechMongo/resources/views/Customers/Layouts/master.blade.php ENDPATH**/ ?>
