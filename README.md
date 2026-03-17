@@ -655,9 +655,6 @@ FlashTechMongo/
 
 | Ưu tiên | Tính năng | Trạng thái |
 |:-------:|:----------|:----------:|
-| 🔴 | Tìm kiếm sản phẩm (search bar + gợi ý) | ⏳ |
-| 🔴 | Mã giảm giá / Coupon | ⏳ |
-| 🟡 | Email thông báo đơn hàng (xác nhận, cập nhật trạng thái) | ⏳ |
 | 🟡 | Tích hợp thanh toán VNPay/MoMo thực tế | ⏳ |
 | 🟡 | Xuất hóa đơn PDF | ⏳ |
 | 🟡 | Dashboard thống kê doanh thu (biểu đồ) | ⏳ |
