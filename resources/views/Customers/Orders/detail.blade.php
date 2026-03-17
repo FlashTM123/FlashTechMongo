@@ -107,6 +107,32 @@
             height: 16px;
         }
 
+        .btn-download-invoice {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--white);
+            background: var(--success);
+            border: 2px solid var(--success);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-download-invoice:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .btn-download-invoice svg {
+            width: 16px;
+            height: 16px;
+        }
+
         .btn-cancel-order {
             display: inline-flex;
             align-items: center;
@@ -396,6 +422,14 @@
                             <polyline points="12 19 5 12 12 5"></polyline>
                         </svg>
                         Quay lại
+                    </a>
+                    <a href="{{ route('customers.orders.invoice', $order->_id) }}" class="btn-download-invoice">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Xuất hóa đơn PDF
                     </a>
                     @if (in_array($order->order_status, ['pending', 'processing']))
                         <form action="{{ route('customers.orders.cancel', $order->_id) }}" method="POST"

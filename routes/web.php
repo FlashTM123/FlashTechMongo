@@ -14,6 +14,17 @@ Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name
 Route::get('/auth/google', [CustomerAuthController::class, 'redirectToGoogle'])->name('customers.login.google');
 Route::get('/auth/google/callback', [CustomerAuthController::class, 'handleGoogleCallback'])->name('customers.login.google.callback');
 
+// Test route to debug authentication
+Route::get('/test-auth', function() {
+    return [
+        'customer_auth' => \Illuminate\Support\Facades\Auth::guard('customer')->check(),
+        'customer_user' => \Illuminate\Support\Facades\Auth::guard('customer')->user()?->email,
+        'web_auth' => \Illuminate\Support\Facades\Auth::guard('web')->check(),
+        'web_user' => \Illuminate\Support\Facades\Auth::guard('web')->user()?->email,
+        'session_data' => session()->all(),
+    ];
+});
+
 Route::get('/fix-storage', function () {
     $target = storage_path('app/public');
     $link = public_path('storage');
@@ -65,6 +76,11 @@ Route::middleware(['auth:customer'])->prefix('thanh-toan')->group(function () {
     Route::post('/api/remove-coupon', [CheckoutController::class, 'removeCoupon'])->name('checkout.removeCoupon');
 });
 
+// Payment Callback Routes (không cần auth vì là callback từ payment gateway)
+Route::get('/payment/vnpay/return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');
+Route::get('/payment/momo/return', [CheckoutController::class, 'momoReturn'])->name('payment.momo.return');
+Route::post('/payment/momo/notify', [CheckoutController::class, 'momoNotify'])->name('payment.momo.notify');
+
 // Customer Profile Routes
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/profile', [\App\Http\Controllers\CustomerHomeController::class, 'profile'])->name('customers.profile');
@@ -75,6 +91,7 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::put('/doi-mat-khau', [\App\Http\Controllers\CustomerHomeController::class, 'updatePassword'])->name('customers.password.update');
     Route::get('/don-hang', [\App\Http\Controllers\CustomerHomeController::class, 'orderHistory'])->name('customers.orders');
     Route::get('/don-hang/{id}', [\App\Http\Controllers\CustomerHomeController::class, 'orderDetail'])->name('customers.orders.detail');
+    Route::get('/don-hang/{id}/hoa-don', [\App\Http\Controllers\CustomerHomeController::class, 'downloadInvoice'])->name('customers.orders.invoice');
     Route::post('/don-hang/{id}/huy', [\App\Http\Controllers\CustomerHomeController::class, 'cancelOrder'])->name('customers.orders.cancel');
     Route::get('/yeu-thich', [\App\Http\Controllers\CustomerHomeController::class, 'wishlist'])->name('wishlist.index');
     Route::post('/yeu-thich/toggle', [\App\Http\Controllers\CustomerHomeController::class, 'toggleWishlist'])->name('wishlist.toggle');

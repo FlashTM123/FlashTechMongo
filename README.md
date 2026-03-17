@@ -493,6 +493,26 @@ FlashTechMongo/
 
 ---
 
+## 📝 Cập nhật gần đây (17/03/2026)
+
+### 🔧 Sửa lỗi quan trọng
+| Lỗi | Mô tả | Giải pháp | Trạng thái |
+|:----|:------|:---------|:----------:|
+| **Filament Widget Static Property** | RevenueChart.php lỗi khi kế thừa từ ChartWidget: static property redeclaration | Xóa `static` keyword từ `protected static ?string $heading` → `protected ?string $heading` | ✅ |
+| **StatsOverview Decimal128 TypeError** | MongoDB Decimal128 không thể pass trực tiếp vào `number_format()` | Cast `(float)(string)$value` để chuyển Decimal128 sang float | ✅ |
+| **Product Edit Foreach() Error** | Filament Repeater component nhận string thay vì array cho `colors` & `images` | Thêm `'colors' => 'array'` và `'images' => 'array'` vào `$casts` trong Product model | ✅ |
+| **Customer Login Redirect** | Customer đăng nhập nhưng redirect sang admin login thay vì customer dashboard | Tạo custom `AuthenticateCustom` middleware với route detection logic | ✅ |
+| **Session Persistence Lost** | Auth state mất sau khi chuyển trang | Thay đổi `SESSION_DRIVER=cookie` → `SESSION_DRIVER=file` trong `.env` | ✅ |
+| **CustomerLoginMiddleware Bug** | Middleware check `session()->has('customer')` thay vì dùng proper auth guard | Sửa thành `Auth::guard('customer')->check()` | ✅ |
+
+### ⏳ Lỗi còn pending
+| Lỗi | Mô tả | Trạng thái |
+|:----|:------|:----------:|
+| **VNPAY Payment Format** | VNPAY không chấp nhận MongoDB Decimal128 data type cho amount | ⏳ Đang xử lý |
+| **MOMO Payment Format** | MOMO không chấp nhận MongoDB Decimal128 data type cho amount | ⏳ Đang xử lý |
+
+---
+
 ## 📝 Cập nhật gần đây (15/03/2026)
 
 ### 🆕 Tính năng mới

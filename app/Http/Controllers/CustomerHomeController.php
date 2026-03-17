@@ -10,6 +10,7 @@ use App\Models\Orders;
 use App\Models\Reviews;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CustomerHomeController extends Controller
 {
@@ -222,7 +223,7 @@ class CustomerHomeController extends Controller
 
         // Tính số đơn hàng
         $ordersCount = Orders::where('customer_id', (string) $customer->_id)->count();
-        
+
         // Tính số đánh giá
         $reviewsCount = Reviews::where('customer_id', (string) $customer->_id)->count();
 
@@ -256,6 +257,26 @@ class CustomerHomeController extends Controller
         }
 
         return view('Customers.Orders.detail', compact('order'));
+    }
+
+    /**
+     * Xuất hóa đơn PDF
+     */
+    public function downloadInvoice($id)
+    {
+        $customer = auth()->guard('customer')->user();
+        $order = Orders::with('details')->findOrFail($id);
+
+        // Kiểm tra quyền truy cập
+        if ((string) $order->customer_id !== (string) $customer->_id) {
+            abort(403);
+        }
+
+        // Tạo PDF
+        $pdf = Pdf::loadView('Customers.Orders.invoice', compact('order'));
+
+        // Tải xuống PDF
+        return $pdf->download('hoa-don-' . $order->order_code . '.pdf');
     }
 
     // ===================== CHỈNH SỬA HỒ SƠ =====================

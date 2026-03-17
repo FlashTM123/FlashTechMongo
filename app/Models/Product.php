@@ -36,9 +36,9 @@ class Product extends Model
     ];
 
     protected $casts = [
-        // Don't use array/json casts for images and colors - handle manually in getAttribute/setAttribute
-        // 'images' => 'json',
-        // 'colors' => 'json',
+        // Cast arrays/json - MongoDB stores as JSON strings
+        'images' => 'array',
+        'colors' => 'array',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'stock_quantity' => 'integer',
@@ -63,43 +63,26 @@ class Product extends Model
     /**
      * ⚡ Override getAttribute to handle JSON parsing for images & colors
      * MongoDB stores these as JSON strings, we need to parse them into arrays
+     * Laravel's array cast will handle automatic parsing
      */
     public function getAttribute($key)
     {
         $value = parent::getAttribute($key);
-
-        // Parse JSON strings to arrays for images and colors
-        if (in_array($key, ['images', 'colors']) && is_string($value)) {
-            $value = json_decode($value, true) ?? [];
-        }
-
-        // Format image URLs
-        if ($key === 'images' && is_array($value)) {
-            return array_map(function ($img) {
-                if (!$img) return null;
-                if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://') || str_starts_with($img, '/storage/')) {
-                    return $img;
-                }
-                return '/storage/' . $img;
-            }, $value);
-        }
-
-        if ($key === 'colors' && is_array($value)) {
-            return collect($value)->map(function ($color) {
-                if (isset($color['images']) && is_array($color['images'])) {
-                    $color['images'] = array_map(function ($img) {
-                        if (!$img) return null;
-                        if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://') || str_starts_with($img, '/storage/')) {
-                            return $img;
-                        }
-                        return '/storage/' . $img;
-                    }, $color['images']);
-                }
-                return $color;
-            })->toArray();
-        }
-
         return $value;
+    }
+
+    /**
+     * ⚡ Override setAttribute to handle JSON conversion for MongoDB
+     * When Filament sends array data, convert to JSON string for MongoDB storage
+     */
+    public function setAttribute($key, $value)
+    {
+        // Convert arrays to JSON strings for MongoDB
+        if (in_array($key, ['images', 'colors']) && is_array($value)) {
+            $value = json_encode($value);
+        }
+
+        return parent::setAttribute($key, $value);
     }
 
     protected function castDecimal($value): float
@@ -147,53 +130,55 @@ class Product extends Model
         return '/storage/' . $value;
     }
 
-    public function getImagesAttribute($value)
-    {
-        if (!$value || !is_array($value)) {
-            return $value ?? [];
-        }
-        // Format each image path
-        return array_map(function($image) {
-            if (!$image) {
-                return null;
-            }
-            if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '/storage/')) {
-                return $image;
-            }
-            return '/storage/' . $image;
-        }, $value);
-    }
+    // ❌ DISABLED - getAttribute & setAttribute handle JSON parsing + URL formatting
+    // public function getImagesAttribute($value)
+    // {
+    //     if (!$value || !is_array($value)) {
+    //         return $value ?? [];
+    //     }
+    //     // Format each image path
+    //     return array_map(function($image) {
+    //         if (!$image) {
+    //             return null;
+    //         }
+    //         if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '/storage/')) {
+    //             return $image;
+    //         }
+    //         return '/storage/' . $image;
+    //     }, $value);
+    // }
 
-    /**
-     * Strip /storage/ prefix khi save từ Filament (convert URL → raw path)
-     */
-    public function setImageAttribute($value)
-    {
-        if (is_string($value) && str_starts_with($value, '/storage/')) {
-            $this->attributes['image'] = substr($value, 9); // Bỏ "/storage/"
-            return;
-        }
-        $this->attributes['image'] = $value;
-    }
+    // ❌ DISABLED - setAttribute & setImagesAttribute handle JSON conversion
+    // /**
+    //  * Strip /storage/ prefix khi save từ Filament (convert URL → raw path)
+    //  */
+    // public function setImageAttribute($value)
+    // {
+    //     if (is_string($value) && str_starts_with($value, '/storage/')) {
+    //         $this->attributes['image'] = substr($value, 9); // Bỏ "/storage/"
+    //         return;
+    //     }
+    //     $this->attributes['image'] = $value;
+    // }
 
-    public function setImagesAttribute($value)
-    {
-        if (!$value) {
-            $this->attributes['images'] = $value;
-            return;
-        }
+    // public function setImagesAttribute($value)
+    // {
+    //     if (!$value) {
+    //         $this->attributes['images'] = $value;
+    //         return;
+    //     }
 
-        if (is_array($value)) {
-            $value = array_map(function($image) {
-                if (is_string($image) && str_starts_with($image, '/storage/')) {
-                    return substr($image, 9); // Bỏ "/storage/"
-                }
-                return $image;
-            }, $value);
-        }
+    //     if (is_array($value)) {
+    //         $value = array_map(function($image) {
+    //             if (is_string($image) && str_starts_with($image, '/storage/')) {
+    //                 return substr($image, 9); // Bỏ "/storage/"
+    //             }
+    //             return $image;
+    //         }, $value);
+    //     }
 
-        $this->attributes['images'] = $value;
-    }
+    //     $this->attributes['images'] = $value;
+    // }
 
     public function brand()
     {

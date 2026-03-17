@@ -13,14 +13,18 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'auth' => \App\Http\Middleware\AuthenticateCustom::class,
+            'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+            'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+            'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+            'can' => \Illuminate\Auth\Middleware\Authorize::class,
+            'guest' => \Illuminate\Auth\Middleware\RedirectIfAuthenticated::class,
+            'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+            'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+            'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+            'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         ]);
         $middleware->trustProxies('*');
-        $middleware->redirectGuestsTo(function ($request) {
-            if ($request->is('thanh-toan*') || $request->is('gio-hang*') || $request->is('don-hang*') || $request->is('chinh-sua-ho-so*') || $request->is('doi-mat-khau*') || $request->is('yeu-thich*') || $request->is('ho-so-ca-nhan*')) {
-                return route('customers.login');
-            }
-            return '/admin/login';
-        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

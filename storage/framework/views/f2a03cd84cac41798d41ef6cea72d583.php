@@ -1,0 +1,873 @@
+<?php $__env->startSection('title', 'Thanh toán - FlashTech'); ?>
+
+<?php $__env->startPush('styles'); ?>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --white: #ffffff;
+        }
+
+        .checkout-page {
+            background: var(--gray-50);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .breadcrumb a {
+            color: var(--gray-600);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb .current {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .page-title svg {
+            width: 28px;
+            height: 28px;
+            color: var(--primary);
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Form Card */
+        .checkout-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+        }
+
+        .checkout-card h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gray-100);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkout-card h3 svg {
+            width: 20px;
+            height: 20px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 0.9375rem;
+            color: var(--dark);
+            transition: border-color 0.2s;
+            background: var(--white);
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-error {
+            color: var(--danger);
+            font-size: 0.8125rem;
+            margin-top: 0.375rem;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .payment-option {
+            position: relative;
+        }
+
+        .payment-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .payment-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .payment-label:hover {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.03);
+        }
+
+        .payment-option input:checked + .payment-label {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.08);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 1.75rem;
+        }
+
+        .payment-name {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .payment-desc {
+            font-size: 0.6875rem;
+            color: var(--gray-500);
+        }
+
+        /* Order Summary Sidebar */
+        .order-summary {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .order-summary h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .summary-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .summary-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .summary-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--gray-100);
+            flex-shrink: 0;
+        }
+
+        .summary-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .summary-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .summary-item-name {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-item-qty {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .summary-item-price {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--primary);
+            white-space: nowrap;
+            align-self: center;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.625rem 0;
+            font-size: 0.9375rem;
+            color: var(--gray-600);
+        }
+
+        .summary-row.total {
+            border-top: 2px solid var(--gray-200);
+            margin-top: 0.75rem;
+            padding-top: 1rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .summary-row.total .total-price {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-place-order {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.0625rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-top: 1.25rem;
+        }
+
+        .btn-place-order:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-place-order:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-place-order svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-back-cart {
+            width: 100%;
+            padding: 0.875rem;
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            color: var(--gray-600);
+            margin-top: 0.75rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-back-cart:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-back-cart svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Coupon Section */
+        .coupon-section {
+            background: rgba(102, 126, 234, 0.03);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .coupon-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .coupon-input-group input {
+            flex: 1;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-family: inherit;
+        }
+
+        .coupon-input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .coupon-btn {
+            padding: 0.625rem 1rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+
+        .coupon-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .coupon-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .coupon-message {
+            font-size: 0.8125rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+
+        .coupon-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .coupon-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .applied-coupon {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .applied-coupon-info {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .applied-coupon-code {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .remove-coupon-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+    </style>
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <div class="checkout-page">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="<?php echo e(route('home')); ?>">Trang chủ</a>
+                <span>/</span>
+                <a href="<?php echo e(route('cart.index')); ?>">Giỏ hàng</a>
+                <span>/</span>
+                <span class="current">Thanh toán</span>
+            </div>
+
+            <h1 class="page-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                Thanh toán
+            </h1>
+
+            <form action="<?php echo e(route('checkout.placeOrder')); ?>" method="POST" id="checkoutForm">
+                <?php echo csrf_field(); ?>
+                <div class="checkout-layout">
+                    <!-- Checkout Form -->
+                    <div>
+                        <div class="checkout-card" style="margin-bottom: 1.5rem;">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Thông tin giao hàng
+                            </h3>
+
+                            <div class="form-group">
+                                <label>Họ và tên <span class="required">*</span></label>
+                                <input type="text" name="full_name" class="form-control"
+                                    value="<?php echo e(old('full_name', $customer->full_name ?? '')); ?>" required>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['full_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="form-error"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Email <span class="required">*</span></label>
+                                    <input type="email" name="email" class="form-control"
+                                        value="<?php echo e(old('email', $customer->email ?? '')); ?>" required>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="form-error"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Số điện thoại <span class="required">*</span></label>
+                                    <input type="tel" name="phone_number" class="form-control"
+                                        value="<?php echo e(old('phone_number', $customer->phone_number ?? '')); ?>" required>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['phone_number'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="form-error"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Địa chỉ giao hàng <span class="required">*</span></label>
+                                <input type="text" name="shipping_address" class="form-control"
+                                    value="<?php echo e(old('shipping_address', $customer->address ?? '')); ?>" required>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['shipping_address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="form-error"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ghi chú đơn hàng</label>
+                                <textarea name="notes" class="form-control" placeholder="Ghi chú thêm cho đơn hàng (tùy chọn)..."><?php echo e(old('notes')); ?></textarea>
+                            </div>
+                        </div>
+
+                        <div class="checkout-card">
+                            <h3>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                </svg>
+                                Phương thức thanh toán
+                            </h3>
+
+                            <div class="payment-methods">
+                                <div class="payment-option">
+                                    <input type="radio" name="payment_method" value="cod" id="pay-cod"
+                                        <?php echo e(old('payment_method', 'cod') === 'cod' ? 'checked' : ''); ?>>
+                                    <label for="pay-cod" class="payment-label">
+                                        <span class="payment-icon">💵</span>
+                                        <span class="payment-name">Thanh toán khi nhận hàng</span>
+                                        <span class="payment-desc">COD</span>
+                                    </label>
+                                </div>
+
+                                <div class="payment-option">
+                                    <input type="radio" name="payment_method" value="bank_transfer" id="pay-bank"
+                                        <?php echo e(old('payment_method') === 'bank_transfer' ? 'checked' : ''); ?>>
+                                    <label for="pay-bank" class="payment-label">
+                                        <span class="payment-icon">🏦</span>
+                                        <span class="payment-name">Chuyển khoản ngân hàng</span>
+                                        <span class="payment-desc">Bank Transfer</span>
+                                    </label>
+                                </div>
+
+                                <div class="payment-option">
+                                    <input type="radio" name="payment_method" value="momo" id="pay-momo"
+                                        <?php echo e(old('payment_method') === 'momo' ? 'checked' : ''); ?>>
+                                    <label for="pay-momo" class="payment-label">
+                                        <span class="payment-icon">📱</span>
+                                        <span class="payment-name">Ví MoMo</span>
+                                        <span class="payment-desc">MoMo Wallet</span>
+                                    </label>
+                                </div>
+
+                                <div class="payment-option">
+                                    <input type="radio" name="payment_method" value="vnpay" id="pay-vnpay"
+                                        <?php echo e(old('payment_method') === 'vnpay' ? 'checked' : ''); ?>>
+                                    <label for="pay-vnpay" class="payment-label">
+                                        <span class="payment-icon">💳</span>
+                                        <span class="payment-name">VNPay</span>
+                                        <span class="payment-desc">Thanh toán online</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['payment_method'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="form-error" style="margin-top: 0.5rem;"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="order-summary">
+                        <h3>Đơn hàng của bạn (<?php echo e(count($cartItems)); ?> sản phẩm)</h3>
+
+                        <!-- Coupon Section -->
+                        <div class="coupon-section">
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($appliedCoupon): ?>
+                                <div class="applied-coupon">
+                                    <div class="applied-coupon-info">
+                                        Mã giảm giá: <span class="applied-coupon-code"><?php echo e($appliedCoupon['code']); ?></span>
+                                    </div>
+                                    <button type="button" class="remove-coupon-btn" onclick="removeCoupon()">Hủy</button>
+                                </div>
+                                <input type="hidden" name="coupon_code" value="<?php echo e($appliedCoupon['code']); ?>">
+                            <?php else: ?>
+                                <div class="coupon-input-group">
+                                    <input type="text" id="couponCode" class="form-control" placeholder="Nhập mã giảm giá..."
+                                        maxlength="50">
+                                    <button type="button" class="coupon-btn" onclick="applyCoupon()">Áp dụng</button>
+                                </div>
+                                <div id="couponMessage"></div>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        </div>
+
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
+                            <div class="summary-item">
+                                <div class="summary-item-image">
+                                    <?php
+                                        $img = $item['product']->image;
+                                        $imgUrl = $img && Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
+                                    ?>
+                                    <img src="<?php echo e($imgUrl); ?>" alt="<?php echo e($item['product']->name); ?>">
+                                </div>
+                                <div class="summary-item-info">
+                                    <div class="summary-item-name"><?php echo e($item['product']->name); ?></div>
+                                    <div class="summary-item-qty">
+                                        SL: <?php echo e($item['quantity']); ?>
+
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($item['color'])): ?>
+                                            | Màu: <?php echo e($item['color']); ?>
+
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                    </div>
+                                </div>
+                                <div class="summary-item-price"><?php echo e(number_format($item['total'], 0, ',', '.')); ?>₫</div>
+                            </div>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
+
+                        <div style="margin-top: 1rem;">
+                            <div class="summary-row">
+                                <span>Tạm tính</span>
+                                <span id="subtotalDisplay"><?php echo e(number_format($subtotal, 0, ',', '.')); ?>₫</span>
+                            </div>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($appliedCoupon): ?>
+                                <div class="summary-row" style="color: var(--success);">
+                                    <span>Giảm giá</span>
+                                    <span id="discountDisplay">-<?php echo e(number_format($appliedCoupon['discount'], 0, ',', '.')); ?>₫</span>
+                                </div>
+                            <?php else: ?>
+                                <div class="summary-row" id="discountRow" style="display: none; color: var(--success);">
+                                    <span>Giảm giá</span>
+                                    <span id="discountDisplay">-0₫</span>
+                                </div>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            <div class="summary-row">
+                                <span>Phí vận chuyển</span>
+                                <span style="color: var(--success)">Miễn phí</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Tổng cộng</span>
+                                <span class="total-price" id="totalDisplay"><?php echo e(number_format($subtotal - ($appliedCoupon['discount'] ?? 0), 0, ',', '.')); ?>₫</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-place-order" id="placeOrderBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            Đặt hàng
+                        </button>
+
+                        <a href="<?php echo e(route('cart.index')); ?>" class="btn-back-cart">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Quay lại giỏ hàng
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+    <script>
+        const subtotal = <?php echo e($subtotal); ?>;
+
+        async function applyCoupon() {
+            const code = document.getElementById('couponCode').value.trim();
+            const btn = event.target;
+
+            if (!code) {
+                showCouponMessage('Vui lòng nhập mã giảm giá!', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Đang kiểm tra...';
+
+            try {
+                const response = await fetch('<?php echo e(route("checkout.validateCoupon")); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('[name="_token"]').value,
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        subtotal: subtotal,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Reload page to show applied coupon
+                    window.location.reload();
+                } else {
+                    showCouponMessage(data.message || 'Mã giảm giá không hợp lệ!', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Áp dụng';
+                }
+            } catch (error) {
+                console.error('Coupon error:', error);
+                showCouponMessage('Có lỗi xảy ra, vui lòng thử lại!', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Áp dụng';
+            }
+        }
+
+        async function removeCoupon() {
+            try {
+                const response = await fetch('<?php echo e(route("checkout.removeCoupon")); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('[name="_token"]').value,
+                    },
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Remove coupon error:', error);
+            }
+        }
+
+        function showCouponMessage(message, type) {
+            const msgEl = document.getElementById('couponMessage');
+            msgEl.className = `coupon-message ${type}`;
+            msgEl.textContent = message;
+            msgEl.style.display = 'block';
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    msgEl.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', function() {
+            const btn = document.getElementById('placeOrderBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Đang xử lý...';
+        });
+
+        // Allow Enter key to apply coupon
+        document.addEventListener('DOMContentLoaded', function() {
+            const couponInput = document.getElementById('couponCode');
+            if (couponInput) {
+                couponInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        applyCoupon();
+                    }
+                });
+            }
+        });
+    </script>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('Customers.Layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/flashtm/Documents/FlashTechMongo/resources/views/Customers/Checkout/index.blade.php ENDPATH**/ ?>

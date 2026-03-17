@@ -87,10 +87,26 @@ class CustomerAuthController extends Controller
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
 
+        \Log::info('Customer login attempt', [
+            'email' => $credentials['email'],
+            'guard' => 'customer',
+            'remember' => $remember
+        ]);
+
         if (\Illuminate\Support\Facades\Auth::guard('customer')->attempt($credentials, $remember)) {
-            $request->session()->regenerate();
+            \Log::info('Customer login successful', [
+                'email' => $credentials['email'],
+                'user_id' => \Illuminate\Support\Facades\Auth::guard('customer')->id(),
+                'user' => \Illuminate\Support\Facades\Auth::guard('customer')->user()?->email
+            ]);
+
+            // Don't regenerate session to avoid losing other authenticated sessions
+            // $request->session()->regenerate();
+
             return redirect()->route('home')->with('success', 'Đăng nhập thành công.');
         }
+
+        \Log::warning('Customer login failed', ['email' => $credentials['email']]);
 
         return back()->withErrors(['email' => 'Email hoặc mật khẩu không đúng.'])->withInput();
     }

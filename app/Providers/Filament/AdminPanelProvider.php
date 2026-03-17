@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->authGuard('web')
+            ->loginRouteSlug('login')
             ->brandName('FlashTech Admin')
             ->colors([
                 'primary' => Color::Blue,

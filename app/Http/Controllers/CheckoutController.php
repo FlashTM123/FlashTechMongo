@@ -10,6 +10,8 @@ use App\Models\Coupon;
 use App\Mail\OrderConfirmation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use App\Services\VNPayService;
+use App\Services\MoMoService;
 
 class CheckoutController extends Controller
 {
@@ -185,7 +187,39 @@ class CheckoutController extends Controller
             $coupon->use();
         }
 
-        // Xóa giỏ hàng
+        // Xử lý thanh toán online
+        if ($request->payment_method === 'vnpay') {
+            $vnpayService = new VNPayService();
+            $paymentUrl = $vnpayService->createPaymentUrl(
+                $order->order_code,
+                (float)$order->total,
+                'Thanh toán đơn hàng ' . $order->order_code,
+                $request->ip()
+            );
+
+            // Lưu order_id vào session để xử lý sau khi thanh toán
+            session()->put('pending_order_id', (string) $order->_id);
+
+            return redirect($paymentUrl);
+        } elseif ($request->payment_method === 'momo') {
+            $momoService = new MoMoService();
+            $result = $momoService->createPaymentUrl(
+                $order->order_code,
+                (float)$order->total,
+                'Thanh toán đơn hàng ' . $order->order_code
+            );
+
+            if ($result['success']) {
+                // Lưu order_id vào session để xử lý sau khi thanh toán
+                session()->put('pending_order_id', (string) $order->_id);
+
+                return redirect($result['payUrl']);
+            } else {
+                return back()->with('error', $result['message']);
+            }
+        }
+
+        // Thanh toán COD hoặc chuyển khoản - xóa giỏ hàng và chuyển đến trang success
         session()->forget('cart');
         session()->forget('applied_coupon');
 
@@ -298,5 +332,113 @@ class CheckoutController extends Controller
             'success' => true,
             'message' => 'Mã giảm giá đã được hủy!',
         ]);
+    }
+
+    /**
+     * Xử lý callback từ VNPay
+     */
+    public function vnpayReturn(Request $request)
+    {
+        $vnpayService = new VNPayService();
+        $result = $vnpayService->verifyReturnUrl($request->all());
+
+        if ($result['success']) {
+            // Lấy order_id từ session
+            $orderId = session()->get('pending_order_id');
+
+            if ($orderId) {
+                $order = Orders::find($orderId);
+
+                if ($order) {
+                    // Cập nhật trạng thái thanh toán
+                    $order->payment_status = 'paid';
+                    $order->save();
+
+                    // Xóa giỏ hàng và session
+                    session()->forget('cart');
+                    session()->forget('applied_coupon');
+                    session()->forget('pending_order_id');
+
+                    return redirect()->route('checkout.success', $order->_id)
+                        ->with('success', 'Thanh toán thành công!');
+                }
+            }
+
+            return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng!');
+        } else {
+            // Thanh toán thất bại
+            $orderId = session()->get('pending_order_id');
+
+            if ($orderId) {
+                // Có thể hủy đơn hàng hoặc giữ nguyên để khách hàng thanh toán lại
+                session()->forget('pending_order_id');
+            }
+
+            return redirect()->route('cart.index')
+                ->with('error', 'Thanh toán thất bại: ' . $result['message']);
+        }
+    }
+
+    /**
+     * Xử lý callback từ MoMo
+     */
+    public function momoReturn(Request $request)
+    {
+        $momoService = new MoMoService();
+        $result = $momoService->verifyReturnUrl($request->all());
+
+        if ($result['success']) {
+            // Lấy order_id từ session
+            $orderId = session()->get('pending_order_id');
+
+            if ($orderId) {
+                $order = Orders::find($orderId);
+
+                if ($order) {
+                    // Cập nhật trạng thái thanh toán
+                    $order->payment_status = 'paid';
+                    $order->save();
+
+                    // Xóa giỏ hàng và session
+                    session()->forget('cart');
+                    session()->forget('applied_coupon');
+                    session()->forget('pending_order_id');
+
+                    return redirect()->route('checkout.success', $order->_id)
+                        ->with('success', 'Thanh toán thành công!');
+                }
+            }
+
+            return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng!');
+        } else {
+            // Thanh toán thất bại
+            $orderId = session()->get('pending_order_id');
+
+            if ($orderId) {
+                session()->forget('pending_order_id');
+            }
+
+            return redirect()->route('cart.index')
+                ->with('error', 'Thanh toán thất bại: ' . $result['message']);
+        }
+    }
+
+    /**
+     * Xử lý IPN (Instant Payment Notification) từ MoMo
+     */
+    public function momoNotify(Request $request)
+    {
+        $momoService = new MoMoService();
+        $result = $momoService->verifyReturnUrl($request->all());
+
+        if ($result['success']) {
+            // Xử lý cập nhật đơn hàng
+            $orderId = $request->input('orderId');
+            // Logic cập nhật database
+
+            return response()->json(['status' => 'success']);
+        }
+
+        return response()->json(['status' => 'failed'], 400);
     }
 }
