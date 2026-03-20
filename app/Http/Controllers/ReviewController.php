@@ -55,6 +55,24 @@ class ReviewController extends Controller
             }
         }
 
+        // Danh sách từ cấm cơ bản (có thể mở rộng thêm)
+        $badWords = ['đm', 'địt', 'vkl', 'vcl', 'clgt', 'cmn', 'lồn', 'cặc', 'buồi', 'đù', 'chó đẻ', 'bố mày'];
+        $contentToCheck = strtolower($validated['title'] . ' ' . $validated['comment']);
+        
+        $containsBadWords = false;
+        foreach ($badWords as $word) {
+            // Kiểm tra xem từ cấm có xuất hiện trong nội dung không
+            if (strpos($contentToCheck, $word) !== false) {
+                $containsBadWords = true;
+                break;
+            }
+        }
+
+        // Nếu có từ ngữ không phù hợp, từ chối lưu và báo lỗi
+        if ($containsBadWords) {
+            return back()->withInput()->with('review_error', 'Đánh giá của bạn chứa từ ngữ không phù hợp. Vui lòng chỉnh sửa lại!');
+        }
+
         if ($existingReview) {
             // Cập nhật review cũ
             $existingReview->update([

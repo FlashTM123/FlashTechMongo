@@ -95,6 +95,46 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::post('/don-hang/{id}/huy', [\App\Http\Controllers\CustomerHomeController::class, 'cancelOrder'])->name('customers.orders.cancel');
     Route::get('/yeu-thich', [\App\Http\Controllers\CustomerHomeController::class, 'wishlist'])->name('wishlist.index');
     Route::post('/yeu-thich/toggle', [\App\Http\Controllers\CustomerHomeController::class, 'toggleWishlist'])->name('wishlist.toggle');
+
+    // Product Comparison Routes
+    Route::prefix('so-sanh')->group(function () {
+        Route::get('/', [App\Http\Controllers\ComparisonController::class, 'index'])->name('comparison.index');
+        Route::post('/them/{product}', [App\Http\Controllers\ComparisonController::class, 'add'])->name('comparison.add');
+        Route::delete('/xoa/{productId}', [App\Http\Controllers\ComparisonController::class, 'remove'])->name('comparison.remove');
+        Route::delete('/xoa-het', [App\Http\Controllers\ComparisonController::class, 'clear'])->name('comparison.clear');
+        Route::get('/api/count', [App\Http\Controllers\ComparisonController::class, 'count'])->name('comparison.count');
+        Route::get('/api/check/{productId}', [App\Http\Controllers\ComparisonController::class, 'isInComparison'])->name('comparison.isInComparison');
+    });
+
+    // Chat Support Routes
+    Route::prefix('tro-giup')->group(function () {
+        Route::get('/', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
+        Route::post('/tao-phong', [App\Http\Controllers\ChatController::class, 'create'])->name('chat.create');
+        Route::post('/phong/{chatRoom}/gui-tin', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.sendMessage');
+        Route::get('/phong/{chatRoom}/tin-nhan', [App\Http\Controllers\ChatController::class, 'getMessages'])->name('chat.getMessages');
+        Route::post('/phong/{chatRoom}/dong', [App\Http\Controllers\ChatController::class, 'close'])->name('chat.close');
+        Route::get('/api/widget', [App\Http\Controllers\ChatController::class, 'widget'])->name('chat.widget');
+    });
+
+    // Notification Routes
+    Route::prefix('thong-bao')->group(function () {
+        Route::get('/', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('/api/chua-doc', [App\Http\Controllers\NotificationController::class, 'getUnread'])->name('notifications.getUnread');
+        Route::post('/{notification}/da-doc', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+        Route::post('/api/tat-ca-da-doc', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+        Route::delete('/{notification}', [App\Http\Controllers\NotificationController::class, 'destroy'])->name('notifications.destroy');
+        Route::delete('/xoa-het', [App\Http\Controllers\NotificationController::class, 'clearAll'])->name('notifications.clearAll');
+        Route::get('/api/dem', [App\Http\Controllers\NotificationController::class, 'count'])->name('notifications.count');
+    });
 });
+
+// Language Route
+Route::get('/lang/{locale}', function($locale) {
+    if (in_array($locale, array_keys(config('locale.locales')))) {
+        session()->put('locale', $locale);
+        app()->setLocale($locale);
+    }
+    return redirect()->back();
+})->name('language.switch');
 
 // Protected routes - Require authentication (Old admin - removed, now using Filament at /admin)

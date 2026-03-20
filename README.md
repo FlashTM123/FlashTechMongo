@@ -493,7 +493,30 @@ FlashTechMongo/
 
 ---
 
-## 📝 Cập nhật gần đây (17/03/2026)
+## 📝 Cập nhật gần đây (20/03/2026)
+
+### 🎨 Cải thiện UI/UX & Refactor Giao diện
+| Tính năng | Mô tả | Trạng thái |
+|:----------|:------|:----------:|
+| **Trang Danh mục (Category)** | Refactor toàn bộ giao diện bằng Tailwind CSS, thiết kế chuẩn premium, đồng bộ card sản phẩm | ✅ |
+| **Trang So sánh (Comparison)** | Chuyển đổi toàn bộ giao diện bảng so sánh (Desktop/Mobile) bằng Tailwind CSS, sửa lỗi text chìm vào background | ✅ |
+| **Nút Thông báo (Notifications)** | Di chuyển widget thông báo ghép nối thẳng vào thanh Navbar, khắc phục lỗi chồng lấn hiển thị (Z-Index Overlap) khiến nút không bấm được | ✅ |
+| **Hiệu ứng Layout** | Sửa lỗi z-index conflict gây lỗi nền (background glitch) ở phần header của trang chi tiết sản phẩm | ✅ |
+
+### 🔧 Sửa lỗi & Logic (Bug Fixes)
+| Lỗi | Mô tả | Trạng thái |
+|:----|:------|:----------:|
+| **Lỗi mất ảnh (Broken Images)** | Bổ sung `onerror` fallback mặc định hiển thị khi link ảnh bị chết ở tất cả hệ thống (Cart, Checkout, Wishlist, Order History) | ✅ |
+| **Lỗi sai đường dẫn ảnh** | Xóa vòng lặp `storage/storage` khi build đường dẫn ảnh do asset url bị thừa | ✅ |
+| **Data Array Casting MongoDB** | Bỏ cơ chế array casting mặc định (`colors`, `images`, `specifications`) của Eloquent trong Model `Product` để chữa lỗi `json_decode()` khi dùng chung với base driver MongoDB | ✅ |
+| **Tab Đánh giá & Thông số trắng** | Thoát luật hiển thị cứng `display: none` của thư viện DaisyUI bằng cách đổi tên class `.tab-content` thành `.custom-tab-pane` | ✅ |
+| **Lỗi logic hiển thị sao Đánh giá** | Đồng bộ `$product->average_rating` để trang chi tiết bắt đúng điểm từ Database, trả lại số lượng đánh giá thực tế thay cho biến sales | ✅ |
+| **Bộ lọc từ ngữ (Profanity Filter)** | Bổ sung logic kiểm duyệt Bad Words tại `ReviewController`, hệ thống tự động từ chối lưu bài đánh giá nếu khách hàng dùng ngôn từ thô tục | ✅ |
+| **Lỗi Checkout Route** | Sửa biến route `customers.orders.history` thành `customers.orders` tại màn Đặt mua thành công để link nút Tracker chạy đúng | ✅ |
+
+---
+
+## 📝 Cập nhật trước đó (17/03/2026)
 
 ### 🔧 Sửa lỗi quan trọng
 | Lỗi | Mô tả | Giải pháp | Trạng thái |
@@ -677,7 +700,6 @@ FlashTechMongo/
 |:-------:|:----------|:----------:|
 | 🟡 | Tích hợp thanh toán VNPay/MoMo thực tế | ⏳ |
 | 🟡 | Xuất hóa đơn PDF | ⏳ |
-| 🟡 | Dashboard thống kê doanh thu (biểu đồ) | ⏳ |
 | 🟢 | So sánh sản phẩm | ⏳ |
 | 🟢 | Chat hỗ trợ trực tuyến | ⏳ |
 | 🟢 | Thông báo realtime (đơn hàng mới, trạng thái) | ⏳ |

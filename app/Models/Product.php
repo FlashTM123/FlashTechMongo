@@ -33,12 +33,13 @@ class Product extends Model
         'views_count',
         'sales_count',
         'rating',
+        'specifications',
     ];
 
     protected $casts = [
-        // Cast arrays/json - MongoDB stores as JSON strings
-        'images' => 'array',
-        'colors' => 'array',
+        // Array casts removed to prevent json_decode() type error since MongoDB handles arrays natively
+        // Other casts
+
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'stock_quantity' => 'integer',
@@ -62,24 +63,97 @@ class Product extends Model
 
     /**
      * ⚡ Override getAttribute to handle JSON parsing for images & colors
-     * MongoDB stores these as JSON strings, we need to parse them into arrays
-     * Laravel's array cast will handle automatic parsing
+     * MongoDB returns arrays directly, sometimes as JSON strings
+     * This ensures consistent array returns and avoids json_decode errors
      */
     public function getAttribute($key)
     {
-        $value = parent::getAttribute($key);
-        return $value;
+        // For array fields, handle raw data before parent casting
+        if (in_array($key, ['images', 'colors', 'specifications'])) {
+            // Get the raw attribute from MongoDB
+            $value = $this->getAttributeValue($key);
+
+            $parsedValue = [];
+            // MongoDB returns arrays directly - parse if string
+            if (is_string($value) && !empty($value)) {
+                try {
+                    $parsedValue = json_decode($value, true) ?? [];
+                } catch (\Exception $e) {
+                    $parsedValue = [];
+                }
+            } else {
+                // Already an array or null
+                $parsedValue = is_array($value) ? $value : [];
+            }
+
+            // Format URLs for images array
+            if ($key === 'images') {
+                $parsedValue = array_values(array_map(function($image) {
+                    if (!$image) return null;
+                    if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '/storage/')) {
+                        return $image;
+                    }
+                    return '/storage/' . $image;
+                }, $parsedValue));
+            }
+
+            // Format image URLs in each color
+            if ($key === 'colors') {
+                $parsedValue = array_values(collect($parsedValue)->map(function ($color) {
+                    if (isset($color['images']) && is_array($color['images'])) {
+                        $color['images'] = array_values(array_map(function ($img) {
+                            if (!$img) return null;
+                            if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://') || str_starts_with($img, '/storage/')) {
+                                return $img;
+                            }
+                            return '/storage/' . $img;
+                        }, $color['images']));
+                    }
+                    return $color;
+                })->toArray());
+            }
+
+            return $parsedValue;
+        }
+
+        // For other attributes, use normal parent handling
+        return parent::getAttribute($key);
+    }
+
+    /**
+     * ⚡ Override getAttributeValue to intercept before casting
+     */
+    public function getAttributeValue($key)
+    {
+        $value = $this->attributes[$key] ?? null;
+
+        // For array fields, don't apply the default array cast here
+        if (in_array($key, ['images', 'colors', 'specifications'])) {
+            return $value;
+        }
+
+        // For other attributes, use normal casting
+        return parent::getAttributeValue($key);
     }
 
     /**
      * ⚡ Override setAttribute to handle JSON conversion for MongoDB
-     * When Filament sends array data, convert to JSON string for MongoDB storage
+     * When Filament sends array data, we store it as is (MongoDB handles it)
+     * Don't convert to JSON string - MongoDB driver handles arrays natively
      */
     public function setAttribute($key, $value)
     {
-        // Convert arrays to JSON strings for MongoDB
-        if (in_array($key, ['images', 'colors']) && is_array($value)) {
-            $value = json_encode($value);
+        // For images, colors, specifications - keep as arrays
+        // MongoDB driver will handle serialization automatically
+        if (in_array($key, ['images', 'colors', 'specifications'])) {
+            // If empty string, set to empty array
+            if ($value === '') {
+                $value = [];
+            }
+            // If not an array, convert to empty array
+            if (!is_array($value) && !is_null($value)) {
+                $value = [];
+            }
         }
 
         return parent::setAttribute($key, $value);

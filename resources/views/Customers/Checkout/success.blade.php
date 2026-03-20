@@ -1,343 +1,97 @@
 @extends('Customers.Layouts.master')
 
-@section('title', 'Đặt hàng thành công - FlashTech')
-
-@push('styles')
-    <style>
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --dark: #1e293b;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --white: #ffffff;
-        }
-
-        .success-page {
-            background: var(--gray-50);
-            min-height: 100vh;
-            padding: 3rem 0;
-        }
-
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .success-card {
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        .success-icon {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, var(--success), #059669);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            animation: scaleIn 0.5s ease;
-        }
-
-        @keyframes scaleIn {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .success-icon svg {
-            width: 45px;
-            height: 45px;
-            color: var(--white);
-        }
-
-        .success-title {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .success-message {
-            color: var(--gray-500);
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        .order-info {
-            background: var(--gray-50);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: left;
-        }
-
-        .order-info h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--gray-200);
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            font-size: 0.9375rem;
-        }
-
-        .info-row .label {
-            color: var(--gray-500);
-        }
-
-        .info-row .value {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .info-row .value.highlight {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 1.125rem;
-            font-weight: 800;
-        }
-
-        .order-code {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: 1px;
-        }
-
-        /* Order items */
-        .order-items {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--gray-200);
-        }
-
-        .order-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .order-item:last-child {
-            border-bottom: none;
-        }
-
-        .order-item-image {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            overflow: hidden;
-            background: var(--gray-100);
-            flex-shrink: 0;
-        }
-
-        .order-item-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .order-item-info {
-            flex: 1;
-            text-align: left;
-        }
-
-        .order-item-name {
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .order-item-qty {
-            font-size: 0.75rem;
-            color: var(--gray-400);
-        }
-
-        .order-item-price {
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: var(--primary);
-            white-space: nowrap;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 0.875rem 2rem;
-            border-radius: 12px;
-            font-size: 0.9375rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            border: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-outline {
-            background: var(--white);
-            color: var(--gray-600);
-            border: 2px solid var(--gray-200);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        @media (max-width: 768px) {
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                justify-content: center;
-            }
-        }
-    </style>
-@endpush
+@section('title', 'Đặt hàng thành công - FlashTech Premium')
 
 @section('content')
-    <div class="success-page">
-        <div class="container">
-            <div class="success-card">
-                <div class="success-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
+<div class="bg-slate-50 min-h-screen pb-20 relative overflow-hidden flex items-center justify-center">
+    <!-- Background Decor -->
+    <div class="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-indigo-900 via-slate-900 to-transparent -z-10"></div>
+    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-emerald-500/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none -z-10"></div>
 
-                <h1 class="success-title">Đặt hàng thành công!</h1>
-                <p class="success-message">Cảm ơn bạn đã mua hàng tại FlashTech. Đơn hàng của bạn đã được tiếp nhận và sẽ được xử lý sớm nhất.</p>
+    <div class="container mx-auto px-4 pt-10 sm:pt-20 relative z-10 w-full max-w-2xl">
+        <div class="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-100 p-8 sm:p-12 text-center relative overflow-hidden">
+            <!-- Deco corner -->
+            <div class="absolute -top-16 -right-16 w-32 h-32 bg-emerald-50 rounded-full blur-2xl"></div>
+            
+            <div class="w-24 h-24 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-emerald-500/30 relative z-10 animate-[bounce_1s_ease-in-out_infinite]">
+                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+            </div>
 
-                <div class="order-info">
-                    <h4>Thông tin đơn hàng</h4>
-                    <div class="info-row">
-                        <span class="label">Mã đơn hàng</span>
-                        <span class="order-code">{{ $order->order_code }}</span>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mb-3 tracking-tight">Đặt Hàng Thành Công!</h1>
+            <p class="text-slate-500 font-medium mb-10 max-w-md mx-auto">Cảm ơn bạn đã tin tưởng mua sắm tại FlashTech. Đơn hàng của bạn đã nhận và đang được xử lý.</p>
+
+            <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-100 text-left mb-10">
+                <h4 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2 pb-4 border-b border-slate-200">
+                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Thông tin đơn hàng
+                </h4>
+
+                <div class="flex flex-col gap-4 text-sm mb-8">
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
+                        <span class="text-slate-500 font-medium">Mã đơn hàng</span>
+                        <span class="font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg tracking-widest">{{ $order->order_code }}</span>
                     </div>
-                    <div class="info-row">
-                        <span class="label">Người nhận</span>
-                        <span class="value">{{ $order->full_name }}</span>
+                    <div class="flex justify-between items-center sm:items-start flex-col sm:flex-row gap-1 border-b border-slate-100 pb-3">
+                        <span class="text-slate-500 font-medium min-w-[120px]">Người nhận</span>
+                        <span class="font-bold text-slate-800 text-right">{{ $order->full_name }}</span>
                     </div>
-                    <div class="info-row">
-                        <span class="label">Số điện thoại</span>
-                        <span class="value">{{ $order->phone_number }}</span>
+                    <div class="flex justify-between items-center sm:items-start flex-col sm:flex-row gap-1 border-b border-slate-100 pb-3">
+                        <span class="text-slate-500 font-medium min-w-[120px]">Số điện thoại</span>
+                        <span class="font-bold text-slate-800 text-right">{{ $order->phone_number }}</span>
                     </div>
-                    <div class="info-row">
-                        <span class="label">Địa chỉ</span>
-                        <span class="value">{{ $order->shipping_address }}</span>
+                    <div class="flex justify-between items-center sm:items-start flex-col sm:flex-row gap-1 border-b border-slate-100 pb-3">
+                        <span class="text-slate-500 font-medium min-w-[120px]">Địa chỉ giao</span>
+                        <span class="font-bold text-slate-800 text-right">{{ $order->shipping_address }}</span>
                     </div>
-                    <div class="info-row">
-                        <span class="label">Thanh toán</span>
-                        <span class="value">
+                    <div class="flex justify-between items-center sm:items-start flex-col sm:flex-row gap-1 border-b border-slate-100 pb-3">
+                        <span class="text-slate-500 font-medium min-w-[120px]">Thanh toán</span>
+                        <span class="font-bold text-slate-800 text-right">
                             @switch($order->payment_method)
-                                @case('cod') Thanh toán khi nhận hàng @break
+                                @case('cod') Lấy trực tiếp (COD) @break
                                 @case('bank_transfer') Chuyển khoản ngân hàng @break
                                 @case('momo') Ví MoMo @break
                                 @case('vnpay') VNPay @break
                             @endswitch
                         </span>
                     </div>
+                </div>
 
-                    <div class="order-items">
-                        @foreach ($order->orderDetails as $detail)
-                            <div class="order-item">
-                                <div class="order-item-image">
-                                    @php
-                                        $img = $detail->product_image;
-                                        $imgUrl = $img && Str::startsWith($img, 'http') ? $img : asset('storage/' . $img);
-                                    @endphp
-                                    <img src="{{ $imgUrl }}" alt="{{ $detail->product_name }}">
-                                </div>
-                                <div class="order-item-info">
-                                    <div class="order-item-name">{{ $detail->product_name }}</div>
-                                    <div class="order-item-qty">
-                                        SL: {{ $detail->quantity }}
-                                        @if(!empty($detail->color))
-                                            | Màu: {{ $detail->color }}
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="order-item-price">{{ number_format($detail->total, 0, ',', '.') }}₫</div>
+                <div class="mb-6 max-h-[250px] overflow-y-auto custom-scrollbar pr-2 space-y-4">
+                    @foreach ($order->orderDetails as $detail)
+                        <div class="flex gap-4 items-center bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                            <div class="w-16 h-16 shrink-0 bg-slate-50 rounded-xl border border-slate-100 p-1">
+                                @php 
+                                    $img = !empty($detail->product_image) ? $detail->product_image : (!empty($detail->image) ? $detail->image : (optional($detail->product)->image ?: ''));
+                                    $imgUrl = empty($img) ? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop' : (Str::startsWith($img, 'http') ? $img : asset(Str::startsWith($img, '/storage/') ? $img : 'storage/' . $img));
+                                @endphp
+                                <img src="{{ $imgUrl }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop';" alt="{{ $detail->product_name }}" class="w-full h-full object-contain">
                             </div>
-                        @endforeach
-                    </div>
-
-                    <div class="info-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--gray-200);">
-                        <span class="label" style="font-weight: 700; color: var(--dark); font-size: 1.0625rem;">Tổng cộng</span>
-                        <span class="value highlight">{{ number_format($order->total, 0, ',', '.') }}₫</span>
-                    </div>
+                            <div class="flex-1 min-w-0">
+                                <h5 class="text-xs font-bold text-slate-800 line-clamp-2 leading-snug mb-1">{{ $detail->product_name }}</h5>
+                                <div class="text-[10px] text-slate-500 font-medium">SL: {{ $detail->quantity }} @if(!empty($detail->color)) | Màu: {{ $detail->color }} @endif</div>
+                            </div>
+                            <div class="text-sm font-black text-indigo-600 shrink-0">{{ number_format($detail->total, 0, ',', '.') }}₫</div>
+                        </div>
+                    @endforeach
                 </div>
 
-                <div class="action-buttons">
-                    <a href="{{ route('home') }}" class="btn btn-primary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                        Tiếp tục mua sắm
-                    </a>
-                    <a href="{{ route('home') }}" class="btn btn-outline">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
-                        Về trang chủ
-                    </a>
+                <div class="flex justify-between items-end pt-6 border-t border-slate-200 border-dashed">
+                    <span class="text-slate-500 font-bold uppercase tracking-widest text-xs">Tổng Thanh Toán</span>
+                    <span class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-500">{{ number_format($order->total, 0, ',', '.') }}₫</span>
                 </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="{{ route('home') }}" class="group w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-900 text-white font-bold px-8 py-4 rounded-2xl shadow-xl shadow-slate-900/20 hover:bg-indigo-600 transition-all">
+                    <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Tiếp tục mua sắm
+                </a>
+                <a href="{{ route('customers.orders') }}" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-slate-600 border-2 border-slate-200 font-bold px-8 py-4 rounded-2xl hover:border-indigo-600 hover:text-indigo-600 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    Theo dõi đơn hàng
+                </a>
             </div>
         </div>
     </div>
+</div>
 @endsection

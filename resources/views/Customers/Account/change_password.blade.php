@@ -1,404 +1,164 @@
 @extends('Customers.Layouts.master')
-@section('title', 'Đổi mật khẩu - FlashTech')
-
-@push('styles')
-    <style>
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --danger: #ef4444;
-            --dark: #1e293b;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --white: #ffffff;
-        }
-
-        .change-password-page {
-            background: var(--gray-50);
-            min-height: 100vh;
-            padding: 2rem 0;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.875rem;
-            color: var(--gray-500);
-        }
-
-        .breadcrumb a { color: var(--gray-600); text-decoration: none; }
-        .breadcrumb a:hover { color: var(--primary); }
-        .breadcrumb .current { color: var(--dark); font-weight: 500; }
-
-        .page-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .page-title svg { width: 26px; height: 26px; color: var(--primary); }
-
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 1.25rem;
-            border-radius: 10px;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            text-decoration: none;
-            color: var(--gray-600);
-            border: 2px solid var(--gray-200);
-            transition: all 0.2s;
-        }
-
-        .btn-back:hover { border-color: var(--primary); color: var(--primary); }
-        .btn-back svg { width: 16px; height: 16px; }
-
-        .form-card {
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            overflow: hidden;
-        }
-
-        .form-card-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .form-card-header h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .form-card-header h3 svg { width: 20px; height: 20px; color: var(--primary); }
-
-        .form-card-body { padding: 1.5rem; }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .form-label {
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .password-wrapper {
-            position: relative;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 2.75rem 0.75rem 1rem;
-            border: 2px solid var(--gray-200);
-            border-radius: 10px;
-            font-size: 0.875rem;
-            color: var(--dark);
-            background: var(--white);
-            transition: border-color 0.2s;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        .form-control:focus { border-color: var(--primary); }
-
-        .toggle-password {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--gray-400);
-            padding: 0.25rem;
-            display: flex;
-        }
-
-        .toggle-password:hover { color: var(--gray-600); }
-
-        .form-error {
-            font-size: 0.75rem;
-            color: var(--danger);
-        }
-
-        .form-hint {
-            font-size: 0.75rem;
-            color: var(--gray-400);
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--gray-100);
-        }
-
-        .btn-submit {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-size: 0.875rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-        }
-
-        .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
-        .btn-submit svg { width: 18px; height: 18px; }
-
-        .btn-cancel {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-decoration: none;
-            color: var(--gray-600);
-            border: 2px solid var(--gray-200);
-            background: var(--white);
-            transition: all 0.2s;
-        }
-
-        .btn-cancel:hover { border-color: var(--gray-300); color: var(--dark); }
-
-        .alert-success {
-            padding: 1rem 1.25rem;
-            background: rgba(16,185,129,0.1);
-            border: 1px solid rgba(16,185,129,0.2);
-            border-radius: 10px;
-            color: #065f46;
-            font-size: 0.875rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .alert-error {
-            padding: 1rem 1.25rem;
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.2);
-            border-radius: 10px;
-            color: #991b1b;
-            font-size: 0.875rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .google-notice {
-            padding: 1rem 1.25rem;
-            background: rgba(59,130,246,0.08);
-            border: 1px solid rgba(59,130,246,0.2);
-            border-radius: 10px;
-            color: #1e40af;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .google-notice svg { width: 24px; height: 24px; flex-shrink: 0; }
-    </style>
-@endpush
+@section('title', 'Đổi mật khẩu - FlashTech Premium')
 
 @section('content')
-    <div class="change-password-page">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="{{ route('home') }}">Trang chủ</a>
-                <span>›</span>
-                <a href="{{ route('customers.profile.detail') }}">Hồ sơ</a>
-                <span>›</span>
-                <span class="current">Đổi mật khẩu</span>
+<div class="bg-slate-50 min-h-screen pb-20 relative overflow-hidden">
+    <!-- Header Decor -->
+    <div class="h-64 bg-slate-900 absolute top-0 inset-x-0 -z-10 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/80 via-purple-900/80 to-slate-900"></div>
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-30 mix-blend-overlay"></div>
+        <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-slate-50 to-transparent"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 pt-4 sm:pt-8 md:pt-12 relative z-10 max-w-4xl">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-sm text-slate-300 mb-8 w-fit px-1">
+            <a href="{{ route('home') }}" class="hover:text-white transition-colors">Trang chủ</a>
+            <span class="text-white/30">/</span>
+            <a href="{{ route('customers.profile.detail') }}" class="hover:text-white transition-colors">Hồ sơ</a>
+            <span class="text-white/30">/</span>
+            <span class="text-white font-bold tracking-wide">Đổi mật khẩu</span>
+        </nav>
+
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">Mật Khẩu & Bảo Mật</h1>
+            <a href="{{ route('customers.profile.detail') }}" class="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-600 font-bold rounded-xl shadow-sm border border-slate-200 hover:text-indigo-600 hover:border-indigo-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Trở lại
+            </a>
+        </div>
+
+        @if($errors->any())
+            <div class="bg-rose-50 border border-rose-200 text-rose-600 rounded-2xl p-4 mb-8 max-w-2xl">
+                <div class="flex items-center gap-2 font-bold mb-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Vui lòng kiểm tra lại thông tin:
+                </div>
+                <ul class="list-disc list-inside text-sm space-y-1">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-8 max-w-2xl">
+            <div class="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"></path></svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-slate-800">Đổi mật khẩu</h3>
+                    <p class="text-sm font-medium text-slate-500">Thiết lập mật khẩu an toàn để bảo vệ tài khoản</p>
+                </div>
             </div>
 
-            <div class="page-header">
-                <h1 class="page-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0110 0v4"/>
-                    </svg>
-                    Đổi mật khẩu
-                </h1>
-                <a href="{{ route('customers.profile.detail') }}" class="btn-back">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5m7-7l-7 7 7 7"/>
-                    </svg>
-                    Quay lại
-                </a>
-            </div>
-
-
-
-            @if($errors->any())
-                <!-- Error alerts removed -->
-                <div style="display:none;">
-                    <ul style="margin:0;padding-left:1.25rem;">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            @if($customer->google_id && !$customer->password)
+                <div class="flex items-start gap-4 p-4 rounded-2xl bg-blue-50/50 border border-blue-100 text-blue-800 mb-8">
+                    <div class="shrink-0 pt-0.5">
+                        <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    </div>
+                    <div>
+                        <div class="font-bold mb-1">Tài khoản liên kết Google</div>
+                        <div class="text-sm font-medium opacity-80">Bạn đang đăng nhập bằng Google. Hãy đặt mật khẩu mới để có thể đăng nhập bằng email trong tương lai.</div>
+                    </div>
                 </div>
-            @endif
 
-            <div class="form-card">
-                <div class="form-card-header">
-                    <h3>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                        Thay đổi mật khẩu
-                    </h3>
-                </div>
-                <div class="form-card-body">
-                    @if($customer->google_id && !$customer->password)
-                        <div class="google-notice">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                            </svg>
-                            <div>
-                                <strong>Tài khoản Google</strong><br>
-                                Bạn đang đăng nhập qua Google. Hãy đặt mật khẩu mới để có thể đăng nhập bằng email.
-                            </div>
+                <form action="{{ route('customers.password.update') }}" method="POST" class="flex flex-col gap-6">
+                    @csrf
+                    @method('PUT')
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mật khẩu mới <span class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <input type="password" name="password" id="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-medium pr-10" required minlength="8" placeholder="Ít nhất 8 ký tự">
+                            <button type="button" onclick="togglePassword('password')" class="absolute top-1/2 right-3 -translate-y-1/2 p-1 text-slate-400 hover:text-indigo-600 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
                         </div>
+                    </div>
 
-                        <form action="{{ route('customers.password.update') }}" method="POST" style="margin-top: 1.5rem;">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group">
-                                <label class="form-label" for="password">Mật khẩu mới *</label>
-                                <div class="password-wrapper">
-                                    <input type="password" class="form-control" id="password" name="password" required minlength="8">
-                                    <button type="button" class="toggle-password" onclick="togglePassword('password')">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    </button>
-                                </div>
-                                <span class="form-hint">Tối thiểu 8 ký tự</span>
-                                @error('password') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="password_confirmation">Xác nhận mật khẩu mới *</label>
-                                <div class="password-wrapper">
-                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                                    <button type="button" class="toggle-password" onclick="togglePassword('password_confirmation')">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    </button>
-                                </div>
-                                @error('password_confirmation') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="form-actions">
-                                <a href="{{ route('customers.profile.detail') }}" class="btn-cancel">Hủy</a>
-                                <button type="submit" class="btn-submit">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                    Đặt mật khẩu
-                                </button>
-                            </div>
-                        </form>
-                    @else
-                        <form action="{{ route('customers.password.update') }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group">
-                                <label class="form-label" for="current_password">Mật khẩu hiện tại *</label>
-                                <div class="password-wrapper">
-                                    <input type="password" class="form-control" id="current_password" name="current_password" required>
-                                    <button type="button" class="toggle-password" onclick="togglePassword('current_password')">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    </button>
-                                </div>
-                                @error('current_password') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="password">Mật khẩu mới *</label>
-                                <div class="password-wrapper">
-                                    <input type="password" class="form-control" id="password" name="password" required minlength="8">
-                                    <button type="button" class="toggle-password" onclick="togglePassword('password')">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    </button>
-                                </div>
-                                <span class="form-hint">Tối thiểu 8 ký tự</span>
-                                @error('password') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="password_confirmation">Xác nhận mật khẩu mới *</label>
-                                <div class="password-wrapper">
-                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                                    <button type="button" class="toggle-password" onclick="togglePassword('password_confirmation')">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    </button>
-                                </div>
-                                @error('password_confirmation') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="form-actions">
-                                <a href="{{ route('customers.profile.detail') }}" class="btn-cancel">Hủy</a>
-                                <button type="submit" class="btn-submit">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                    Đổi mật khẩu
-                                </button>
-                            </div>
-                        </form>
-                    @endif
-                </div>
-            </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Xác nhận mật khẩu mới <span class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-medium pr-10" required placeholder="Nhập lại mật khẩu mới">
+                            <button type="button" onclick="togglePassword('password_confirmation')" class="absolute top-1/2 right-3 -translate-y-1/2 p-1 text-slate-400 hover:text-indigo-600 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-4 mt-4 pt-6 border-t border-slate-100">
+                        <a href="{{ route('customers.profile.detail') }}" class="px-6 py-3 bg-white text-slate-600 font-bold rounded-xl border border-slate-200 shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">
+                            Hủy bỏ
+                        </a>
+                        <button type="submit" class="group flex items-center gap-2 px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-xl shadow-slate-900/20 hover:bg-indigo-600 transition-all">
+                            Tạo mật khẩu
+                        </button>
+                    </div>
+                </form>
+
+            @else
+                <form action="{{ route('customers.password.update') }}" method="POST" class="flex flex-col gap-6">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mật khẩu hiện tại <span class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <input type="password" name="current_password" id="current_password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-medium pr-10" required>
+                            <button type="button" onclick="togglePassword('current_password')" class="absolute top-1/2 right-3 -translate-y-1/2 p-1 text-slate-400 hover:text-indigo-600 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mật khẩu mới <span class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <input type="password" name="password" id="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-medium pr-10" required minlength="8" placeholder="Ít nhất 8 ký tự">
+                            <button type="button" onclick="togglePassword('password')" class="absolute top-1/2 right-3 -translate-y-1/2 p-1 text-slate-400 hover:text-indigo-600 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Xác nhận mật khẩu mới <span class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-medium pr-10" required placeholder="Nhập lại mật khẩu mới">
+                            <button type="button" onclick="togglePassword('password_confirmation')" class="absolute top-1/2 right-3 -translate-y-1/2 p-1 text-slate-400 hover:text-indigo-600 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-4 mt-4 pt-6 border-t border-slate-100">
+                        <a href="{{ route('customers.profile.detail') }}" class="px-6 py-3 bg-white text-slate-600 font-bold rounded-xl border border-slate-200 shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">
+                            Hủy bỏ
+                        </a>
+                        <button type="submit" class="group flex items-center gap-2 px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-xl shadow-slate-900/20 hover:bg-indigo-600 transition-all">
+                            Đổi mật khẩu
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                        </button>
+                    </div>
+                </form>
+            @endif
         </div>
     </div>
+</div>
 @endsection
 
 @push('scripts')
-    <script>
-        function togglePassword(fieldId) {
-            const field = document.getElementById(fieldId);
-            field.type = field.type === 'password' ? 'text' : 'password';
+<script>
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (field.type === 'password') {
+            field.type = 'text';
+            /* optionally change the svg icon here to eye-off */
+        } else {
+            field.type = 'password';
         }
-    </script>
+    }
+</script>
 @endpush

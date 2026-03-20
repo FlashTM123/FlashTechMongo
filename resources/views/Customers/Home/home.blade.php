@@ -1,1003 +1,192 @@
 @extends('Customers.Layouts.master')
-@section('title', 'Home - FlashTech')
-
-@push('styles')
-<style>
-    /* Hero Section */
-    .hero-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 4rem 0;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-        opacity: 0.3;
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        gap: 4rem;
-    }
-
-    .hero-text {
-        flex: 1;
-        color: white;
-    }
-
-    .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border-radius: 50px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        animation: slideInDown 0.6s ease;
-    }
-
-    .hero-title {
-        font-size: 3.5rem;
-        font-weight: 900;
-        line-height: 1.2;
-        margin-bottom: 1.5rem;
-        animation: slideInLeft 0.8s ease;
-    }
-
-    .hero-title .highlight {
-        background: linear-gradient(90deg, #fbbf24, #f59e0b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .hero-description {
-        font-size: 1.25rem;
-        opacity: 0.95;
-        margin-bottom: 2.5rem;
-        line-height: 1.7;
-        animation: slideInLeft 1s ease;
-    }
-
-    .hero-buttons {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        animation: slideInUp 1.2s ease;
-    }
-
-    .hero-btn {
-        padding: 1rem 2rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1.0625rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
-    }
-
-    .hero-btn-primary {
-        background: white;
-        color: #667eea;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .hero-btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .hero-btn-secondary {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .hero-btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: translateY(-3px);
-    }
-
-    .hero-image {
-        flex: 1;
-        position: relative;
-        animation: float 3s ease-in-out infinite;
-    }
-
-    .hero-image img {
-        width: 100%;
-        height: auto;
-        filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
-    }
-
-    /* Categories Section */
-    .categories-section {
-        padding: 4rem 0;
-        background: #f8fafc;
-    }
-
-    .section-header {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-
-    .section-badge {
-        display: inline-block;
-        padding: 0.5rem 1.25rem;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border-radius: 50px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    .section-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #1e293b;
-        margin-bottom: 0.75rem;
-    }
-
-    .section-description {
-        font-size: 1.125rem;
-        color: #64748b;
-    }
-
-    .categories-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .category-card {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .category-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .category-card:hover::before {
-        opacity: 0.05;
-    }
-
-    .category-card:hover {
-        transform: translateY(-8px);
-        border-color: #667eea;
-        box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
-    }
-
-    .category-icon {
-        width: 56px;
-        height: 56px;
-        margin-bottom: 1rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        z-index: 1;
-        color: #334155;
-    }
-
-    .category-icon svg {
-        width: 100%;
-        height: 100%;
-    }
-
-    .category-name {
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 0.5rem;
-        position: relative;
-        z-index: 1;
-    }
-
-    .category-count {
-        font-size: 0.875rem;
-        color: #64748b;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Featured Products */
-    .featured-section {
-        padding: 4rem 0;
-        background: white;
-    }
-
-    .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 2rem;
-    }
-
-    .product-card-link {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-    }
-
-    .product-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: block;
-    }
-
-    .product-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-        border-color: #667eea;
-    }
-
-    .product-image-wrapper {
-        position: relative;
-        padding-top: 75%;
-        background: #f8fafc;
-        overflow: hidden;
-    }
-
-    .product-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .product-card:hover .product-image {
-        transform: scale(1.05);
-    }
-
-    .product-badges {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .product-badge {
-        padding: 0.375rem 0.75rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .badge-hot {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-        color: white;
-        animation: pulse 2s ease infinite;
-    }
-
-    .badge-new {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-    }
-
-    .badge-sale {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        color: white;
-    }
-
-    .product-actions {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .product-card:hover .product-actions {
-        opacity: 1;
-    }
-
-    .action-btn {
-        width: 40px;
-        height: 40px;
-        background: white;
-        border: none;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .action-btn:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .action-btn svg {
-        width: 18px;
-        height: 18px;
-        stroke: #1e293b;
-    }
-
-    .product-info {
-        padding: 1.5rem;
-    }
-
-    .product-brand {
-        font-size: 0.875rem;
-        color: #667eea;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-
-    .product-name {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 0.75rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        line-height: 1.4;
-        min-height: 2.8rem;
-        word-break: break-word;
-    }
-
-    .product-rating {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .stars {
-        color: #fbbf24;
-        font-size: 0.875rem;
-        white-space: nowrap;
-    }
-
-    .rating-count {
-        font-size: 0.8125rem;
-        color: #64748b;
-        white-space: nowrap;
-    }
-
-    .product-price {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        min-height: 3.5rem;
-    }
-
-    .price-current {
-        font-size: 1.375rem;
-        font-weight: 800;
-        color: #ef4444;
-        line-height: 1;
-        word-break: break-all;
-    }
-
-    .price-original {
-        font-size: 1rem;
-        color: #94a3b8;
-        text-decoration: line-through;
-        line-height: 1;
-    }
-
-    .price-discount {
-        padding: 0.25rem 0.5rem;
-        background: #fee2e2;
-        color: #ef4444;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        align-self: flex-start;
-    }
-
-    .product-footer {
-        padding: 0 1.5rem 1.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-    }
-
-    .stock-status {
-        display: flex;
-        align-items: center;
-        gap: 0.375rem;
-        font-size: 0.8125rem;
-        color: #10b981;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-    .stock-dot {
-        width: 8px;
-        height: 8px;
-        background: #10b981;
-        border-radius: 50%;
-        animation: pulse 2s ease infinite;
-    }
-
-    .add-to-cart-btn {
-        padding: 0.625rem 1rem;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        white-space: nowrap;
-    }
-
-    .add-to-cart-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    }
-
-    .add-to-cart-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .add-to-cart-btn:disabled:hover {
-        transform: none;
-    }
-
-    /* Deals Section */
-    .deals-section {
-        padding: 4rem 0;
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        color: white;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .deals-section::before {
-        content: '🔥';
-        position: absolute;
-        font-size: 20rem;
-        opacity: 0.05;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .deals-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .deals-header {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-
-    .deals-timer {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
-
-    .timer-box {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 1.5rem;
-        min-width: 100px;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .timer-value {
-        font-size: 2.5rem;
-        font-weight: 800;
-        display: block;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(135deg, #fbbf24, #f59e0b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .timer-label {
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.8;
-    }
-
-    /* Brands Section */
-    .brands-section {
-        padding: 4rem 0;
-        background: white;
-    }
-
-    .brands-slider {
-        display: flex;
-        gap: 3rem;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .brand-logo {
-        opacity: 0.6;
-        transition: all 0.3s ease;
-        filter: grayscale(1);
-        height: 60px;
-    }
-
-    .brand-logo:hover {
-        opacity: 1;
-        filter: grayscale(0);
-        transform: scale(1.1);
-    }
-
-    /* Animations */
-    @keyframes slideInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes slideInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-20px);
-        }
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-        50% {
-            opacity: 0.8;
-            transform: scale(1.05);
-        }
-    }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-        .hero-content {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 2.5rem;
-        }
-
-        .hero-buttons {
-            justify-content: center;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .hero-section {
-            padding: 3rem 0;
-        }
-
-        .hero-title {
-            font-size: 2rem;
-        }
-
-        .hero-description {
-            font-size: 1rem;
-        }
-
-        .section-title {
-            font-size: 2rem;
-        }
-
-        .categories-grid {
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        }
-
-        .products-grid {
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .deals-timer {
-            gap: 1rem;
-        }
-
-        .timer-box {
-            min-width: 80px;
-            padding: 1rem;
-        }
-
-        .timer-value {
-            font-size: 2rem;
-        }
-    }
-</style>
-@endpush
+@section('title', 'Home - FlashTech Premium Store')
 
 @section('content')
+
 <!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="hero-content">
-            <div class="hero-text">
-                <div class="hero-badge">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-                    </svg>
+<section class="relative pt-8 pb-20 lg:pt-16 lg:pb-28 overflow-hidden bg-slate-50">
+    <!-- Background Elements -->
+    <div class="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-indigo-50 to-white pointer-events-none"></div>
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+    <div class="absolute top-1/2 -left-24 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+            <!-- Hero Text -->
+            <div class="flex-1 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-100 text-indigo-700 font-bold text-sm mb-6 border border-indigo-200">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-500 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
+                    </span>
                     Flash Sale - Giảm đến 50%
                 </div>
-                <h1 class="hero-title">
-                    Công Nghệ Hàng Đầu<br>
-                    Giá <span class="highlight">Siêu Hời</span>
+                <h1 class="text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
+                    Công Nghệ Đỉnh Cao<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600">Giá Siêu Hời</span>
                 </h1>
-                <p class="hero-description">
+                <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 font-medium pb-2">
                     Khám phá bộ sưu tập smartphone, laptop, tablet và phụ kiện công nghệ mới nhất
                     với giá tốt nhất thị trường. Freeship toàn quốc, bảo hành chính hãng.
                 </p>
-                <div class="hero-buttons">
-                    <a href="#" class="hero-btn hero-btn-primary">
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                    <a href="#featured" class="px-8 py-4 rounded-full bg-slate-900 text-white font-bold hover:bg-indigo-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 text-center w-full sm:w-auto">
                         Mua Ngay
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
                     </a>
-                    <a href="#" class="hero-btn hero-btn-secondary">
-                        Xem Sản Phẩm
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                    <a href="{{ route('products.category', 'smartphone') }}" class="px-8 py-4 rounded-full bg-white text-slate-700 border border-slate-200 font-bold hover:border-indigo-300 hover:text-indigo-600 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto overflow-hidden group">
+                        Khám Phá
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
                 </div>
+                <!-- Trust Indicators -->
+                <div class="mt-10 flex items-center justify-center lg:justify-start gap-6 text-sm font-semibold text-slate-500">
+                    <div class="flex items-center gap-2"><svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Chính hãng 100%</div>
+                    <div class="flex items-center gap-2"><svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg> Freeship </div>
+                </div>
             </div>
-            <div class="hero-image">
-                <svg width="500" height="400" viewBox="0 0 500 400" fill="none">
-                    <rect x="100" y="50" width="300" height="300" rx="30" fill="white" opacity="0.2"/>
-                    <rect x="130" y="80" width="240" height="240" rx="20" fill="white" opacity="0.3"/>
-                    <circle cx="250" cy="200" r="80" fill="white" opacity="0.5"/>
-                    <path d="M220 200L240 220L280 180" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+
+            <!-- Hero Image / Glass Card -->
+            <div class="flex-1 w-full max-w-xl lg:max-w-none relative mt-10 lg:mt-0">
+                <div class="relative w-full aspect-square rounded-[3rem] bg-gradient-to-tr from-indigo-100 to-purple-50 p-4 sm:p-8 transform rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
+                    <div class="w-full h-full bg-white/60 backdrop-blur-xl rounded-[2.5rem] border border-white p-6 shadow-inner relative overflow-hidden flex flex-col items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800&h=800" alt="Tech Setup" class="w-full h-full object-cover rounded-[2rem] shadow-md absolute inset-0 opacity-90 transition-transform duration-700 hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+                        <div class="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-white/50 transform translate-y-4 hover:translate-y-0 transition-transform">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs font-bold text-indigo-600 mb-1 uppercase tracking-wider">New Arrival</div>
+                                    <div class="text-xl font-bold text-slate-800">Samsung S24 Ultra</div>
+                                </div>
+                                <div class="h-10 w-10 bg-slate-900 rounded-full flex items-center justify-center text-white shadow-lg"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Categories Section -->
-<section class="categories-section">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">Danh Mục</span>
-            <h2 class="section-title">Khám Phá Sản Phẩm</h2>
-            <p class="section-description">Tìm kiếm công nghệ phù hợp với nhu cầu của bạn</p>
+<section class="py-16 bg-white relative border-b border-slate-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl lg:text-4xl font-black text-slate-900 mb-4">Danh Mục Mua Sắm</h2>
+            <p class="text-slate-500 font-medium max-w-2xl mx-auto">Tìm kiếm thiết bị công nghệ phù hợp với nhu cầu và phong cách của bạn.</p>
         </div>
-        <div class="categories-grid">
-            <a href="#smartphones" class="category-card">
-                <span class="category-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="7" y="2" width="10" height="20" rx="2"></rect>
-                        <line x1="11" y1="18" x2="13" y2="18"></line>
-                    </svg>
-                </span>
-                <h3 class="category-name">Smartphone</h3>
-                <p class="category-count">{{ $categoryCounts['Smartphone'] ?? 0 }} sản phẩm</p>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+            <!-- Smartphone -->
+            <a href="{{ route('products.category', 'smartphone') }}" class="group bg-slate-50 hover:bg-white border text-center border-slate-100 hover:border-indigo-100 p-6 rounded-3xl hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-2 flex flex-col items-center">
+                <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"></rect><line x1="11" y1="18" x2="13" y2="18"></line></svg>
+                </div>
+                <h3 class="font-bold text-slate-800 mb-1">Điện thoại</h3>
+                <span class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded-full">{{ $categoryCounts['Smartphone'] ?? 0 }}</span>
             </a>
-            <a href="#laptops" class="category-card">
-                <span class="category-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="4" y="5" width="16" height="11" rx="1.5"></rect>
-                        <path d="M2 19h20"></path>
-                    </svg>
-                </span>
-                <h3 class="category-name">Laptop</h3>
-                <p class="category-count">{{ $categoryCounts['Laptop'] ?? 0 }} sản phẩm</p>
+            <!-- Laptop -->
+            <a href="{{ route('products.category', 'laptop') }}" class="group bg-slate-50 hover:bg-white border text-center border-slate-100 hover:border-emerald-100 p-6 rounded-3xl hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-2 flex flex-col items-center">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="1.5"></rect><path d="M2 19h20"></path></svg>
+                </div>
+                <h3 class="font-bold text-slate-800 mb-1">Laptop</h3>
+                <span class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded-full">{{ $categoryCounts['Laptop'] ?? 0 }}</span>
             </a>
-            <a href="#tablets" class="category-card">
-                <span class="category-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="5" y="2" width="14" height="20" rx="2"></rect>
-                        <circle cx="12" cy="18" r="0.8" fill="currentColor" stroke="none"></circle>
-                    </svg>
-                </span>
-                <h3 class="category-name">Tablet</h3>
-                <p class="category-count">{{ $categoryCounts['Tablet'] ?? 0 }} sản phẩm</p>
+            <!-- Tablet -->
+            <a href="{{ route('products.category', 'tablet') }}" class="group bg-slate-50 hover:bg-white border text-center border-slate-100 hover:border-purple-100 p-6 rounded-3xl hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 hover:-translate-y-2 flex flex-col items-center">
+                <div class="w-16 h-16 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"></rect><circle cx="12" cy="18" r="1"></circle></svg>
+                </div>
+                <h3 class="font-bold text-slate-800 mb-1">Tablet</h3>
+                <span class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded-full">{{ $categoryCounts['Tablet'] ?? 0 }}</span>
             </a>
-            <a href="#computers" class="category-card">
-                <span class="category-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="12" rx="1.5"></rect>
-                        <path d="M8 20h8"></path>
-                        <path d="M12 16v4"></path>
-                    </svg>
-                </span>
-                <h3 class="category-name">Computer</h3>
-                <p class="category-count">{{ $categoryCounts['Computer'] ?? 0 }} sản phẩm</p>
+            <!-- Accessories -->
+            <a href="{{ route('products.category', 'accessory') }}" class="group bg-slate-50 hover:bg-white border text-center border-slate-100 hover:border-rose-100 p-6 rounded-3xl hover:shadow-xl hover:shadow-rose-500/10 transition-all duration-300 hover:-translate-y-2 flex flex-col items-center">
+                <div class="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 16 0"></path><rect x="3" y="12" width="4" height="7" rx="1.5"></rect><rect x="17" y="12" width="4" height="7" rx="1.5"></rect></svg>
+                </div>
+                <h3 class="font-bold text-slate-800 mb-1">Phụ kiện</h3>
+                <span class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded-full">{{ $categoryCounts['Accessory'] ?? 0 }}</span>
             </a>
-            <a href="#accessories" class="category-card">
-                <span class="category-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 12a8 8 0 0 1 16 0"></path>
-                        <rect x="3" y="12" width="4" height="7" rx="1.5"></rect>
-                        <rect x="17" y="12" width="4" height="7" rx="1.5"></rect>
-                    </svg>
-                </span>
-                <h3 class="category-name">Phụ kiện</h3>
-                <p class="category-count">{{ $categoryCounts['Accessory'] ?? 0 }} sản phẩm</p>
+            <!-- Components -->
+            <a href="{{ route('products.category', 'component') }}" class="group bg-slate-50 hover:bg-white border text-center border-slate-100 hover:border-sky-100 p-6 rounded-3xl hover:shadow-xl hover:shadow-sky-500/10 transition-all duration-300 hover:-translate-y-2 flex flex-col items-center hidden md:flex">
+                <div class="w-16 h-16 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M14 6a4 4 0 0 0 4 4l-6.5 6.5a2.1 2.1 0 1 1-3-3L15 7a4 4 0 0 0-1-1z"></path><path d="M5 19l2 2"></path></svg>
+                </div>
+                <h3 class="font-bold text-slate-800 mb-1">Linh kiện</h3>
+                <span class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded-full">{{ $categoryCounts['Component'] ?? 0 }}</span>
             </a>
-            <a href="#components" class="category-card">
-                <span class="category-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 6a4 4 0 0 0 4 4l-6.5 6.5a2.1 2.1 0 1 1-3-3L15 7a4 4 0 0 0-1-1z"></path>
-                        <path d="M5 19l2 2"></path>
-                    </svg>
-                </span>
-                <h3 class="category-name">Linh kiện</h3>
-                <p class="category-count">{{ $categoryCounts['Component'] ?? 0 }} sản phẩm</p>
-            </a>
-            <a href="#accessories" class="category-card">
-                <span class="category-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 8l9-5 9 5-9 5-9-5z"></path>
-                        <path d="M3 8v8l9 5 9-5V8"></path>
-                        <path d="M12 13v8"></path>
-                    </svg>
-                </span>
-                <h3 class="category-name">Khác</h3>
-                <p class="category-count">{{ $categoryCounts['Other'] ?? 0 }} sản phẩm</p>
+            <!-- Computer -->
+            <a href="{{ route('products.category', 'computer') }}" class="group bg-slate-50 hover:bg-white border text-center border-slate-100 hover:border-amber-100 p-6 rounded-3xl hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 hover:-translate-y-2 flex flex-col items-center hidden md:flex">
+                <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"></rect><path d="M8 20h8"></path><path d="M12 16v4"></path></svg>
+                </div>
+                <h3 class="font-bold text-slate-800 mb-1">Computer</h3>
+                <span class="text-xs text-slate-500 font-medium bg-slate-100 px-2 py-0.5 rounded-full">{{ $categoryCounts['Computer'] ?? 0 }}</span>
             </a>
         </div>
     </div>
 </section>
 
 <!-- Featured Products Section -->
-<section class="featured-section">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">Sản Phẩm</span>
-            <h2 class="section-title">Sản Phẩm Nổi Bật</h2>
-            <p class="section-description">Những sản phẩm được yêu thích nhất</p>
+<section id="featured" class="py-16 bg-slate-50">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col sm:flex-row items-center justify-between mb-10 gap-4">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-2 flex items-center gap-2">
+                    <span class="text-indigo-600">⚡</span> Sản Phẩm Nổi Bật
+                </h2>
+                <p class="text-slate-500 font-medium">Những sản phẩm công nghệ bán chạy nhất tuần qua.</p>
+            </div>
+            <a href="{{ route('products.search') }}" class="text-indigo-600 font-bold hover:text-indigo-700 flex items-center gap-1 group">
+                Xem tất cả <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
         </div>
-        <div class="products-grid">
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
             @forelse($featuredProducts as $product)
                 @include('Customers.Components.product-card', ['product' => $product])
             @empty
-                <p style="text-align: center; padding: 3rem; color: #64748b; grid-column: 1 / -1;">
+                <div class="col-span-full py-12 text-center text-slate-500 font-medium bg-white rounded-3xl border border-slate-100">
                     Chưa có sản phẩm nổi bật
-                </p>
+                </div>
             @endforelse
         </div>
     </div>
 </section>
 
-<!-- Smartphones Section -->
-@if($smartphones->count() > 0)
-<section class="featured-section" id="smartphones" style="background: #f8fafc;">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
-                    <rect x="7" y="2" width="10" height="20" rx="2"></rect>
-                    <line x1="11" y1="18" x2="13" y2="18"></line>
-                </svg>
-                Smartphone
-            </span>
-            <h2 class="section-title">Điện Thoại Thông Minh</h2>
-            <p class="section-description">Các mẫu smartphone mới nhất</p>
-        </div>
-        <div class="products-grid">
-            @foreach($smartphones as $product)
-                @include('Customers.Components.product-card', ['product' => $product])
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Laptops Section -->
-@if($laptops->count() > 0)
-<section class="featured-section" id="laptops">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
-                    <rect x="4" y="5" width="16" height="11" rx="1.5"></rect>
-                    <path d="M2 19h20"></path>
-                </svg>
-                Laptop
-            </span>
-            <h2 class="section-title">Laptop & Máy Tính Xách Tay</h2>
-            <p class="section-description">Laptop cho mọi nhu cầu làm việc và giải trí</p>
-        </div>
-        <div class="products-grid">
-            @foreach($laptops as $product)
-                @include('Customers.Components.product-card', ['product' => $product])
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Tablets Section -->
-@if($tablets->count() > 0)
-<section class="featured-section" id="tablets" style="background: #f8fafc;">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
-                    <rect x="5" y="2" width="14" height="20" rx="2"></rect>
-                    <circle cx="12" cy="18" r="0.9" fill="currentColor" stroke="none"></circle>
-                </svg>
-                Tablet
-            </span>
-            <h2 class="section-title">Máy Tính Bảng</h2>
-            <p class="section-description">Tablet tiện lợi cho học tập và giải trí</p>
-        </div>
-        <div class="products-grid">
-            @foreach($tablets as $product)
-                @include('Customers.Components.product-card', ['product' => $product])
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Computers Section -->
-@if($computers->count() > 0)
-<section class="featured-section" id="computers">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
-                    <rect x="3" y="4" width="18" height="12" rx="1.5"></rect>
-                    <path d="M8 20h8"></path>
-                    <path d="M12 16v4"></path>
-                </svg>
-                Computer
-            </span>
-            <h2 class="section-title">PC & Máy Tính Để Bàn</h2>
-            <p class="section-description">Máy tính bàn hiệu năng cao</p>
-        </div>
-        <div class="products-grid">
-            @foreach($computers as $product)
-                @include('Customers.Components.product-card', ['product' => $product])
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Accessories Section -->
-@if($accessories->count() > 0)
-<section class="featured-section" id="accessories" style="background: #f8fafc;">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.35rem; vertical-align: text-bottom;">
-                    <path d="M4 12a8 8 0 0 1 16 0"></path>
-                    <rect x="3" y="12" width="4" height="7" rx="1.5"></rect>
-                    <rect x="17" y="12" width="4" height="7" rx="1.5"></rect>
-                </svg>
-                Phụ Kiện
-            </span>
-            <h2 class="section-title">Phụ Kiện Công Nghệ</h2>
-            <p class="section-description">Phụ kiện chất lượng cao cho thiết bị của bạn</p>
-        </div>
-        <div class="products-grid">
-            @foreach($accessories as $product)
-                @include('Customers.Components.product-card', ['product' => $product])
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Flash Deals Section -->
-<section class="deals-section">
-    <div class="container">
-        <div class="deals-content">
-            <div class="deals-header">
-                <span class="section-badge">🔥 Flash Sale</span>
-                <h2 class="section-title" style="color: white;">Giờ Vàng Giá Sốc</h2>
-                <p class="section-description" style="color: rgba(255,255,255,0.8);">Nhanh tay chốt đơn trước khi hết giờ!</p>
-                <div class="deals-timer">
-                    <div class="timer-box">
-                        <span class="timer-value">12</span>
-                        <span class="timer-label">Giờ</span>
+<!-- Flash Deals Banner -->
+<section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="relative w-full rounded-[2.5rem] bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 overflow-hidden p-8 sm:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border border-slate-800 text-center md:text-left">
+            <!-- decorative circles -->
+            <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-500 rounded-full mix-blend-screen filter blur-[80px] opacity-40"></div>
+            <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-fuchsia-500 rounded-full mix-blend-screen filter blur-[80px] opacity-40"></div>
+            
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-300 font-bold text-xs mb-4 border border-red-500/30">
+                    🔥 Giờ Vàng Giá Sốc
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">Flash Sale Cuối Tuần</h2>
+                <p class="text-indigo-200 font-medium text-lg max-w-lg mb-8 md:mb-0">Giảm thêm 10% khi thanh toán qua thẻ tín dụng. Nhanh tay săn deal ngon, số lượng có hạn!</p>
+            </div>
+            
+            <div class="relative z-10 bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20 shadow-xl shrink-0">
+                <div class="text-center text-white font-bold mb-4 uppercase tracking-wider text-sm">Kết thúc sau</div>
+                <div class="flex items-center gap-3 justify-center deals-timer">
+                    <div class="w-16 h-16 rounded-xl bg-slate-900 flex flex-col items-center justify-center shadow-inner border border-white/10">
+                        <span class="text-2xl font-black text-white timer-value">12</span>
+                        <span class="text-[0.6rem] text-slate-400 uppercase font-bold">Giờ</span>
                     </div>
-                    <div class="timer-box">
-                        <span class="timer-value">34</span>
-                        <span class="timer-label">Phút</span>
+                    <span class="text-2xl font-bold text-white/50">:</span>
+                    <div class="w-16 h-16 rounded-xl bg-slate-900 flex flex-col items-center justify-center shadow-inner border border-white/10">
+                        <span class="text-2xl font-black text-white timer-value">34</span>
+                        <span class="text-[0.6rem] text-slate-400 uppercase font-bold">Phút</span>
                     </div>
-                    <div class="timer-box">
-                        <span class="timer-value">56</span>
-                        <span class="timer-label">Giây</span>
+                    <span class="text-2xl font-bold text-white/50">:</span>
+                    <div class="w-16 h-16 rounded-xl bg-slate-900 flex flex-col items-center justify-center shadow-inner border border-white/10">
+                        <span class="text-2xl font-black text-rose-400 timer-value">56</span>
+                        <span class="text-[0.6rem] text-slate-400 uppercase font-bold">Giây</span>
                     </div>
                 </div>
             </div>
@@ -1005,81 +194,73 @@
     </div>
 </section>
 
-<!-- Brands Section -->
-<section class="brands-section">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-badge">Thương Hiệu</span>
-            <h2 class="section-title">Đối Tác Chính Hãng</h2>
-            <p class="section-description">Cam kết 100% sản phẩm chính hãng</p>
+<!-- Category Rows -->
+@foreach([
+    ['name' => 'Smartphone', 'slug' => 'smartphone', 'data' => $smartphones],
+    ['name' => 'Laptop', 'slug' => 'laptop', 'data' => $laptops],
+    ['name' => 'Tablet', 'slug' => 'tablet', 'data' => $tablets],
+    ['name' => 'Phụ kiện', 'slug' => 'accessory', 'data' => $accessories],
+] as $category)
+    @if($category['data']->count() > 0)
+    <section class="py-12 {{ $loop->even ? 'bg-white' : 'bg-slate-50' }}">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900">{{ $category['name'] }} Mới Nhất</h2>
+                <a href="{{ route('products.category', $category['slug']) }}" class="px-5 py-2 rounded-full bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition-colors text-sm">
+                    Xem tất cả {{ $category['name'] }}
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+                @foreach($category['data'] as $product)
+                    @include('Customers.Components.product-card', ['product' => $product])
+                @endforeach
+            </div>
         </div>
-        <div class="brands-slider">
+    </section>
+    @endif
+@endforeach
+
+<!-- Brands Section -->
+<section class="py-16 bg-white border-t border-slate-100">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-black text-slate-400 uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-slate-400 to-slate-500">Đối Tác Chính Hãng</h2>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60 hover:opacity-100 transition-opacity duration-500">
             @forelse($brands as $brand)
-                @php
-                    $brandName = strtolower($brand->name);
-                    $logoUrl = "https://logo.clearbit.com/{$brandName}.com";
-                @endphp
-                <img src="{{ $logoUrl }}"
-                     alt="{{ $brand->name }}"
-                     class="brand-logo"
-                     onerror="this.src='https://via.placeholder.com/120x60?text={{ urlencode($brand->name) }}'">
+                @php $logoUrl = "https://logo.clearbit.com/".strtolower($brand->name).".com"; @endphp
+                <img src="{{ $logoUrl }}" alt="{{ $brand->name }}" class="h-8 md:h-12 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300" onerror="this.src='https://via.placeholder.com/120x60/ffffff/94a3b8?text={{ urlencode($brand->name) }}'">
             @empty
-                <img src="https://logo.clearbit.com/apple.com" alt="Apple" class="brand-logo">
-                <img src="https://logo.clearbit.com/samsung.com" alt="Samsung" class="brand-logo">
-                <img src="https://logo.clearbit.com/dell.com" alt="Dell" class="brand-logo">
-                <img src="https://logo.clearbit.com/hp.com" alt="HP" class="brand-logo">
-                <img src="https://logo.clearbit.com/lenovo.com" alt="Lenovo" class="brand-logo">
-                <img src="https://logo.clearbit.com/asus.com" alt="Asus" class="brand-logo">
-                <img src="https://logo.clearbit.com/sony.com" alt="Sony" class="brand-logo">
-                <img src="https://logo.clearbit.com/xiaomi.com" alt="Xiaomi" class="brand-logo">
+                <img src="https://logo.clearbit.com/apple.com" alt="Apple" class="h-10 md:h-12 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
+                <img src="https://logo.clearbit.com/samsung.com" alt="Samsung" class="h-10 md:h-12 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
+                <img src="https://logo.clearbit.com/asus.com" alt="Asus" class="h-10 md:h-12 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
+                <img src="https://logo.clearbit.com/dell.com" alt="Dell" class="h-10 md:h-12 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
             @endforelse
         </div>
     </div>
 </section>
+
 @endsection
 
 @push('scripts')
 <script>
-    // Countdown Timer
-    function updateTimer() {
-        const timerBoxes = document.querySelectorAll('.timer-box');
-        if (timerBoxes.length === 0) return;
-
+document.addEventListener('DOMContentLoaded', () => {
+    // Basic Timer Logic
+    const timerBoxes = document.querySelectorAll('.timer-value');
+    if (timerBoxes.length === 3) {
         setInterval(() => {
-            const hours = parseInt(timerBoxes[0].querySelector('.timer-value').textContent);
-            let minutes = parseInt(timerBoxes[1].querySelector('.timer-value').textContent);
-            let seconds = parseInt(timerBoxes[2].querySelector('.timer-value').textContent);
-
-            seconds--;
-            if (seconds < 0) {
-                seconds = 59;
-                minutes--;
-                if (minutes < 0) {
-                    minutes = 59;
-                }
-            }
-
-            timerBoxes[1].querySelector('.timer-value').textContent = minutes.toString().padStart(2, '0');
-            timerBoxes[2].querySelector('.timer-value').textContent = seconds.toString().padStart(2, '0');
+            let h = parseInt(timerBoxes[0].textContent);
+            let m = parseInt(timerBoxes[1].textContent);
+            let s = parseInt(timerBoxes[2].textContent);
+            s--;
+            if (s < 0) { s = 59; m--; }
+            if (m < 0) { m = 59; h--; }
+            if (h < 0) { h = 23; }
+            timerBoxes[0].textContent = h.toString().padStart(2, '0');
+            timerBoxes[1].textContent = m.toString().padStart(2, '0');
+            timerBoxes[2].textContent = s.toString().padStart(2, '0');
         }, 1000);
     }
-
-    updateTimer();
-
-    // Add to Cart
-    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-        });
-    });
-
-    // Wishlist
-    document.querySelectorAll('.action-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const svg = this.querySelector('svg');
-            if (svg.querySelector('path').getAttribute('d').includes('M20.84')) {
-            }
-        });
-    });
+});
 </script>
 @endpush
-
